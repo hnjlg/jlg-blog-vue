@@ -26,6 +26,7 @@
 import HelloWorld from '@/components/HelloWorld.vue';
 import useTestStore from '@/store/index';
 import { useRouter } from 'vue-router';
+import { testAxios } from '@/api/test';
 
 const router = useRouter();
 
@@ -36,6 +37,10 @@ ElMessage({
 });
 const a = ref(1);
 console.log(import.meta.env.VITE_APP_ENV);
+
+testAxios().then((res) => {
+	console.log(res);
+});
 </script>
 
 <style scoped lang="scss">

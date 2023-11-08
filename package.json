@@ -16,6 +16,7 @@
 		"style": "stylelint \"./**/*.{css,scss,sass,vue,html}\" --fix"
 	},
 	"dependencies": {
+		"axios": "^1.6.0",
 		"element-plus": "^2.4.2",
 		"normalize.css": "^8.0.1",
 		"pinia": "^2.1.7",
