@@ -4,8 +4,8 @@
 	"version": "0.0.0",
 	"type": "commonjs",
 	"scripts": {
-		"dev": "vite",
-		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
+		"dev": "vite --mode development",
+		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite --mode build build",
 		"preview": "vite preview",
 		"commitlint": "commitlint --config commitlint.config.ts -e -V",
 		"prettier:fix": "prettier --write .",

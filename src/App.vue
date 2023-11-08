@@ -5,6 +5,7 @@ ElMessage({
 	type: 'success',
 });
 const a = ref(1);
+console.log(import.meta.env.VITE_APP_ENV);
 </script>
 
 <template>
