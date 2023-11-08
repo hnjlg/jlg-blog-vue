@@ -6,6 +6,8 @@ import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
 import DefineOptions from 'unplugin-vue-define-options/vite';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -33,6 +35,9 @@ export default defineConfig({
 			scss: {
 				javascriptEnabled: true,
 				additionalData: '@import "./src/assets/styles/variable.scss"; @import "./src/assets/styles/mixins.scss";',
+			},
+			postcss: {
+				plugins: [tailwindcss, autoprefixer],
 			},
 		},
 	},

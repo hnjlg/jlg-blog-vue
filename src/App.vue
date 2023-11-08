@@ -5,6 +5,7 @@
 		</keep-alive>
 		<component :is="Component" v-if="!$route.meta.keepAlive" />
 	</router-view>
+	<h1 class="text-3xl font-bold underline">Hello world!</h1>
 	<div @click="router.push('/home')">showHome</div>
 	<div @click="router.push('/about')">showAbout</div>
 	<div style="width: 100vw; height: 100vh; border: 1px solid red" class="global-test">
