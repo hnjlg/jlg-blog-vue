@@ -25,6 +25,14 @@ export default defineConfig({
 			directoryAsNamespace: true,
 		}),
 	],
+	css: {
+		preprocessorOptions: {
+			scss: {
+				javascriptEnabled: true,
+				additionalData: '@import "./src/assets/styles/variable.scss"; @import "./src/assets/styles/mixins.scss";',
+			},
+		},
+	},
 	resolve: {
 		alias: {
 			'@': resolve(__dirname, 'src'),

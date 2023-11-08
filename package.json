@@ -12,7 +12,8 @@
 		"eslint:fix": "eslint --fix .",
 		"prepare": "husky install",
 		"pre-commit": "lint-staged",
-		"preinstall": "npx only-allow npm"
+		"preinstall": "npx only-allow npm",
+		"style": "stylelint \"./**/*.{css,scss,sass,vue,html}\" --fix"
 	},
 	"dependencies": {
 		"element-plus": "^2.4.2",
@@ -37,7 +38,18 @@
 		"husky": "^8.0.0",
 		"lint-staged": "^15.0.2",
 		"only-allow": "^1.2.1",
+		"postcss": "^8.4.16",
+		"postcss-html": "^1.5.0",
+		"postcss-scss": "^4.0.4",
 		"prettier": "^3.0.3",
+		"sass": "^1.51.0",
+		"stylelint": "^14.11.0",
+		"stylelint-config-prettier": "^9.0.3",
+		"stylelint-config-recommended-scss": "^7.0.0",
+		"stylelint-config-standard": "^28.0.0",
+		"stylelint-config-standard-vue": "^1.0.0",
+		"stylelint-order": "^5.0.0",
+		"stylelint-scss": "^4.3.0",
 		"typescript": "^5.0.2",
 		"unplugin-auto-import": "^0.16.7",
 		"unplugin-vue-components": "^0.25.2",
