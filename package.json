@@ -5,7 +5,7 @@
 	"type": "commonjs",
 	"scripts": {
 		"dev": "vite",
-		"build": "vue-tsc && vite build",
+		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
 		"preview": "vite preview",
 		"commitlint": "commitlint --config commitlint.config.ts -e -V",
 		"prettier:fix": "prettier --write .",
@@ -39,6 +39,7 @@
 		"unplugin-vue-components": "^0.25.2",
 		"vite": "^4.4.5",
 		"vite-plugin-eslint": "^1.8.1",
-		"vue-tsc": "^1.8.5"
+		"vue-tsc": "^1.8.5",
+		"cross-env": "^7.0.3"
 	}
 }
