@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
+import HelloWorld from '@/components/HelloWorld.vue';
+ElMessage({
+	message: 'Congrats, this is a success message.',
+	type: 'success',
+});
+const a = ref(1);
 </script>
 
 <template>
 	<div>
+		{{ a }}
+		<el-button>按钮</el-button>
 		<a href="https://vitejs.dev" target="_blank">
 			<img src="/vite.svg" class="logo" alt="Vite logo" />
 		</a>
