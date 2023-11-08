@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import HelloWorld from '@/components/HelloWorld.vue';
+import useTestStore from '@/store/index';
+
+const testStore = useTestStore();
 ElMessage({
 	message: 'Congrats, this is a success message.',
 	type: 'success',
@@ -10,14 +13,16 @@ console.log(import.meta.env.VITE_APP_ENV);
 
 <template>
 	<div style="border: 1px solid red; width: 100vw; height: 100vh">
-		{{ a }}
-		<el-button>按钮</el-button>
+		{{ testStore.count }}
+		{{ testStore.doubleCount }}
+		<el-button @click="testStore.changeCount(++testStore.count)">按钮</el-button>
 		<a href="https://vitejs.dev" target="_blank">
 			<img src="/vite.svg" class="logo" alt="Vite logo" />
 		</a>
 		<a href="https://vuejs.org/" target="_blank">
 			<img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
 		</a>
+		{{ a }}
 	</div>
 	<HelloWorld msg="Vite + Vue" />
 </template>
