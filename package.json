@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"element-plus": "^2.4.2",
+		"normalize.css": "^8.0.1",
 		"vue": "^3.3.4"
 	},
 	"devDependencies": {

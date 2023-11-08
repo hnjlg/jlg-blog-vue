@@ -8,7 +8,7 @@ const a = ref(1);
 </script>
 
 <template>
-	<div>
+	<div style="border: 1px solid red; width: 100vw; height: 100vh">
 		{{ a }}
 		<el-button>按钮</el-button>
 		<a href="https://vitejs.dev" target="_blank">
