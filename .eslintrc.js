@@ -43,8 +43,8 @@ module.exports = {
 		'vue/require-prop-types': 'error', // 允许组件定义prop类型 可以不定义类型 后续解决
 		'vue/require-default-prop': 'error', // 允许组件定义默认值 可以不定义默认值 后续解决
 		'no-undef': ['error', { typeof: false }], //允许使用未定义的变量,因为自动导入了vue
-		'no-console': 'off', //生产模式不允许使用log
-		'no-debugger': 'off', //生产默认不允许使用debugger
+		'no-console': process.env.NODE_ENV === 'build' ? ['warn', { allow: ['warn'] }] : 'off', //生产模式不允许使用log
+		'no-debugger': process.env.NODE_ENV === 'build' ? 'error' : 'off', //生产默认不允许使用debugger
 		'@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '.*', args: 'none' }], //变量声明未使用
 		'@typescript-eslint/no-explicit-any': 'error', // ts使用any
 		'@typescript-eslint/no-var-requires': 'error', // 强制使用 import 且不允许使用 require 设置off关闭检查
