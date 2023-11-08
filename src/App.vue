@@ -1,4 +1,12 @@
 <template>
+	<router-view v-slot="{ Component }">
+		<keep-alive>
+			<component :is="Component" v-if="$route.meta.keepAlive" />
+		</keep-alive>
+		<component :is="Component" v-if="!$route.meta.keepAlive" />
+	</router-view>
+	<div @click="router.push('/home')">showHome</div>
+	<div @click="router.push('/about')">showAbout</div>
 	<div style="width: 100vw; height: 100vh; border: 1px solid red" class="global-test">
 		{{ testStore.count }}
 		{{ testStore.doubleCount }}
@@ -17,6 +25,9 @@
 <script setup lang="ts">
 import HelloWorld from '@/components/HelloWorld.vue';
 import useTestStore from '@/store/index';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const testStore = useTestStore();
 ElMessage({

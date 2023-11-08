@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import router from '@/router/index';
 import 'normalize.css';
 import App from './App.vue';
-const pinia = createPinia();
-createApp(App).use(pinia).mount('#app');
+createApp(App).use(createPinia()).use(router).mount('#app');

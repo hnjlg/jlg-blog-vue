@@ -1,0 +1,36 @@
+import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
+
+const routes: RouteRecordRaw[] = [
+	{
+		path: '/about',
+		component: () => import('@/views/about/index.vue'),
+		beforeEnter: (to, from) => {
+			console.log(to, from, '路由独享守卫');
+		},
+		meta: {
+			keepAlive: false,
+		},
+	},
+	{
+		path: '/home',
+		component: () => import('@/views/home/index.vue'),
+		meta: {
+			keepAlive: true,
+		},
+	},
+];
+
+const router = createRouter({
+	history: createWebHashHistory('/'),
+	routes,
+});
+
+router.beforeEach((to, from, next) => {
+	console.log(to, from, '全局前置守卫');
+	next();
+});
+router.afterEach((to, from) => {
+	console.log(to, from, '全局后置钩子');
+});
+
+export default router;
