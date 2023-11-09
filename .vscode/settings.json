@@ -41,6 +41,7 @@
 		"vitepress",
 		"warpped",
 		"yalc",
-		"tailwindcss"
+		"tailwindcss",
+		"gsap"
 	]
 }
