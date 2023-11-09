@@ -2,8 +2,8 @@ import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
 	{
-		path: '/about',
-		component: () => import('@/views/about/index.vue'),
+		path: '/errorSDK',
+		component: () => import('@/views/error-sdk/index.vue'),
 		beforeEnter: (to, from) => {
 			console.log(to, from, '路由独享守卫');
 		},

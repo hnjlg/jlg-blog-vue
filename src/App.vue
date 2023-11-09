@@ -1,62 +1,42 @@
 <template>
+	<div class="navigation-menu-container-switch" @click="navigationSwitchHandle">{{ navigationSwitchUrl }}</div>
+	<Navigation-Menu
+		v-model="navigationMenuShow"
+		:animation-event-callback="{
+			drawerOpened,
+			drawerClosed,
+		}"
+	></Navigation-Menu>
 	<router-view v-slot="{ Component }">
 		<keep-alive>
 			<component :is="Component" v-if="$route.meta.keepAlive" />
 		</keep-alive>
 		<component :is="Component" v-if="!$route.meta.keepAlive" />
 	</router-view>
-	<h1 class="text-3xl font-bold underline">Hello world!</h1>
-	<div @click="router.push('/home')">showHome</div>
-	<div @click="router.push('/about')">showAbout</div>
-	<div style="width: 100vw; height: 100vh; border: 1px solid red" class="global-test">
-		{{ testStore.count }}
-		{{ testStore.doubleCount }}
-		<el-button @click="testStore.changeCount(++testStore.count)">按钮</el-button>
-		<a href="https://vitejs.dev" target="_blank">
-			<img src="/vite.svg" class="logo" alt="Vite logo" />
-		</a>
-		<a href="https://vuejs.org/" target="_blank">
-			<img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-		</a>
-		{{ a }}
-	</div>
-	<HelloWorld msg="Vite + Vue" />
 </template>
 
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue';
-import useTestStore from '@/store/index';
-import { useRouter } from 'vue-router';
-import { testAxios } from '@/api/test';
-
-const router = useRouter();
-
-const testStore = useTestStore();
-ElMessage({
-	message: 'Congrats, this is a success message.',
-	type: 'success',
-});
-const a = ref(1);
-console.log(import.meta.env.VITE_APP_ENV);
-
-testAxios().then((res) => {
-	console.log(res);
-});
+import NavigationMenu from '@/components/navigation-menu/index.vue';
+const navigationMenuShow = ref<boolean>(false);
+const navigationSwitchUrl = ref<string>('中');
+const navigationSwitchHandle = () => {
+	navigationMenuShow.value = !navigationMenuShow.value;
+	navigationMenuShow.value ? (navigationSwitchUrl.value = '放') : (navigationSwitchUrl.value = '收');
+};
+const drawerOpened = () => {
+	console.log('drawer open animate done');
+	navigationSwitchUrl.value = '中';
+};
+const drawerClosed = () => {
+	console.log('drawer close animate done');
+	navigationSwitchUrl.value = '中';
+};
 </script>
-
-<style scoped lang="scss">
-.global-test {
-	.logo {
-		height: 6em;
-		padding: 1.5em;
-		will-change: filter;
-		transition: filter 300ms;
-	}
-	.logo:hover {
-		filter: drop-shadow(0 0 2em #646cffaa);
-	}
-	.logo.vue:hover {
-		filter: drop-shadow(0 0 2em #42b883aa);
-	}
+<style lang="scss" scoped>
+.navigation-menu-container-switch {
+	position: fixed;
+	top: 0;
+	right: 10%;
+	z-index: 9999;
 }
 </style>
