@@ -25,10 +25,11 @@
 		"paths": {
 			"@/*": [
 				"./src/*"
-			]
+			],
 		},
 		"types": [
-			"unplugin-vue-define-options"
+			"unplugin-vue-define-options",
+			"@types/node"
 		]
 	},
 	"include": [

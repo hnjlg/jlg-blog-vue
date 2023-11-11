@@ -2,6 +2,10 @@ import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
 	{
+		path: '/',
+		redirect: '/markdown-test',
+	},
+	{
 		path: '/errorSDK',
 		component: () => import('@/views/error-sdk/index.vue'),
 		beforeEnter: (to, from) => {
@@ -16,6 +20,13 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/views/home/index.vue'),
 		meta: {
 			keepAlive: true,
+		},
+	},
+	{
+		path: '/markdown-test',
+		component: () => import('@/views/markdown-test/index.vue'),
+		meta: {
+			keepAlive: false,
 		},
 	},
 ];

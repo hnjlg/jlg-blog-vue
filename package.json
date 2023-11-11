@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"axios": "^1.6.0",
+		"cherry-markdown": "^0.8.27",
 		"element-plus": "^2.4.2",
 		"gsap": "^3.12.2",
 		"normalize.css": "^8.0.1",

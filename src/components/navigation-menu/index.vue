@@ -12,6 +12,7 @@
 			<div>
 				<div @click="menuLink('/home')">home</div>
 				<div @click="menuLink('/errorSDK')">error-sdk</div>
+				<div @click="menuLink('/markdown-test')">markdown-test</div>
 			</div>
 		</el-drawer>
 	</div>
@@ -40,7 +41,7 @@ const emits = defineEmits(['update:modelValue']);
 
 const router = useRouter();
 
-const menuLink = (url) => {
+const menuLink = (url: string) => {
 	router.push(url);
 	emits('update:modelValue', false);
 };

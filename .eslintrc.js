@@ -63,7 +63,7 @@ module.exports = {
 		h: 'readonly',
 		ComponentPublicInstance: 'readonly',
 		globalThis: 'readonly',
-		NodeJS: 'readonly'
+		NodeJS: 'readonly',
 	},
 	rules: {
 		'no-prototype-builtins': 'error', // 允许使用hasOwnProperty
