@@ -40,7 +40,7 @@ const emits = defineEmits(['update:modelValue']);
 
 const router = useRouter();
 
-const menuLink = (url) => {
+const menuLink = (url: string) => {
 	router.push(url);
 	emits('update:modelValue', false);
 };

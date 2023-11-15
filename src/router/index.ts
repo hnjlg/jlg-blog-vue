@@ -12,6 +12,13 @@ const routes: RouteRecordRaw[] = [
 		},
 	},
 	{
+		path: '/errorDetail',
+		component: () => import('@/views/error-detail/index.vue'),
+		meta: {
+			keepAlive: false,
+		},
+	},
+	{
 		path: '/home',
 		component: () => import('@/views/home/index.vue'),
 		meta: {

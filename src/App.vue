@@ -1,5 +1,9 @@
 <template>
-	<div class="navigation-menu-container-switch" @click="navigationSwitchHandle">{{ navigationSwitchUrl }}</div>
+	<div class="navigation-menu-container-switch" @click="navigationSwitchHandle">
+		<div class="w-20">
+			{{ navigationSwitchUrl }}
+		</div>
+	</div>
 	<Navigation-Menu
 		v-model="navigationMenuShow"
 		:animation-event-callback="{
@@ -17,6 +21,7 @@
 
 <script setup lang="ts">
 import NavigationMenu from '@/components/navigation-menu/index.vue';
+
 const navigationMenuShow = ref<boolean>(false);
 const navigationSwitchUrl = ref<string>('中');
 const navigationSwitchHandle = () => {
@@ -38,5 +43,8 @@ const drawerClosed = () => {
 	top: 0;
 	right: 10%;
 	z-index: 9999;
+}
+* {
+	font-size: 16px;
 }
 </style>
