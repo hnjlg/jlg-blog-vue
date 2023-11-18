@@ -8,6 +8,7 @@ import { resolve } from 'path';
 import DefineOptions from 'unplugin-vue-define-options/vite';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
+import svgLoader from 'vite-svg-loader';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,12 +30,14 @@ export default defineConfig({
 			// 允许文件夹目录作为命名空间，可以避免自动导入组件出现重名文件名警告
 			directoryAsNamespace: true,
 		}),
+		svgLoader(),
 	],
 	css: {
 		preprocessorOptions: {
 			scss: {
 				javascriptEnabled: true,
-				additionalData: '@import "./src/assets/styles/variable.scss"; @import "./src/assets/styles/mixins.scss";',
+				additionalData:
+					'@import "./src/assets/styles/variable.scss"; @import "./src/assets/styles/mixins.scss"; @import "./src/assets/styles/theme.scss";',
 			},
 			postcss: {
 				plugins: [tailwindcss, autoprefixer],

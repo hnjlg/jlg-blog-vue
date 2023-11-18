@@ -1,0 +1,22 @@
+$blob-themes: (
+    light: (bgColor: #ffffff, textColor: #000000),
+    dark:(bgColor: #000000, textColor: #ffffff),
+);
+$current-blob-theme: dark;
+
+@mixin useBlobTheme() {
+
+    @each $key,
+    $value in $blob-themes {
+        $current-blob-theme: $key !global;
+
+        #blob-home-container[data-theme='#{$key}'] & {
+            @content;
+        }
+    }
+}
+
+@function getVar($key) {
+    $themeObj: map-get($blob-themes, $current-blob-theme);
+    @return map-get($themeObj, $key)
+}

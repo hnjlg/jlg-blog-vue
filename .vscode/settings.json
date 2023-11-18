@@ -42,6 +42,7 @@
 		"warpped",
 		"yalc",
 		"tailwindcss",
-		"gsap"
+		"gsap",
+		"getVar"
 	]
 }
