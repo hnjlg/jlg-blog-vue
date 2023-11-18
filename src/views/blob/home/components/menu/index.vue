@@ -6,15 +6,15 @@
 				menuItemClick({
 					pathName: 'blob-content-home',
 					level: 1,
-					title: '@JLG.BLOB',
+					title: '情感分析系统',
 				})
 			"
 		>
-			@JLG.BLOB
+			情感分析系统
 		</div>
 		<div class="blob-menu-content">
 			<div
-				v-for="item in menuList"
+				v-for="item in blobStore.blobMenu"
 				:key="item.title"
 				:class="{
 					'blob-menu-first-level': item.level === 1,
@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import useBlobStore from '@/store/blob';
 import { I_MenuItem } from './type';
 import undraw_articles_wbpb_svg from './svg/undraw_articles_wbpb.svg';
 import undraw_blog_post_re_fy5x_svg from './svg/undraw_blog_post_re_fy5x.svg';
@@ -50,76 +51,9 @@ const props = withDefaults(defineProps<{ disabled: boolean }>(), {
 	disabled: false,
 });
 
-const router = useRouter();
+const blobStore = useBlobStore();
 
-const menuList = ref<I_MenuItem[]>([
-	{
-		level: 1,
-		title: 'Article',
-	},
-	{
-		level: 2,
-		title: 'Article Square',
-		pathName: 'article-square',
-		icon: 'undraw_articles_wbpb_svg',
-	},
-	{
-		level: 2,
-		title: 'Article Classification',
-		pathName: 'article-classification',
-		icon: 'undraw_blog_post_re_fy5x_svg',
-	},
-	{
-		level: 2,
-		title: 'Find Article',
-		pathName: 'find-article',
-		icon: 'undraw_body_text_re_9riw_svg',
-	},
-	{
-		level: 1,
-		title: 'DOCS',
-	},
-	{
-		level: 2,
-		title: 'FKS Technology DOCS',
-		pathName: 'fks-technology-docs',
-		icon: 'undraw_my_personal_files_re_3q0p_svg',
-	},
-	{
-		level: 2,
-		title: 'FKS Component Library DOCS',
-		pathName: 'fks-component-library-docs',
-		icon: 'undraw_online_article_re_daq5_svg',
-	},
-	{
-		level: 2,
-		title: 'OA Technology DOCS',
-		pathName: 'oa-technology-docs',
-		icon: 'undraw_online_articles_re_yrkj_svg',
-	},
-	{
-		level: 2,
-		title: 'JLG Component Library DOCS',
-		pathName: 'jlg-component-library-docs',
-		icon: 'undraw_online_information_re_erks_svg',
-	},
-	{
-		level: 1,
-		title: 'Other',
-	},
-	{
-		level: 2,
-		title: 'Contributors',
-		pathName: 'contributors',
-		icon: 'undraw_placeholders_re_pvr4_svg',
-	},
-	{
-		level: 2,
-		title: 'About The Project',
-		pathName: 'about-the-project',
-		icon: 'undraw_publish_article_re_3x8h_svg',
-	},
-]);
+const router = useRouter();
 
 const svgComputed = computed(() => {
 	return (item: I_MenuItem) => {
@@ -191,14 +125,14 @@ const menuItemClick = (item: I_MenuItem) => {
 
 		.blob-menu-first-level {
 			font-size: 14px;
-			padding: 30px 0;
+			padding: 45px 0;
 			@include useBlobTheme() {
 				border-top: 1px solid getVar('textColor');
 			}
 		}
 
 		.blob-menu-second-level {
-			padding: 20px 0;
+			padding: 30px 0;
 			cursor: pointer;
 			display: flex;
 			align-items: center;

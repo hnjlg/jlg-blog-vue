@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
 		children: [
 			{
 				path: '/blob-home',
-				redirect: '/blob-home/blob-content-home',
+				redirect: '/blob-home/blob-login',
 			},
 			{
 				path: '/blob-home/blob-content-home',
@@ -51,76 +51,13 @@ const routes: RouteRecordRaw[] = [
 				name: 'blob-content-home',
 			},
 			{
-				path: '/blob-home/article-square',
-				component: () => import('@/views/blob/article-square/index.vue'),
+				path: '/blob-home/log-management',
+				component: () => import('@/views/blob/log-management/index.vue'),
 				meta: {
 					keepAlive: true,
 					backgroundShow: false,
 				},
-				name: 'article-square',
-			},
-			{
-				path: '/blob-home/article-classification',
-				component: () => import('@/views/blob/article-classification/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'article-classification',
-			},
-			{
-				path: '/blob-home/find-article',
-				component: () => import('@/views/blob/find-article/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'find-article',
-			},
-			{
-				path: '/blob-home/fks-technology-docs',
-				component: () => import('@/views/blob/fks-technology-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'fks-technology-docs',
-			},
-			{
-				path: '/blob-home/fks-component-library-docs',
-				component: () => import('@/views/blob/fks-component-library-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'fks-component-library-docs',
-			},
-			{
-				path: '/blob-home/oa-technology-docs',
-				component: () => import('@/views/blob/oa-technology-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'oa-technology-docs',
-			},
-			{
-				path: '/blob-home/jlg-component-library-docs',
-				component: () => import('@/views/blob/jlg-component-library-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'jlg-component-library-docs',
-			},
-			{
-				path: '/blob-home/contributors',
-				component: () => import('@/views/blob/contributors/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'contributors',
+				name: 'log-management',
 			},
 			{
 				path: '/blob-home/about-the-project',
@@ -132,13 +69,85 @@ const routes: RouteRecordRaw[] = [
 				name: 'about-the-project',
 			},
 			{
-				path: '/blob-home/article-details',
-				component: () => import('@/views/blob/article-details/index.vue'),
+				path: '/blob-home/system-monitoring',
+				component: () => import('@/views/blob/system-monitoring/index.vue'),
 				meta: {
 					keepAlive: true,
+					backgroundShow: false,
+				},
+				name: 'system-monitoring',
+			},
+			{
+				path: '/blob-home/user-management',
+				component: () => import('@/views/blob/user-management/index.vue'),
+				meta: {
+					keepAlive: true,
+					backgroundShow: false,
+				},
+				name: 'user-management',
+			},
+			{
+				path: '/blob-home/sample-management',
+				component: () => import('@/views/blob/sample-management/index.vue'),
+				meta: {
+					keepAlive: true,
+					backgroundShow: false,
+				},
+				name: 'sample-management',
+			},
+			{
+				path: '/blob-home/data-analysis',
+				component: () => import('@/views/blob/data-analysis/index.vue'),
+				meta: {
+					keepAlive: true,
+					backgroundShow: false,
+				},
+				name: 'data-analysis',
+			},
+			{
+				path: '/blob-home/model-prediction',
+				component: () => import('@/views/blob/model-prediction/index.vue'),
+				meta: {
+					keepAlive: true,
+					backgroundShow: false,
+				},
+				name: 'model-prediction',
+			},
+			{
+				path: '/blob-home/individual-center',
+				component: () => import('@/views/blob/individual-center/index.vue'),
+				meta: {
+					keepAlive: true,
+					backgroundShow: false,
+				},
+				name: 'individual-center',
+			},
+			{
+				path: '/blob-home/blob-login',
+				component: () => import('@/views/blob/login/index.vue'),
+				meta: {
+					keepAlive: false,
 					backgroundShow: true,
 				},
-				name: 'article-details',
+				name: 'blob-login',
+			},
+			{
+				path: '/blob-home/blob-register',
+				component: () => import('@/views/blob/register/index.vue'),
+				meta: {
+					keepAlive: false,
+					backgroundShow: true,
+				},
+				name: 'blob-register',
+			},
+			{
+				path: '/blob-home/blob-404',
+				component: () => import('@/views/blob/blob-404/index.vue'),
+				meta: {
+					keepAlive: false,
+					backgroundShow: true,
+				},
+				name: 'blob-404',
 			},
 		],
 	},

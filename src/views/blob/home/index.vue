@@ -2,7 +2,6 @@
 	<div id="blob-home-container" :data-theme="theme">
 		<div class="blob-home-container">
 			<div id="blob-home-content-background" class="blob-home-content-common blob-home-content-background">
-				<background-content-header v-if="$route.meta.backgroundShow"></background-content-header>
 				<router-view v-slot="{ Component }">
 					<keep-alive v-if="$route.meta.keepAlive && $route.meta.backgroundShow">
 						<component :is="Component" :key="$route.path" />
@@ -31,7 +30,6 @@
 <script setup lang="ts">
 import BlobMenu from './components/menu/index.vue';
 import BlobContentHeader from './components/content-header/index.vue';
-import BackgroundContentHeader from './components/background-content-header/index.vue';
 import { currentShow } from './hooks/useBackgroundContent';
 import { T_BlobTheme } from './type';
 
@@ -39,7 +37,7 @@ defineOptions({
 	name: 'BlobHome',
 });
 
-const theme = ref<T_BlobTheme>('light');
+const theme = ref<T_BlobTheme>('dark');
 
 const changeTheme = () => {
 	theme.value = theme.value === 'dark' ? 'light' : 'dark';

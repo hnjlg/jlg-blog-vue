@@ -20,6 +20,7 @@
 		"@element-plus/icons-vue": "^2.1.0",
 		"axios": "^1.6.0",
 		"cherry-markdown": "^0.8.27",
+		"echarts": "^5.4.3",
 		"element-plus": "^2.4.2",
 		"gsap": "^3.12.2",
 		"normalize.css": "^8.0.1",

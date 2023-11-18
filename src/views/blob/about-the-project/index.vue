@@ -2,8 +2,8 @@
 	<div class="about-the-project-container">
 		<div class="about-the-project-center">
 			<h1 class="about-the-project-title">ONE PIECE</h1>
-			<p>A library of documents co-written</p>
-			<p>by jlg front-end project development team members</p>
+			<p>Use the latest mainstream technology stack</p>
+			<p>-by SongQuan</p>
 			<p class="about-the-project-echnology-stack-text">Technology Stack</p>
 			<p class="about-the-project-echnology-stack-images">
 				<img src="./image/github.webp" width="80" />
