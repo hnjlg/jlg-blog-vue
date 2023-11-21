@@ -38,7 +38,7 @@ defineOptions({
 	name: 'BlobHome',
 });
 
-const theme = ref<T_BlobTheme>('dark');
+const theme = ref<T_BlobTheme>('light');
 
 const changeTheme = () => {
 	theme.value = theme.value === 'dark' ? 'light' : 'dark';

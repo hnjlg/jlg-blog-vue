@@ -30,11 +30,11 @@
     min-width: 976px;
 
     .blob-home-content-common {
-        width: 70%;
+        width: 90%;
         height: 90%;
         border-radius: 20px;
         position: absolute;
-        left: 15%;
+        left: 5%;
         top: 5%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
@@ -54,7 +54,7 @@
 
     .blob-home-content {
         display: flex;
-        transform: rotate(-2deg);
+        transform: rotate(0deg);
 
         @include useBlobTheme {
             background-color: getVar('bgColor');

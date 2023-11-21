@@ -77,14 +77,18 @@
 import { Search } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import type { UploadProps, UploadUserFile } from 'element-plus';
-import { I_ModelModel, blobModelQuery } from '@/api/blob';
+import { I_ModelModel, blobModelInsert, blobModelQuery } from '@/api/blob';
 import { pageLoading } from '@/views/blob/home/hooks/useBlobPageLoading';
+import useBlobStore from '@/store/blob';
+import router from '@/router';
 
 defineOptions({
 	name: 'ModelPrediction',
 });
 
 const formRef = ref<FormInstance>();
+
+const blobStore = useBlobStore();
 
 const modelPrediction = ref<{
 	context: string;
@@ -97,7 +101,9 @@ const currentPage = ref<number>(1);
 const pageSize = ref<number>(10);
 const paginationTotal = ref<number>(0);
 const visible = ref<boolean>(false);
-const searchForm = ref<Partial<I_ModelModel>>({});
+const searchForm = ref<Partial<I_ModelModel>>({
+	userId: blobStore.$state.userInfo?.id,
+});
 
 const rules = ref<FormRules>({
 	context: [{ required: true, message: 'Please input context', trigger: 'blur' }],
@@ -109,7 +115,22 @@ const resetHandle = () => {
 	modelPrediction.value = { context: 'context', aspectTerm: '', image: [] };
 };
 
-const registerHandle = () => {};
+const registerHandle = () => {
+	if (blobStore.$state.userInfo?.id) {
+		blobModelInsert({
+			userId: blobStore.$state.userInfo?.id,
+			context: '测试1',
+			aspectTerm: '嘿嘿1',
+			image: 'http://localhost/upload/home.png',
+			result: '积极',
+		}).then(() => {
+			refreshTableData();
+		});
+	} else {
+		ElMessage.error('useId not found');
+		router.push('blob-login');
+	}
+};
 
 const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
 	console.log(file, uploadFiles);
@@ -136,7 +157,7 @@ const deleteRow = (index: number, row: I_ModelModel) => {
 
 const refreshTableData = () => {
 	pageLoading.value = true;
-	blobModelQuery(currentPage.value, pageSize.value)
+	blobModelQuery(currentPage.value, pageSize.value, searchForm.value)
 		.then((res) => {
 			tableData.value = res.data.data.records;
 			paginationTotal.value = res.data.data.records.length;
@@ -149,7 +170,7 @@ const refreshTableData = () => {
 };
 
 const searchResetHandle = () => {
-	searchForm.value = {};
+	searchForm.value = { userId: blobStore.$state.userInfo?.id };
 	refreshTableData();
 };
 

@@ -49,7 +49,7 @@ export declare interface I_ModelModel {
 	context: string;
 	aspectTerm: string;
 	image: string;
-	result: string;
+	result: '消极' | '中性' | '积极';
 }
 
 export const blobModelQuery = (pageNo: number, pageSize: number, data?: Partial<I_ModelModel>) => {
@@ -100,7 +100,7 @@ export const blobAccountQuery = (pageNo: number, pageSize: number, data?: I_Regi
 	}>(`/analysis/application/account/query?pageNo=${pageNo}&pageSize=${pageSize}`, data);
 };
 
-export const blobAccountDelete = (row: I_RegisterModel) => {
+export const blobAccountDelete = (row: { id: I_RegisterModel['id'] }) => {
 	return request.post<{ code: 200 | 500; data: string; msg: string; status: true }>('/analysis/application/account/delete', row);
 };
 
@@ -131,11 +131,21 @@ export const blobLogQuery = (pageNo: number, pageSize: number, data?: I_LogModel
 	}>(`/analysis/application/log/query?pageNo=${pageNo}&pageSize=${pageSize}`, data);
 };
 
+export declare interface I_DataAnalysisData {
+	all: number;
+	analysis: { result: I_ModelModel['result']; num: number }[];
+}
+
 export const blobDataAnalysis = () => {
-	return request.get<{ code: 200 | 500; data: { all: number; analysis: [] }; msg: string }>('/analysis/application/data/analysis');
+	return request.get<{ code: 200 | 500; data: I_DataAnalysisData; msg: string }>('/analysis/application/data/analysis');
 };
 
-export const blobModelInsert = (data: I_ModelModel) => {
+export const blobModelInsert = (
+	data: I_ModelModel & {
+		createTime?: string;
+		updateTime?: string;
+	}
+) => {
 	return request.post<{ code: 200 | 500; data: string; msg: string; status: true }>('/analysis/application/model/insert', data);
 };
 

@@ -52,7 +52,7 @@ const searchForm = ref<Partial<I_LogModel>>({});
 
 const refreshTableData = () => {
 	pageLoading.value = true;
-	blobLogQuery(currentPage.value, pageSize.value)
+	blobLogQuery(currentPage.value, pageSize.value, searchForm.value)
 		.then((res) => {
 			tableData.value = res.data.data.records;
 			paginationTotal.value = res.data.data.records.length;

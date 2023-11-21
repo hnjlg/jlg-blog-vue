@@ -23,12 +23,12 @@ request.interceptors.response.use(
 			return new Promise((resolve) => {
 				resolve(response);
 			});
-		} else if (response.data.code === 500) {
+		} else if ([501, 502, 503, 504, 505, 506].includes(response.data.code)) {
 			router.push('blob-login');
 			window.location.href = '';
 			return new Promise((_resolve, reject) => {
 				// 异常
-				ElMessage.error('请求错误');
+				ElMessage.error(response.data.msg);
 				reject(response);
 			});
 		} else {

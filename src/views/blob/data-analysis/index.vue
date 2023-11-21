@@ -1,8 +1,14 @@
 <template>
 	<div>
 		<el-tabs v-model="activeName" :stretch="true" @tab-click="handleClick">
-			<el-tab-pane label="饼状图" name="fPie-chart"><div ref="fPieChartRef" style="width: 600px; height: 500px"></div></el-tab-pane>
-			<el-tab-pane label="柱状图" name="bar-chart"><div ref="barChartRef" style="width: 600px; height: 500px"></div></el-tab-pane>
+			<el-tab-pane label="饼状图" name="fPie-chart"
+				><div v-show="analysis.length" ref="fPieChartRef" style="width: 800px; height: 500px"></div>
+				<el-empty v-show="!analysis.length" :image-size="200"
+			/></el-tab-pane>
+			<el-tab-pane label="柱状图" name="bar-chart"
+				><div v-show="analysis.length" ref="barChartRef" style="width: 800px; height: 500px"></div>
+				<el-empty v-show="!analysis.length" :image-size="200"
+			/></el-tab-pane>
 		</el-tabs>
 	</div>
 </template>
@@ -11,7 +17,7 @@
 import type { TabsPaneContext } from 'element-plus';
 import * as echarts from 'echarts';
 import { ECharts } from 'echarts';
-import { blobDataAnalysis } from '@/api/blob';
+import { I_DataAnalysisData, blobDataAnalysis } from '@/api/blob';
 import { pageLoading } from '@/views/blob/home/hooks/useBlobPageLoading';
 defineOptions({
 	name: 'DataAnalysis',
@@ -27,8 +33,7 @@ const barChart = ref<ECharts>();
 
 const barChartRef = ref<HTMLDivElement>();
 
-const handleClick = (tab: TabsPaneContext & { paneName: 'fPie-chart' | 'bar-chart' }, event: Event) => {
-	console.log(tab, event);
+const handleClick = (tab: TabsPaneContext & { paneName: 'fPie-chart' | 'bar-chart' }) => {
 	activeName.value = tab.paneName;
 };
 
@@ -39,7 +44,7 @@ const fPieChartInit = () => {
 	// 指定图表的配置项和数据
 	const option = {
 		legend: {
-			top: 'bottom',
+			left: 'top',
 		},
 		toolbox: {
 			show: true,
@@ -60,16 +65,10 @@ const fPieChartInit = () => {
 				itemStyle: {
 					borderRadius: 8,
 				},
-				data: [
-					{ value: 40, name: 'rose 1' },
-					{ value: 38, name: 'rose 2' },
-					{ value: 32, name: 'rose 3' },
-					{ value: 30, name: 'rose 4' },
-					{ value: 28, name: 'rose 5' },
-					{ value: 26, name: 'rose 6' },
-					{ value: 22, name: 'rose 7' },
-					{ value: 18, name: 'rose 8' },
-				],
+				data: analysis.value.map((item) => ({
+					name: item.result,
+					value: item.num,
+				})),
 			},
 		],
 	};
@@ -86,14 +85,14 @@ const barChartInit = () => {
 	const option = {
 		xAxis: {
 			type: 'category',
-			data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+			data: analysis.value.map((item) => item.result),
 		},
 		yAxis: {
 			type: 'value',
 		},
 		series: [
 			{
-				data: [120, 200, 150, 80, 70, 110, 130],
+				data: analysis.value.map((item) => item.num),
 				type: 'bar',
 			},
 		],
@@ -103,8 +102,11 @@ const barChartInit = () => {
 	barChart.value.setOption(option);
 };
 
+const analysis = ref<I_DataAnalysisData['analysis']>([]);
+
 const refreshData = () => {
-	blobDataAnalysis().then(() => {
+	blobDataAnalysis().then((res) => {
+		analysis.value = res.data.data.analysis;
 		pageLoading.value = false;
 		fPieChartInit();
 		barChartInit();

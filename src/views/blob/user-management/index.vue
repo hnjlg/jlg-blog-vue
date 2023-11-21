@@ -12,7 +12,10 @@
 					<el-input v-model="searchForm.userName" placeholder="Please input userName" clearable />
 				</el-form-item>
 				<el-form-item label="用户类型" prop="isAdmin">
-					<el-input v-model="searchForm.isAdmin" placeholder="Please input isAdmin" clearable />
+					<el-select v-model="searchForm.isAdmin" placeholder="Please Select isAdmin" clearable>
+						<el-option label="管理员" :value="1" />
+						<el-option label="普通用户" :value="0" />
+					</el-select>
 				</el-form-item>
 				<el-form-item label="电话" prop="phone">
 					<el-input v-model="searchForm.phone" placeholder="Please input phone" clearable />
@@ -35,7 +38,13 @@
 		<el-table :data="tableData" style="width: 100%" max-height="700" class="user-management-table">
 			<el-table-column fixed prop="id" label="用户id" min-width="120" />
 			<el-table-column prop="userName" label="用户名" min-width="120" />
-			<el-table-column prop="isAdmin" label="用户类型"></el-table-column>
+			<el-table-column prop="isAdmin" label="用户类型">
+				<template #default="scope">
+					<div style="display: flex; align-items: center">
+						<span>{{ scope.row.isAdmin ? '管理员' : '普通用户' }}</span>
+					</div>
+				</template>
+			</el-table-column>
 			<el-table-column prop="phone" label="电话" min-width="120" />
 			<el-table-column prop="email" label="邮箱" min-width="120" />
 			<el-table-column prop="age" label="年龄" min-width="120" />
@@ -64,7 +73,7 @@
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue';
 import { pageLoading } from '@/views/blob/home/hooks/useBlobPageLoading';
-import { blobAccountQuery, I_RegisterModel, blobAccountDelete } from '@/api/blob';
+import { blobAccountDelete, blobAccountQuery, I_RegisterModel } from '@/api/blob';
 
 defineOptions({ name: 'UserManagement' });
 const tableData = ref<I_RegisterModel[]>([]);
@@ -76,7 +85,8 @@ const searchForm = ref<Partial<I_RegisterModel>>({});
 
 const deleteRow = (_index: number, row: I_RegisterModel) => {
 	pageLoading.value = true;
-	blobAccountDelete(row).then(() => {
+	console.log(row.id, 'row.id');
+	blobAccountDelete({ id: row.id }).then(() => {
 		pageLoading.value = false;
 		ElMessage.success('Remove Success');
 		refreshTableData();
@@ -85,7 +95,7 @@ const deleteRow = (_index: number, row: I_RegisterModel) => {
 
 const refreshTableData = () => {
 	pageLoading.value = true;
-	blobAccountQuery(currentPage.value, pageSize.value)
+	blobAccountQuery(currentPage.value, pageSize.value, searchForm.value)
 		.then((res) => {
 			tableData.value = res.data.data.records;
 			paginationTotal.value = res.data.data.records.length;
