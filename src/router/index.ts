@@ -192,13 +192,22 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
-	// 为路由对象添加了isInitLoading的，确认页面是否需要loading
-	if ('isInitLoading' in to.meta && to.meta.isInitLoading) {
-		pageLoading.value = true;
-	} else {
-		pageLoading.value = false;
+	if (to.fullPath.includes('/blob-home')) {
+		if ('isInitLoading' in to.meta && to.meta.isInitLoading) {
+			// 为路由对象添加了isInitLoading的，确认页面是否需要loading
+			pageLoading.value = true;
+		} else {
+			pageLoading.value = false;
+		}
+		if (localStorage.getItem('blob-token') && (to.name === 'blob-login' || to.name === 'blob-register')) {
+			next({ name: 'blob-content-home' });
+		} else if (!localStorage.getItem('blob-token') && to.name !== 'blob-login' && to.name !== 'blob-register') {
+			pageLoading.value = false;
+			next({ name: 'blob-login' });
+		} else {
+			next();
+		}
 	}
-	next();
 });
 router.afterEach((to) => {
 	if ('title' in to.meta) {

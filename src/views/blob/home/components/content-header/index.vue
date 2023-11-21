@@ -36,6 +36,7 @@ const logOutHandle = () => {
 	router.push('blob-login');
 	blobStore.changeUserInfo(null);
 	localStorage.setItem('blob-userInfo', '{}');
+	localStorage.setItem('blob-token', '');
 };
 </script>
 
