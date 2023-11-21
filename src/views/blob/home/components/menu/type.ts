@@ -1,6 +1,10 @@
-export declare interface I_MenuItem {
-	level: 1 | 2;
-	title: string;
-	pathName?: string;
-	icon?: string;
-}
+export declare type T_MenuItem =
+	| {
+			level: 1;
+			title: string;
+			pathName?: string;
+	  }
+	| {
+			level: 2;
+			pathName?: string;
+	  };

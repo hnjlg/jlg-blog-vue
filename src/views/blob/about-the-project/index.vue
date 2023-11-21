@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { Guide, Calendar, Flag } from '@element-plus/icons-vue';
+
 defineOptions({
 	name: 'AboutTheProject',
 });

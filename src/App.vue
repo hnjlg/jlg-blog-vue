@@ -1,12 +1,12 @@
 <template>
-	<div class="navigation-menu-container-switch" @click="navigationSwitchHandle">{{ navigationSwitchUrl }}</div>
-	<Navigation-Menu
+	<!-- <div class="navigation-menu-container-switch" @click="navigationSwitchHandle">{{ navigationSwitchUrl }}</div> -->
+	<!-- <Navigation-Menu
 		v-model="navigationMenuShow"
 		:animation-event-callback="{
 			drawerOpened,
 			drawerClosed,
 		}"
-	></Navigation-Menu>
+	></Navigation-Menu> -->
 	<router-view v-slot="{ Component }">
 		<keep-alive v-if="$route.meta.keepAlive">
 			<component :is="Component" />
@@ -16,21 +16,21 @@
 </template>
 
 <script setup lang="ts">
-import NavigationMenu from '@/components/navigation-menu/index.vue';
-const navigationMenuShow = ref<boolean>(false);
-const navigationSwitchUrl = ref<string>('中');
-const navigationSwitchHandle = () => {
-	navigationMenuShow.value = !navigationMenuShow.value;
-	navigationMenuShow.value ? (navigationSwitchUrl.value = '放') : (navigationSwitchUrl.value = '收');
-};
-const drawerOpened = () => {
-	console.log('drawer open animate done');
-	navigationSwitchUrl.value = '中';
-};
-const drawerClosed = () => {
-	console.log('drawer close animate done');
-	navigationSwitchUrl.value = '中';
-};
+// import NavigationMenu from '@/components/navigation-menu/index.vue';
+// const navigationMenuShow = ref<boolean>(false);
+// const navigationSwitchUrl = ref<string>('中');
+// const navigationSwitchHandle = () => {
+// 	navigationMenuShow.value = !navigationMenuShow.value;
+// 	navigationMenuShow.value ? (navigationSwitchUrl.value = '放') : (navigationSwitchUrl.value = '收');
+// };
+// const drawerOpened = () => {
+// 	console.log('drawer open animate done');
+// 	navigationSwitchUrl.value = '中';
+// };
+// const drawerClosed = () => {
+// 	console.log('drawer close animate done');
+// 	navigationSwitchUrl.value = '中';
+// };
 </script>
 <style lang="scss" scoped>
 .navigation-menu-container-switch {

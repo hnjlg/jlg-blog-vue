@@ -1,30 +1,37 @@
 <template>
 	<div class="system-monitoring-container">
-		<el-button class="refresh-button" @click="refreshHandle">刷新</el-button>
+		<el-button class="refresh-button" :loading="refreshLoading" @click="refreshHandle"
+			><el-icon><RefreshRight /></el-icon>Refresh</el-button
+		>
 		<div class="progress-container">
 			<div>
 				<div class="progress-title">CPU</div>
-				<el-progress type="dashboard" :percentage="percentage" :color="colors" />
+				<el-progress type="dashboard" :percentage="systemCpuLoad" :color="colors" />
 			</div>
 			<div>
 				<div class="progress-title">内存</div>
-				<el-progress type="dashboard" :percentage="percentage2" :color="colors" />
+				<el-progress type="dashboard" :percentage="memoryUsage" :color="colors" />
 			</div>
 			<div>
 				<div class="progress-title">磁盘</div>
-				<el-progress type="dashboard" :percentage="percentage3" :color="colors" />
+				<el-progress type="dashboard" :percentage="availableProcessors" :color="colors" />
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { RefreshRight } from '@element-plus/icons-vue';
+import { blobGetCsInfo } from '@/api/blob';
+import { pageLoading } from '@/views/blob/home/hooks/useBlobPageLoading';
+
 defineOptions({
 	name: 'SystemMonitoring',
 });
-const percentage = ref(16);
-const percentage2 = ref(30);
-const percentage3 = ref(98);
+const availableProcessors = ref(16);
+const memoryUsage = ref(30);
+const systemCpuLoad = ref(98);
+const refreshLoading = ref(false);
 
 const colors = [
 	{ color: '#5cb87a', percentage: 30 },
@@ -33,8 +40,31 @@ const colors = [
 ];
 
 const refreshHandle = () => {
-	ElMessage.success('刷新成功');
+	refreshLoading.value = true;
+	getTableData(() => {
+		refreshLoading.value = false;
+	});
 };
+
+const getTableData = (callback: () => void) => {
+	blobGetCsInfo()
+		.then((res) => {
+			ElMessage.success('Refresh Success');
+			systemCpuLoad.value = Math.round(res.data.data.systemCpuLoad * 100);
+			availableProcessors.value = Math.round(res.data.data.availableProcessors * 100);
+			memoryUsage.value = Math.round(res.data.data.memoryUsage * 100);
+			callback();
+		})
+		.catch(() => {
+			callback();
+		});
+};
+
+onMounted(() => {
+	getTableData(() => {
+		pageLoading.value = false;
+	});
+});
 </script>
 
 <style lang="scss" scoped>

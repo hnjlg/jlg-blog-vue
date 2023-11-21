@@ -3,16 +3,40 @@
 		<el-icon :class="{ 'blob-content-header-lamp-dark': props.theme === 'dark', 'blob-content-header-lamp': true }" @click="changeTheme"
 			><Opportunity
 		/></el-icon>
-		<div class="blob-content-header-user">游客</div>
+		<el-dropdown trigger="click">
+			<span>
+				<div class="blob-content-header-user">
+					{{ blobStore.$state?.userInfo?.userName ?? '游客' }}<el-icon><MoreFilled /></el-icon>
+				</div>
+			</span>
+			<template #dropdown>
+				<el-dropdown-menu>
+					<el-dropdown-item :icon="SwitchButton" @click="logOutHandle">Log out</el-dropdown-item>
+				</el-dropdown-menu>
+			</template>
+		</el-dropdown>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { Opportunity } from '@element-plus/icons-vue';
+import { Opportunity, MoreFilled, SwitchButton } from '@element-plus/icons-vue';
 import { T_BlobTheme } from '../../type';
+import useBlobStore from '@/store/blob';
+import { useRouter } from 'vue-router';
+
 defineOptions({ name: 'BlobContentHeader' });
 
+const blobStore = useBlobStore();
+
+const router = useRouter();
+
 const props = defineProps<{ theme: T_BlobTheme; changeTheme: () => void }>();
+
+const logOutHandle = () => {
+	router.push('blob-login');
+	blobStore.changeUserInfo(null);
+	localStorage.setItem('blob-userInfo', '{}');
+};
 </script>
 
 <style scoped lang="scss">

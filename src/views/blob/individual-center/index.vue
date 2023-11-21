@@ -31,20 +31,26 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance, FormRules, RuleForm } from 'element-plus';
+import type { FormInstance, FormRules } from 'element-plus';
+import { I_RegisterModel, blobAccountUpdate } from '@/api/blob';
+import { pageLoading } from '@/views/blob/home/hooks/useBlobPageLoading';
+import useBlobStore from '@/store/blob';
+
 defineOptions({
 	name: 'IndividualCenter',
 });
 
 const formRef = ref<FormInstance>();
 
-const individualForm = ref({});
+const blobStore = useBlobStore();
 
-const rules = ref<FormRules<RuleForm>>({
+const individualForm = ref<Partial<I_RegisterModel>>({});
+
+const rules = ref<FormRules>({
 	userName: [
 		{ required: true, message: 'Please input userName', trigger: 'blur' },
 		{
-			validator(rule, value, callback) {
+			validator(_rule, value, callback) {
 				if (value.length > 16 || value.length < 2) {
 					callback('The length is between 2 and 16');
 				} else {
@@ -56,7 +62,7 @@ const rules = ref<FormRules<RuleForm>>({
 	phone: [
 		{ required: true, message: 'Please input phone', trigger: 'blur' },
 		{
-			validator(rule, value, callback) {
+			validator(_rule, value, callback) {
 				if (/^[1][3-8]+\d{9}$/.test(value)) {
 					callback();
 				} else {
@@ -68,7 +74,7 @@ const rules = ref<FormRules<RuleForm>>({
 	passWord: [
 		{ required: true, message: 'Please input passWord', trigger: 'blur' },
 		{
-			validator(rule, value, callback) {
+			validator(_rule, value, callback) {
 				if (value.length > 16 || value.length < 6) {
 					callback('The length is between 6 and 16');
 				} else {
@@ -80,7 +86,7 @@ const rules = ref<FormRules<RuleForm>>({
 	email: [
 		{ required: true, message: 'Please input email', trigger: 'blur' },
 		{
-			validator(rule, value, callback) {
+			validator(_rule, value, callback) {
 				if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)) {
 					callback();
 				} else {
@@ -91,8 +97,25 @@ const rules = ref<FormRules<RuleForm>>({
 	],
 });
 
+onMounted(() => {
+	if (blobStore.$state.userInfo) {
+		individualForm.value = blobStore.$state.userInfo;
+		pageLoading.value = false;
+	}
+});
+
 const SubmitHandle = () => {
-	ElMessage.success('Submit Success');
+	formRef.value?.validate((valid) => {
+		if (valid) {
+			blobAccountUpdate(individualForm.value).then((res) => {
+				ElMessage.success('Change Success');
+				blobStore.changeUserInfo(res.data.data);
+				localStorage.setItem('blob-token', res.data.data.token);
+			});
+		} else {
+			ElMessage.warning('Please enter the correct content as prompted');
+		}
+	});
 };
 </script>
 

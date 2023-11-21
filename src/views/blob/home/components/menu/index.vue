@@ -15,7 +15,7 @@
 		<div class="blob-menu-content">
 			<div
 				v-for="item in blobStore.blobMenu"
-				:key="item.title"
+				:key="item.pathName"
 				:class="{
 					'blob-menu-first-level': item.level === 1,
 					'blob-menu-second-level': item.level === 2,
@@ -23,16 +23,16 @@
 				@click="menuItemClick(item)"
 			>
 				<component :is="svgComputed(item)"></component>
-				<div>{{ item.title }}</div>
+				<div>{{ getTitle(item) }}</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
 import useBlobStore from '@/store/blob';
-import { I_MenuItem } from './type';
+import { T_MenuItem } from './type';
 import undraw_articles_wbpb_svg from './svg/undraw_articles_wbpb.svg';
 import undraw_blog_post_re_fy5x_svg from './svg/undraw_blog_post_re_fy5x.svg';
 import undraw_body_text_re_9riw_svg from './svg/undraw_body_text_re_9riw.svg';
@@ -55,9 +55,25 @@ const blobStore = useBlobStore();
 
 const router = useRouter();
 
+const route = useRoute();
+
+const currentRoutes = computed(() => {
+	const firstUrl = route.fullPath.split('/').find((item) => item);
+	if (firstUrl) {
+		return router.options.routes.find((i) => i.path.includes(firstUrl));
+	}
+});
+
+const toRoute = computed<(item: T_MenuItem) => RouteRecordRaw | undefined>(
+	() => (item: T_MenuItem) => currentRoutes.value?.children?.find((i) => i.name === item.pathName)
+);
+
 const svgComputed = computed(() => {
-	return (item: I_MenuItem) => {
-		switch (item.icon) {
+	return (item: T_MenuItem) => {
+		if (!toRoute.value(item) || !toRoute.value(item)?.meta) {
+			return;
+		}
+		switch (toRoute.value(item)?.meta?.icon) {
 			case 'undraw_articles_wbpb_svg':
 				return undraw_articles_wbpb_svg;
 			case 'undraw_blog_post_re_fy5x_svg':
@@ -80,7 +96,15 @@ const svgComputed = computed(() => {
 	};
 });
 
-const menuItemClick = (item: I_MenuItem) => {
+const getTitle = computed(() => (item: T_MenuItem) => {
+	if (item.level === 1) {
+		return item.title;
+	} else {
+		return toRoute.value(item)?.meta?.title || '';
+	}
+});
+
+const menuItemClick = (item: T_MenuItem) => {
 	if (item.pathName && !props.disabled) {
 		router.push(item.pathName);
 	}
@@ -88,55 +112,5 @@ const menuItemClick = (item: I_MenuItem) => {
 </script>
 
 <style scoped lang="scss">
-/* WebKit浏览器 */
-::-webkit-scrollbar {
-	width: 1px;
-}
-
-// 滚动条轨道色
-::-webkit-scrollbar-track {
-	background: #fff;
-}
-
-// 滚动条柱体颜色
-::-webkit-scrollbar-thumb {
-	background: #000;
-	border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #000;
-}
-
-.blob-menu-container {
-	.blob-menu-back-home {
-		height: $blob-header-height;
-		line-height: $blob-header-height;
-		text-align: center;
-		border-radius: 20px 0 0 0;
-		cursor: pointer;
-	}
-
-	.blob-menu-content {
-		height: calc(100% - $blob-header-height);
-		overflow-x: hidden;
-		overflow-y: auto;
-		padding: 0 30px;
-
-		.blob-menu-first-level {
-			font-size: 14px;
-			padding: 45px 0;
-			@include useBlobTheme() {
-				border-top: 1px solid getVar('textColor');
-			}
-		}
-
-		.blob-menu-second-level {
-			padding: 30px 0;
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-		}
-	}
-}
+@import url('./index.scss');
 </style>

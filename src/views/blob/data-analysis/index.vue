@@ -10,21 +10,24 @@
 <script setup lang="ts">
 import type { TabsPaneContext } from 'element-plus';
 import * as echarts from 'echarts';
+import { ECharts } from 'echarts';
+import { blobDataAnalysis } from '@/api/blob';
+import { pageLoading } from '@/views/blob/home/hooks/useBlobPageLoading';
 defineOptions({
 	name: 'DataAnalysis',
 });
 
-const activeName = ref('fPie-chart');
+const activeName = ref<'fPie-chart' | 'bar-chart'>('fPie-chart');
 
-const fPieChart = ref<echarts.EChartsOption>();
+const fPieChart = ref<ECharts>();
 
 const fPieChartRef = ref<HTMLDivElement>();
 
-const barChart = ref<echarts.EChartsOption>();
+const barChart = ref<ECharts>();
 
 const barChartRef = ref<HTMLDivElement>();
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
+const handleClick = (tab: TabsPaneContext & { paneName: 'fPie-chart' | 'bar-chart' }, event: Event) => {
 	console.log(tab, event);
 	activeName.value = tab.paneName;
 };
@@ -100,9 +103,16 @@ const barChartInit = () => {
 	barChart.value.setOption(option);
 };
 
+const refreshData = () => {
+	blobDataAnalysis().then(() => {
+		pageLoading.value = false;
+		fPieChartInit();
+		barChartInit();
+	});
+};
+
 onMounted(() => {
-	fPieChartInit();
-	barChartInit();
+	refreshData();
 });
 </script>
 <style lang="scss" scoped>

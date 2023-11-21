@@ -1,7 +1,7 @@
 <template>
 	<div id="blob-home-container" :data-theme="theme">
 		<div class="blob-home-container">
-			<div id="blob-home-content-background" class="blob-home-content-common blob-home-content-background">
+			<div id="blob-home-content-background" v-loading="pageLoading" class="blob-home-content-common blob-home-content-background">
 				<router-view v-slot="{ Component }">
 					<keep-alive v-if="$route.meta.keepAlive && $route.meta.backgroundShow">
 						<component :is="Component" :key="$route.path" />
@@ -13,7 +13,7 @@
 				<blob-menu class="blob-home-left-menu" :disabled="currentShow !== 'content'"></blob-menu>
 				<div class="blob-home-right-content">
 					<blob-content-header :theme="theme" :change-theme="changeTheme" class="blob-home-content-right-header"></blob-content-header>
-					<div id="blob-home-content-right-content" class="blob-home-content-right-content">
+					<div id="blob-home-content-right-content" v-loading="pageLoading" class="blob-home-content-right-content">
 						<router-view v-slot="{ Component }">
 							<keep-alive v-if="$route.meta.keepAlive && !$route.meta.backgroundShow">
 								<component :is="Component" :key="$route.path" />
@@ -31,6 +31,7 @@
 import BlobMenu from './components/menu/index.vue';
 import BlobContentHeader from './components/content-header/index.vue';
 import { currentShow } from './hooks/useBackgroundContent';
+import { pageLoading } from './hooks/useBlobPageLoading';
 import { T_BlobTheme } from './type';
 
 defineOptions({
