@@ -48,6 +48,10 @@ const logOutHandle = () => {
 
 	.blob-content-header-user {
 		padding: 0 20px;
+
+		@include useBlobTheme {
+			color: getVar('textColor');
+		}
 	}
 
 	.blob-content-header-lamp {
