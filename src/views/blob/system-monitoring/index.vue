@@ -72,6 +72,9 @@ onMounted(() => {
 	padding: 50px;
 	.refresh-button {
 		float: right;
+		@include useBlobTheme {
+			color: getVar('bgColor');
+		}
 	}
 
 	.progress-container {

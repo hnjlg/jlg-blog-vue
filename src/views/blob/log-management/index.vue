@@ -92,6 +92,40 @@ onMounted(() => {
 
 	.log-management-table {
 		flex: 1;
+		@include useBlobTheme {
+			color: getVar('textColor');
+			background-color: getVar('bgColor');
+		}
+
+		:deep(thead) {
+			@include useBlobTheme {
+				color: getVar('textColor');
+			}
+		}
+
+		:deep(th.el-table__cell) {
+			@include useBlobTheme {
+				background-color: getVar('bgColor');
+			}
+		}
+
+		:deep(tr) {
+			@include useBlobTheme {
+				background-color: getVar('bgColor');
+			}
+		}
+	}
+
+	:deep(.el-pagination__total) {
+		@include useBlobTheme {
+			color: getVar('textColor');
+		}
+	}
+
+	:deep(.el-pagination__jump) {
+		@include useBlobTheme {
+			color: getVar('textColor');
+		}
 	}
 }
 </style>
