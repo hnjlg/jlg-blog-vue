@@ -73,6 +73,7 @@ onMounted(() => {
 	.refresh-button {
 		float: right;
 		@include useBlobTheme {
+			background-color: getVar('textColor');
 			color: getVar('bgColor');
 		}
 	}
