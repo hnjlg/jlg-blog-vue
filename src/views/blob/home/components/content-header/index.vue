@@ -3,7 +3,7 @@
 		<el-icon :class="{ 'blob-content-header-lamp-dark': props.theme === 'dark', 'blob-content-header-lamp': true }" @click="changeTheme"
 			><Opportunity
 		/></el-icon>
-		<el-dropdown trigger="click">
+		<el-dropdown trigger="click" :teleported="false">
 			<span>
 				<div class="blob-content-header-user">
 					{{ blobStore.$state?.userInfo?.userName ?? '游客' }}<el-icon><MoreFilled /></el-icon>
@@ -62,6 +62,12 @@ const logOutHandle = () => {
 		@include useBlobTheme() {
 			box-shadow: 0 0 94px 64px getVar('textColor');
 			height: 0;
+		}
+	}
+	:deep(.el-dropdown-menu) {
+		@include useBlobTheme {
+			background-color: getVar('bgColor');
+			color: getVar('textColor');
 		}
 	}
 }

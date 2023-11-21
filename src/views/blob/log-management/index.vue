@@ -1,6 +1,6 @@
 <template>
 	<div class="log-management-container">
-		<el-popover placement="left" :width="300" :visible="visible">
+		<el-popover placement="left" :width="300" :visible="visible" :teleported="false" popper-class="sample-management-popover">
 			<template #reference>
 				<el-icon class="log-management-table-search" @click="visible = !visible"><Search /></el-icon>
 			</template>
@@ -90,6 +90,16 @@ onMounted(() => {
 		cursor: pointer;
 	}
 
+	:deep(.sample-management-popover) {
+		@include useBlobTheme {
+			color: getVar('textColor');
+			background-color: getVar('bgColor');
+		}
+		.el-popper__arrow::before {
+			background-color: getVar('bgColor');
+		}
+	}
+
 	.log-management-table {
 		flex: 1;
 		@include useBlobTheme {
@@ -112,6 +122,13 @@ onMounted(() => {
 		:deep(tr) {
 			@include useBlobTheme {
 				background-color: getVar('bgColor');
+			}
+		}
+
+		:deep(.hover-row) {
+			@include useBlobTheme {
+				background-color: getVar('bgColor');
+				color: getVar('bgColor');
 			}
 		}
 	}

@@ -2,14 +2,14 @@
 	<div class="blob-login-container">
 		<el-form ref="formRef" :model="loginForm" :rules="rules" label-width="120px" label-position="top" class="form">
 			<el-form-item label="用户名" prop="userName">
-				<el-input v-model="loginForm.userName" placeholder="Please input userName" clearable />
+				<el-input v-model="loginForm.userName" placeholder="Please input userName" clearable @keyup.enter="submitHandle" />
 			</el-form-item>
 			<el-form-item label="密码" prop="passWord">
-				<el-input v-model="loginForm.passWord" placeholder="Please input passWord" show-password clearable />
+				<el-input v-model="loginForm.passWord" placeholder="Please input passWord" show-password clearable @keyup.enter="submitHandle" />
 			</el-form-item>
 			<el-form-item>
 				<el-button @click="registerHandle">To Register</el-button>
-				<el-button :loading="submitLoading" @click="SubmitHandle">Submit</el-button>
+				<el-button :loading="submitLoading" @click="submitHandle">Submit</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -69,7 +69,7 @@ const registerHandle = () => {
 
 const submitLoading = ref<boolean>(false);
 
-const SubmitHandle = () => {
+const submitHandle = () => {
 	formRef.value?.validate((valid) => {
 		if (valid) {
 			submitLoading.value = true;
