@@ -19,6 +19,7 @@
 				:class="{
 					'blob-menu-first-level': item.level === 1,
 					'blob-menu-second-level': item.level === 2,
+					'blob-menu-current': item.level === 2 && item.pathName === route.name,
 				}"
 				@click="menuItemClick(item)"
 			>
