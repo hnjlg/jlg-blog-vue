@@ -55,9 +55,13 @@ const fPieChartInit = () => {
 				saveAsImage: { show: true },
 			},
 		},
+		tooltip: {
+			trigger: 'item',
+			formatter: '{b} : {c} ({d}%)',
+		},
 		series: [
 			{
-				name: 'Nightingale Chart',
+				name: 'pie',
 				type: 'pie',
 				radius: [50, 250],
 				center: ['50%', '50%'],

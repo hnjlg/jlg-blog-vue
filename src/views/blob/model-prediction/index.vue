@@ -122,7 +122,7 @@ const registerHandle = () => {
 			context: '测试1',
 			aspectTerm: '嘿嘿1',
 			image: 'http://localhost/upload/home.png',
-			result: '积极',
+			result: '中性',
 		}).then(() => {
 			refreshTableData();
 		});
