@@ -125,9 +125,9 @@ onMounted(() => {
 			}
 		}
 
-		:deep(.hover-row) {
+		:deep(.el-table__body tr.hover-row > td.el-table__cell) {
 			@include useBlobTheme {
-				background-color: getVar('bgColor');
+				background-color: getVar('textColor');
 				color: getVar('bgColor');
 			}
 		}
