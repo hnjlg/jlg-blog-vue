@@ -69,6 +69,17 @@ const logOutHandle = () => {
 			background-color: getVar('bgColor');
 			color: getVar('textColor');
 		}
+		.el-dropdown-menu__item {
+			@include useBlobTheme {
+				color: getVar('textColor');
+			}
+			&:not(.is-disabled):focus {
+				@include useBlobTheme {
+					background-color: getVar('bgColor');
+					color: getVar('textColor');
+				}
+			}
+		}
 	}
 }
 </style>
