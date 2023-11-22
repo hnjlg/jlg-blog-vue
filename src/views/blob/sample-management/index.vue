@@ -114,7 +114,9 @@ onMounted(() => {
 			background-color: getVar('bgColor');
 		}
 		.el-popper__arrow::before {
-			background-color: getVar('bgColor');
+			@include useBlobTheme {
+				background-color: getVar('bgColor');
+			}
 		}
 	}
 
