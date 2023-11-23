@@ -16,7 +16,6 @@ const props = defineProps<{ theme: T_BlobTheme; changeTheme: () => void }>();
 </script>
 
 <style scoped lang="scss">
-@import url('../../../../../assets/styles/theme.scss');
 .blob-content-header-container {
 	display: flex;
 	justify-content: flex-end;

@@ -1,29 +1,34 @@
 <template>
 	<div class="blob-article-tree-container">
 		<template v-for="article in props.articleTree" :key="article.title">
-			<h1 v-if="article.level === 1" class="blob-article-first-level-title">
-				<el-icon><FolderOpened /></el-icon>{{ article.title }}
-			</h1>
-			<template v-else-if="article.level === 2">
-				<h2 class="blob-article-second-level-title">
+			<h2 v-if="article.children && article.children.length !== 0" :class="{ 'box-border': article.level !== 1 }">
+				<div v-if="article.level === 2" class="blob-article-second-level-title">
 					<el-icon><Collection /></el-icon>{{ article.title }}
-				</h2>
-				<ul v-if="article.children">
-					<li
-						v-for="articleCld in article.children"
-						:key="articleCld.title"
-						class="blob-article-item-title"
-						@click="
-							articleClick({
-								articleCld,
-								article,
-							})
-						"
-					>
-						<el-icon><Document /></el-icon>{{ articleCld.title }}
-					</li>
-				</ul>
-			</template>
+				</div>
+				<div v-if="article.level === 1" class="blob-article-first-level-title">
+					<el-icon><FolderOpened /></el-icon>{{ article.title }}
+				</div>
+				<blob-article-tree :article-tree="article.children" @article-click="articleClick"></blob-article-tree>
+			</h2>
+			<h2 v-if="!article.children || article.children.length === 0">
+				<div
+					v-if="article.level === 3"
+					class="blob-article-item-title"
+					@click="
+						articleClick({
+							article,
+						})
+					"
+				>
+					<el-icon><Document /></el-icon>{{ article.title }}
+				</div>
+				<div v-if="article.level === 2" class="blob-article-second-level-title">
+					<el-icon><Collection /></el-icon>{{ article.title }}
+				</div>
+				<div v-if="article.level === 1" class="blob-article-first-level-title">
+					<el-icon><FolderOpened /></el-icon>{{ article.title }}
+				</div>
+			</h2>
 		</template>
 	</div>
 </template>
@@ -62,6 +67,12 @@ const articleClick = (obj: I_ArticleClickObj) => {
 		cursor: pointer;
 		padding: 10px 40px;
 		font-size: 16px;
+	}
+	.box-border {
+		margin: 0 30px;
+		@include useBlobTheme {
+			border-left: 1px dashed getVar('textColor');
+		}
 	}
 }
 </style>
