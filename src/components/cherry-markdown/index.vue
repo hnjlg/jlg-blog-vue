@@ -1,7 +1,7 @@
 <template>
-	<div class="cherry-markdown-container">
-		<div :id="uuid" class="cherry-markdown-content"></div>
-		<div class="cherry-markdown-toc">
+	<div ref="mdboxRef" class="cherry-markdown-container">
+		<div :id="uuid" ref="mdcontentRef" class="cherry-markdown-content"></div>
+		<div v-if="props.displayToc" class="cherry-markdown-toc">
 			<div v-for="item in toc" :key="item.id">
 				{{ item }}
 			</div>
@@ -20,8 +20,9 @@ defineOptions({
 const props = withDefaults(
 	defineProps<{
 		defaultContent: string;
+		displayToc: boolean;
 	}>(),
-	{ defaultContent: '' }
+	{ defaultContent: '', displayToc: false }
 );
 const uuid = generateUniqueID();
 
@@ -32,6 +33,17 @@ const cherry = new Cherry({
 
 const toc = computed(() => {
 	return cherry.getToc();
+});
+
+const mdboxRef = ref<HTMLElement>();
+const mdcontentRef = ref<HTMLElement>();
+onMounted(() => {
+	const sourceElement = document.querySelectorAll('#' + uuid);
+	if (sourceElement.length > 0) {
+		mdboxRef.value?.replaceChild(sourceElement[sourceElement.length - 1], mdcontentRef.value as Node);
+	} else {
+		console.log('cherry >>> 未找到UUID');
+	}
 });
 
 const unmount = () => {
@@ -46,6 +58,7 @@ onUnmounted(() => {
 defineExpose({
 	cherry,
 	unmount,
+	uuid,
 });
 </script>
 
