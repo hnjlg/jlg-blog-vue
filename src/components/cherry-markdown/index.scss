@@ -1,13 +1,17 @@
 .cherry-markdown-container {
-    .cherry-markdown-toc {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
-        width: 20%;
-        min-height: 50%;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px #ccc;
-    }
+	height: inherit;
+	.cherry-markdown-content {
+		height: inherit;
+	}
+	.cherry-markdown-toc {
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		z-index: 9999;
+		width: 20%;
+		min-height: 50%;
+		background-color: #fff;
+		border-radius: 10px;
+		box-shadow: 0 0 10px #ccc;
+	}
 }

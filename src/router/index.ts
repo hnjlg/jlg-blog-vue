@@ -140,6 +140,15 @@ const routes: RouteRecordRaw[] = [
 				},
 				name: 'article-details',
 			},
+			{
+				path: '/blob-home/article-publish',
+				component: () => import('@/views/blob/article-publish/index.vue'),
+				meta: {
+					keepAlive: true,
+					backgroundShow: true,
+				},
+				name: 'article-publish',
+			},
 		],
 	},
 ];

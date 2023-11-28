@@ -19,6 +19,7 @@
 				:class="{
 					'blob-menu-first-level': item.level === 1,
 					'blob-menu-second-level': item.level === 2,
+					'animate-bounce': item.level === 2 && item.pathName === route.name,
 				}"
 				@click="menuItemClick(item)"
 			>
@@ -30,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { I_MenuItem } from './type';
 import undraw_articles_wbpb_svg from './svg/undraw_articles_wbpb.svg';
 import undraw_blog_post_re_fy5x_svg from './svg/undraw_blog_post_re_fy5x.svg';
@@ -52,7 +53,15 @@ const props = withDefaults(defineProps<{ disabled: boolean }>(), {
 
 const router = useRouter();
 
+const route = useRoute();
+
 const menuList = ref<I_MenuItem[]>([
+	{
+		level: 2,
+		title: 'Publish Article',
+		pathName: 'article-publish',
+		icon: 'undraw_body_text_re_9riw_svg',
+	},
 	{
 		level: 1,
 		title: 'Article',
