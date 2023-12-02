@@ -2,6 +2,7 @@
 	<div class="about-the-project-container">
 		<div class="about-the-project-center">
 			<h1 class="about-the-project-title">ONE PIECE</h1>
+			<p>简介</p>
 			<p>Use the latest mainstream technology stack</p>
 			<p>-by SongQuan</p>
 			<p class="about-the-project-echnology-stack-text">Technology Stack</p>

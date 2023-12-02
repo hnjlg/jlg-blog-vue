@@ -21,10 +21,10 @@ const useBlobStore = defineStore<
 		blobMenu: (state) => {
 			if (state.userInfo?.isAdmin === 0) {
 				return [
-					{
-						level: 1,
-						title: 'Primary Function',
-					},
+					// {
+					// 	level: 1,
+					// 	title: 'Primary Function',
+					// },
 					{
 						level: 2,
 						pathName: 'model-prediction',
@@ -37,21 +37,21 @@ const useBlobStore = defineStore<
 						level: 2,
 						pathName: 'individual-center',
 					},
-					{
-						level: 1,
-						title: 'Other',
-					},
-					{
-						level: 2,
-						pathName: 'about-the-project',
-					},
+					// {
+					// 	level: 1,
+					// 	title: 'Other',
+					// },
+					// {
+					// 	level: 2,
+					// 	pathName: 'about-the-project',
+					// },
 				];
 			} else if (state.userInfo?.isAdmin === 1) {
 				return [
-					{
-						level: 1,
-						title: 'Primary Function',
-					},
+					// {
+					// 	level: 1,
+					// 	title: 'Primary Function',
+					// },
 					{
 						level: 2,
 						pathName: 'sample-management',
@@ -68,25 +68,25 @@ const useBlobStore = defineStore<
 						level: 2,
 						pathName: 'system-monitoring',
 					},
-					{
-						level: 1,
-						title: 'Other',
-					},
-					{
-						level: 2,
-						pathName: 'about-the-project',
-					},
+					// {
+					// 	level: 1,
+					// 	title: 'Other',
+					// },
+					// {
+					// 	level: 2,
+					// 	pathName: 'about-the-project',
+					// },
 				];
 			} else {
 				return [
-					{
-						level: 2,
-						pathName: 'about-the-project',
-					},
-					{
-						level: 2,
-						pathName: 'blob-404',
-					},
+					// {
+					// 	level: 2,
+					// 	pathName: 'about-the-project',
+					// },
+					// {
+					// 	level: 2,
+					// 	pathName: 'blob-404',
+					// },
 				];
 			}
 		},

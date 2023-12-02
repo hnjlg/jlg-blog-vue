@@ -4,7 +4,7 @@
 			class="blob-menu-item blob-menu-back-home"
 			@click="
 				menuItemClick({
-					pathName: 'blob-content-home',
+					pathName: 'about-the-project',
 					level: 1,
 					title: '情感分析系统',
 				})

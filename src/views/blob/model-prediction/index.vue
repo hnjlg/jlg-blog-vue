@@ -8,24 +8,12 @@
 				<el-input v-model="modelPrediction.aspectTerm" placeholder="Please input aspectTerm" clearable />
 			</el-form-item>
 			<el-form-item label="图像" prop="image">
-				<el-upload
-					v-model:file-list="modelPrediction.image"
-					action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-					multiple
-					:on-preview="handlePreview"
-					:on-remove="handleRemove"
-					:before-remove="beforeRemove"
-					:limit="1"
-					:on-exceed="handleExceed"
-				>
+				<el-upload v-model:file-list="modelPrediction.image" :auto-upload="false" :on-change="handleChange" multiple drag>
 					<el-button>Click to upload</el-button>
-					<template #tip>
-						<div class="el-upload__tip">jpg/png files with a size less than 500KB.</div>
-					</template>
 				</el-upload>
 			</el-form-item>
 			<el-form-item>
-				<el-button @click="registerHandle">预测</el-button>
+				<el-button v-loading="submitLoading" @click="registerHandle">预测</el-button>
 				<el-button @click="resetHandle">重置</el-button>
 			</el-form-item>
 		</el-form>
@@ -35,7 +23,7 @@
 					<el-icon class="model-prediction-table-search" @click="visible = !visible"><Search /></el-icon>
 				</template>
 				<el-form ref="formRef" :model="searchForm" label-width="120px" label-position="top">
-					<el-form-item label="样本" prop="context">
+					<el-form-item label="上下文" prop="context">
 						<el-input v-model="searchForm.context" placeholder="Please input context" clearable />
 					</el-form-item>
 					<el-form-item label="预测结果" prop="result">
@@ -48,7 +36,25 @@
 				</el-form>
 			</el-popover>
 			<el-table :data="tableData" style="width: 100%" max-height="300" class="model-prediction-table">
-				<el-table-column fixed prop="context" label="样本" min-width="300" />
+				<el-table-column fixed prop="context" label="上下文" min-width="200" />
+				<el-table-column fixed prop="aspectTerm" label="方面词" min-width="200" />
+
+				<el-table-column prop="image" label="图像" min-wdith="120">
+					<template #default="scope">
+						<el-image
+							v-for="(image, index) in scope.row.image.split(',')"
+							:key="index"
+							:src="image"
+							:zoom-rate="1.2"
+							:max-scale="7"
+							:min-scale="0.2"
+							:preview-src-list="scope.row.image.split(',')"
+							:initial-index="4"
+							fit="cover"
+							:preview-teleported="true"
+						/>
+					</template>
+				</el-table-column>
 				<el-table-column prop="result" label="预测结果" min-width="120" />
 				<el-table-column prop="createTime" label="时间" min-width="120" />
 				<el-table-column fixed="right" label="操作" width="120">
@@ -69,15 +75,18 @@
 				@prev-click="refreshTableData"
 				@next-click="refreshTableData"
 			/>
+			<el-dialog v-model="dialogTableVisible" title="">
+				<h1>预测结果：{{ dialogData.outputs }}</h1>
+			</el-dialog>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue';
-import type { FormInstance, FormRules } from 'element-plus';
-import type { UploadProps, UploadUserFile } from 'element-plus';
-import { I_ModelModel, blobModelInsert, blobModelQuery } from '@/api/blob';
+import type { FormInstance, FormRules, UploadProps } from 'element-plus';
+import type { UploadUserFile } from 'element-plus';
+import { I_ModelModel, blobModelInsert, blobModelQuery, blobModelDelete } from '@/api/blob';
 import { pageLoading } from '@/views/blob/home/hooks/useBlobPageLoading';
 import useBlobStore from '@/store/blob';
 import router from '@/router';
@@ -89,6 +98,10 @@ defineOptions({
 const formRef = ref<FormInstance>();
 
 const blobStore = useBlobStore();
+
+const dialogTableVisible = ref(false);
+
+const dialogData = ref({});
 
 const modelPrediction = ref<{
 	context: string;
@@ -112,54 +125,73 @@ const rules = ref<FormRules>({
 });
 
 const resetHandle = () => {
-	modelPrediction.value = { context: 'context', aspectTerm: '', image: [] };
+	modelPrediction.value = { context: '', aspectTerm: '', image: [] };
 };
+
+const submitLoading = ref<boolean>(false);
 
 const registerHandle = () => {
-	if (blobStore.$state.userInfo?.id) {
-		blobModelInsert({
-			userId: blobStore.$state.userInfo?.id,
-			context: '测试1',
-			aspectTerm: '嘿嘿1',
-			image: 'http://localhost/upload/home.png',
-			result: '中性',
-		}).then(() => {
-			refreshTableData();
-		});
-	} else {
-		ElMessage.error('useId not found');
-		router.push('blob-login');
-	}
+	const formData = new FormData();
+	modelPrediction.value.image.map((item) => {
+		formData.append('image_files', item.raw);
+	});
+	formData.append('text_raw', modelPrediction.value.context);
+	formData.append('text_aspect', modelPrediction.value.aspectTerm);
+	formRef.value?.validate((valid) => {
+		if (valid) {
+			submitLoading.value = true;
+			fetch('http://127.0.0.1:5000/predict', {
+				method: 'POST',
+				body: formData,
+			})
+				.then((res) => {
+					res.json().then((resJson) => {
+						dialogTableVisible.value = true;
+						resJson.image_urls = resJson.image_urls.map((item) => 'http://localhost:5000' + item);
+						dialogData.value = resJson;
+						resetHandle();
+						if (blobStore.$state.userInfo?.id) {
+							blobModelInsert({
+								userId: blobStore.$state.userInfo?.id,
+								context: modelPrediction.value.context,
+								aspectTerm: modelPrediction.value.aspectTerm,
+								image: resJson.image_urls.join(','),
+								result: resJson.outputs,
+							}).then(() => {
+								refreshTableData();
+							});
+						} else {
+							ElMessage.error('useId not found');
+							router.push('blob-login');
+						}
+					});
+				})
+				.catch(() => {
+					ElMessage.error('分析错误');
+				})
+				.finally(() => {
+					submitLoading.value = false;
+				});
+		} else {
+			ElMessage.warning('Please enter the correct content as prompted');
+		}
+	});
 };
 
-const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
-	console.log(file, uploadFiles);
-};
-
-const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
-	console.log(uploadFile);
-};
-
-const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
-	ElMessage.warning(`The limit is 1, you selected ${files.length} files this time, add up to ${files.length + uploadFiles.length} totally`);
-};
-
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile) => {
-	return ElMessageBox.confirm(`Cancel the transfer of ${uploadFile.name} ?`).then(
-		() => true,
-		() => false
-	);
-};
-
-const deleteRow = (index: number, row: I_ModelModel) => {
-	console.log(index, row);
+const deleteRow = (_index: number, row: I_ModelModel) => {
+	pageLoading.value = true;
+	blobModelDelete(row).then(() => {
+		pageLoading.value = false;
+		ElMessage.success('Remove Success');
+		refreshTableData();
+	});
 };
 
 const refreshTableData = () => {
 	pageLoading.value = true;
 	blobModelQuery(currentPage.value, pageSize.value, searchForm.value)
 		.then((res) => {
-			tableData.value = res.data.data.records;
+			tableData.value = res.data.data.records.reverse();
 			paginationTotal.value = res.data.data.records.length;
 			ElMessage.success('Refresh Success');
 			pageLoading.value = false;
@@ -182,6 +214,11 @@ const searchHandle = () => {
 onMounted(() => {
 	refreshTableData();
 });
+
+const handleChange: UploadProps['onChange'] = (uploadFile, uploadFiles) => {
+	console.log(uploadFile, uploadFiles);
+	// modelPrediction.image = uploadFiles.push(uploadFile.raw);
+};
 </script>
 
 <style lang="scss" scoped>

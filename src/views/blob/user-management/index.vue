@@ -8,7 +8,7 @@
 				<el-form-item label="用户id" prop="id">
 					<el-input v-model="searchForm.id" placeholder="Please input id" clearable />
 				</el-form-item>
-				<el-form-item label="用户名" prop="userName">
+				<el-form-item label="用户名" prop="">
 					<el-input v-model="searchForm.userName" placeholder="Please input userName" clearable />
 				</el-form-item>
 				<el-form-item label="用户类型" prop="isAdmin">
@@ -97,7 +97,10 @@ const refreshTableData = () => {
 	pageLoading.value = true;
 	blobAccountQuery(currentPage.value, pageSize.value, searchForm.value)
 		.then((res) => {
-			tableData.value = res.data.data.records;
+			tableData.value = res.data.data.records.map((item) => {
+				item.userName = item.user_name;
+				return item;
+			});
 			paginationTotal.value = res.data.data.records.length;
 			ElMessage.success('Refresh Success');
 			pageLoading.value = false;
