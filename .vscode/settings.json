@@ -43,6 +43,6 @@
 		"yalc",
 		"tailwindcss",
 		"gsap",
-		"getVar"
+		"getBlobVar"
 	]
 }

@@ -31,7 +31,7 @@ const props = defineProps<{ theme: T_BlobTheme; changeTheme: () => void }>();
 
 	.blob-content-header-lamp-dark {
 		@include useBlobTheme() {
-			box-shadow: 0 0 94px 64px getVar('textColor');
+			box-shadow: 0 0 94px 64px getBlobVar('textColor');
 			height: 0;
 		}
 	}

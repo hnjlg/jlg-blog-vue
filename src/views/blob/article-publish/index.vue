@@ -1,6 +1,6 @@
 <template>
 	<div class="article-publish-page px-3">
-		<el-form ref="ruleFormRef" v-model="pageFormData" :rules="formRules" label-position="top" size="small" status-icon>
+		<el-form ref="ruleFormRef" :model="pageFormData" :rules="formRules" label-position="top" size="small" status-icon>
 			<el-form-item label="文章标题" prop="title">
 				<el-input v-model="pageFormData.title" />
 			</el-form-item>
@@ -103,16 +103,16 @@ async function sumbmitFun() {
 .article-publish-page {
 	// --el-color-primary: blue;
 	@include useBlobTheme {
-		--el-text-color-regular: getVar('bgColor');
+		--el-text-color-regular: getBlobVar('bgColor');
 	}
-	.md-box {
-		height: 600px;
-	}
+	// .md-box {
+	// 	height: 600px;
+	// }
 	:deep(.el-input__inner) {
-		color: getVar('bgColor');
+		color: getBlobVar('bgColor');
 	}
 	:deep(.el-button) {
-		color: getVar('bgColor');
+		color: getBlobVar('bgColor');
 	}
 }
 </style>

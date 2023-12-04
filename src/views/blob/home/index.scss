@@ -1,81 +1,62 @@
-/* WebKit浏览器 */
-
-::-webkit-scrollbar {
-    width: 1px;
-}
-
-// 滚动条轨道色
-::-webkit-scrollbar-track {
-    background: #fff;
-}
-
-// 滚动条柱体颜色
-::-webkit-scrollbar-thumb {
-    background: #000;
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #000;
-}
+@import '@/assets/styles/scroll.scss';
 
 .blob-home-container {
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    background-blend-mode: color-dodge;
-    background-image: url('./svg/dalmatian-spots.svg');
-    overflow: hidden;
-    font-family: 'Caveat', cursive;
+	position: relative;
+	height: 100vh;
+	width: 100vw;
+	background-blend-mode: color-dodge;
+	background-image: url('./svg/dalmatian-spots.svg');
+	overflow: hidden;
+	font-family: 'Caveat', cursive;
 
-    .blob-home-content-common {
-        width: 70%;
-        height: 90%;
-        border-radius: 20px;
-        position: absolute;
-        left: 15%;
-        top: 5%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
+	.blob-home-content-common {
+		width: 70%;
+		height: 90%;
+		border-radius: 20px;
+		position: absolute;
+		left: 15%;
+		top: 5%;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	}
 
-    .blob-home-content-background {
-        transform: rotate(8deg);
+	.blob-home-content-background {
+		transform: rotate(8deg);
 
-        @include useBlobTheme {
-            background-color: getVar('textColor');
-            color: getVar('bgColor');
-        }
-    }
+		@include useBlobTheme {
+			background-color: getBlobVar('textColor');
+			color: getBlobVar('bgColor');
+		}
+	}
 
-    .blob-home-content {
-        display: flex;
-        transform: rotate(-2deg);
+	.blob-home-content {
+		display: flex;
+		transform: rotate(-2deg);
 
-        @include useBlobTheme {
-            background-color: getVar('bgColor');
-            color: getVar('textColor');
-        }
+		@include useBlobTheme {
+			background-color: getBlobVar('bgColor');
+			color: getBlobVar('textColor');
+		}
 
-        .blob-home-left-menu {
-            width: 20%;
-            height: 100%;
-            min-width: 120px;
-        }
+		.blob-home-left-menu {
+			width: 20%;
+			height: 100%;
+			min-width: 120px;
+		}
 
-        .blob-home-right-content {
-            width: 80%;
+		.blob-home-right-content {
+			width: 80%;
 
-            .blob-home-content-right-header {
-                height: $blob-header-height;
-                line-height: $blob-header-height;
-            }
+			.blob-home-content-right-header {
+				height: $blob-header-height;
+				line-height: $blob-header-height;
+			}
 
-            .blob-home-content-right-content {
-                overflow-y: auto;
-                padding: 20px;
-                height: calc(100% - $blob-header-height);
-                overflow-x: hidden;
-            }
-        }
-    }
+			.blob-home-content-right-content {
+				overflow-y: auto;
+				padding: 20px;
+				height: calc(100% - $blob-header-height);
+				overflow-x: hidden;
+			}
+		}
+	}
 }

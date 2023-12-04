@@ -71,7 +71,7 @@ const articleClick = (obj: I_ArticleClickObj) => {
 	.box-border {
 		margin: 0 30px;
 		@include useBlobTheme {
-			border-left: 1px dashed getVar('textColor');
+			border-left: 1px dashed getBlobVar('textColor');
 		}
 	}
 }

@@ -19,3 +19,4 @@ onMounted(() => {
 	cherryMarkdownContent.value?.replaceChild(tempContainer, cherryMarkdownContent.value?.childNodes[0]);
 });
 </script>
+<style lang="scss" scoped></style>

@@ -151,6 +151,28 @@ const routes: RouteRecordRaw[] = [
 			},
 		],
 	},
+	// {
+	// 	path: '/blob-backend',
+	// 	component: () => import('@/views/markdown-test/index.vue'),
+	// 	meta: {
+	// 		keepAlive: false,
+	// 	},
+	// 	children: [
+	// 		{
+	// 			path: '/blob-backend',
+	// 			redirect: '/blob-backend/blob-content-home',
+	// 		},
+	// 		{
+	// 			path: '/blob-backend/blob-content-home',
+	// 			component: () => import('@/views/blob-backend/blob-backend-home/index.vue'),
+	// 			meta: {
+	// 				keepAlive: true,
+	// 				backgroundShow: false,
+	// 			},
+	// 			name: 'blob-content-home',
+	// 		},
+	// 	],
+	// },
 ];
 
 const router = createRouter({

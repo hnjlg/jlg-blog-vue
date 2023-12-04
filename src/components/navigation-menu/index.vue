@@ -14,6 +14,7 @@
 				<div @click="menuLink('/errorSDK')">error-sdk</div>
 				<div @click="menuLink('/markdown-test')">markdown-test</div>
 				<div @click="menuLink('/blob-home')">blob-home</div>
+				<div @click="menuLink('/blob-backend')">blob-backend</div>
 			</div>
 		</el-drawer>
 	</div>

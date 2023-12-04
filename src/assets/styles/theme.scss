@@ -1,22 +1,54 @@
 $blob-themes: (
-    light: (bgColor: #ffffff, textColor: #000000),
-    dark:(bgColor: #000000, textColor: #ffffff),
+	light: (
+		bgColor: #ffffff,
+		textColor: #000000,
+	),
+	dark: (
+		bgColor: #000000,
+		textColor: #ffffff,
+	),
 );
 $current-blob-theme: dark;
 
 @mixin useBlobTheme() {
+	@each $key, $value in $blob-themes {
+		$current-blob-theme: $key !global;
 
-    @each $key,
-    $value in $blob-themes {
-        $current-blob-theme: $key !global;
-
-        #blob-home-container[data-theme='#{$key}'] & {
-            @content;
-        }
-    }
+		#blob-home-container[data-theme='#{$key}'] & {
+			@content;
+		}
+	}
 }
 
-@function getVar($key) {
-    $themeObj: map-get($blob-themes, $current-blob-theme);
-    @return map-get($themeObj, $key)
+@function getBlobVar($key) {
+	$themeObj: map-get($blob-themes, $current-blob-theme);
+	@return map-get($themeObj, $key);
+}
+
+$blob-backed-themes: (
+	light: (
+		bgColor: #ffffff,
+		textColor: #000000,
+	),
+	dark: (
+		bgColor: #000000,
+		textColor: #ffffff,
+	),
+);
+
+$current-blob-backed-theme: dark;
+
+@mixin useBlobBackedTheme() {
+	@each $key, $value in $blob-backed-themes {
+		$current-blob-backed-theme: $key !global;
+
+		#blob-home-container[data-theme='#{$key}'] & {
+			@content;
+		}
+	}
+}
+
+@function getBlobBackedVar($key) {
+	$themeObj: map-get($blob-backed-themes, $current-blob-backed-theme);
+	@return map-get($themeObj, $key);
 }

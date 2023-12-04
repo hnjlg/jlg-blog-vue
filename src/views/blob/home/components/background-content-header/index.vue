@@ -1,6 +1,8 @@
 <template>
 	<div class="background-content-header-container">
-		<el-icon class="top-left-icon" @click="goBackHandle"><TopLeft /></el-icon><span>Go Back</span>
+		<span class="cursor-pointer" @click="goBackHandle">
+			<el-icon class="top-left-icon"><TopLeft /></el-icon><span>Go Back</span>
+		</span>
 	</div>
 </template>
 
@@ -20,9 +22,9 @@ const goBackHandle = () => {
 
 <style scoped lang="scss">
 .background-content-header-container {
-	padding: 5px 10px;
 	display: flex;
 	align-items: center;
+	height: $blob-header-goback-height;
 	.top-left-icon {
 		cursor: pointer;
 	}

@@ -87,7 +87,7 @@ const load = () => {
 		animation: blink 1s infinite;
 	}
 	// @include useBlobTheme {
-	// 	--el-color-primary: getVar('textColor');
+	// 	--el-color-primary: getBlobVar('textColor');
 	// }
 }
 </style>

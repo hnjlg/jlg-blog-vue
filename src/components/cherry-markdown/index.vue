@@ -19,7 +19,7 @@ defineOptions({
 
 const props = withDefaults(
 	defineProps<{
-		defaultContent: string;
+		defaultContent: string | null;
 		displayToc: boolean;
 	}>(),
 	{ defaultContent: '', displayToc: false }
@@ -28,7 +28,7 @@ const uuid = generateUniqueID();
 
 const cherry = new Cherry({
 	id: uuid,
-	value: props.defaultContent,
+	value: props.defaultContent ?? '',
 });
 
 const toc = computed(() => {

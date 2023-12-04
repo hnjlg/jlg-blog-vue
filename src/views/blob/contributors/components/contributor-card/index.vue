@@ -16,7 +16,7 @@ defineOptions({
 
 <style scoped lang="scss">
 .contributor-card-container {
-	box-shadow: 0 0 10px getVar('bgColor');
+	box-shadow: 0 0 10px getBlobVar('bgColor');
 	border-radius: 10px;
 
 	.contributor-card-top {

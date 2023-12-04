@@ -163,25 +163,7 @@ const menuItemClick = (item: I_MenuItem) => {
 </script>
 
 <style scoped lang="scss">
-/* WebKit浏览器 */
-::-webkit-scrollbar {
-	width: 1px;
-}
-
-// 滚动条轨道色
-::-webkit-scrollbar-track {
-	background: #fff;
-}
-
-// 滚动条柱体颜色
-::-webkit-scrollbar-thumb {
-	background: #000;
-	border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #000;
-}
+@import '@/assets/styles/scroll.scss';
 
 .blob-menu-container {
 	.blob-menu-back-home {
@@ -202,7 +184,7 @@ const menuItemClick = (item: I_MenuItem) => {
 			font-size: 14px;
 			padding: 30px 0;
 			@include useBlobTheme() {
-				border-top: 1px solid getVar('textColor');
+				border-top: 1px solid getBlobVar('textColor');
 			}
 		}
 

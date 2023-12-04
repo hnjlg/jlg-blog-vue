@@ -5,7 +5,7 @@
 		>
 			<!-- <el-icon><Search /></el-icon><span class="pl-2">搜索</span><span class="animate-blink">|</span> -->
 			<el-icon @click="searchFun"><Search /></el-icon
-			><el-input v-model.trim="searchKey" clearable class="caret-slate-500" @keyup.enter="searchFun"></el-input>
+			><el-input v-model.trim="searchKey" clearable class="caret-slate-500" @keyup.enter="searchFun"> </el-input>
 		</div>
 		<div class="page-label__hot min-h-[100px] my-8">
 			<div class="text-lg font-bold">热门标签</div>
