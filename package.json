@@ -13,7 +13,8 @@
 		"prepare": "husky install",
 		"pre-commit": "lint-staged",
 		"preinstall": "npx only-allow npm",
-		"style": "stylelint \"./**/*.{css,scss,sass,vue,html}\" --fix"
+		"style": "stylelint \"./**/*.{css,scss,sass,vue,html}\" --fix",
+		"jlg_generate_by_swagger": "npx jlg_generate_by_swagger"
 	},
 	"dependencies": {
 		"@element-plus/icons": "^0.0.11",
@@ -43,6 +44,7 @@
 		"eslint-plugin-prettier": "^5.0.1",
 		"eslint-plugin-vue": "^9.18.1",
 		"husky": "^8.0.0",
+		"jlg_generate_by_swagger": "^0.0.8",
 		"lint-staged": "^15.0.2",
 		"only-allow": "^1.2.1",
 		"postcss": "^8.4.31",
