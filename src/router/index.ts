@@ -4,7 +4,7 @@ import { blobHomeContentBackgroundHandleClick } from '@/views/blob/home/hooks/us
 const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		redirect: 'blob-home',
+		redirect: 'blob-backend',
 	},
 	{
 		path: '/home',
@@ -140,39 +140,36 @@ const routes: RouteRecordRaw[] = [
 				},
 				name: 'article-details',
 			},
+		],
+	},
+	{
+		path: '/blob-backend',
+		component: () => import('@/views/blog-backend/home/index.vue'),
+		meta: {
+			keepAlive: false,
+		},
+		children: [
 			{
-				path: '/blob-home/article-publish',
-				component: () => import('@/views/blob/article-publish/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: true,
-				},
-				name: 'article-publish',
+				path: '/blog-backend',
+				redirect: '/blog-backend/blog-backend-index',
+			},
+			{
+				path: '/blog-backend/blog-backend-index',
+				component: () => import('@/views/blog-backend/blog-backend-index/index.vue'),
+				name: 'blog-backend-index',
+			},
+			{
+				path: '/blog-backend/blog-backend-publish',
+				component: () => import('@/views/blog-backend/blog-backend-publish/index.vue'),
+				name: 'blog-backend-publish',
+			},
+			{
+				path: '/blog-backend/blog-article-all',
+				component: () => import('@/views/blog-backend/blog-article-all/index.vue'),
+				name: 'blog-article-all',
 			},
 		],
 	},
-	// {
-	// 	path: '/blob-backend',
-	// 	component: () => import('@/views/markdown-test/index.vue'),
-	// 	meta: {
-	// 		keepAlive: false,
-	// 	},
-	// 	children: [
-	// 		{
-	// 			path: '/blob-backend',
-	// 			redirect: '/blob-backend/blob-content-home',
-	// 		},
-	// 		{
-	// 			path: '/blob-backend/blob-content-home',
-	// 			component: () => import('@/views/blob-backend/blob-backend-home/index.vue'),
-	// 			meta: {
-	// 				keepAlive: true,
-	// 				backgroundShow: false,
-	// 			},
-	// 			name: 'blob-content-home',
-	// 		},
-	// 	],
-	// },
 ];
 
 const router = createRouter({
@@ -180,9 +177,16 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach((_to, _from, next) => {
-	next();
+router.beforeEach((to, from, next) => {
+	//如果未匹配到路由
+	if (to.matched.length === 0) {
+		//如果上级也未匹配到路由则跳转主页面，如果上级能匹配到则转上级路由。404还没写
+		next({ path: from.path ? from.path : '404' });
+	} else {
+		next(); //如果匹配到正确跳转
+	}
 });
+
 router.afterEach((to) => {
 	// 博客前台刷新浏览器时，保持正确的背景和首屏渲染
 	if ('backgroundShow' in to.meta) {

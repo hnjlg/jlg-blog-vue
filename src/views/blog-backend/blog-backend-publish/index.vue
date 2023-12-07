@@ -1,3 +1,4 @@
+<!-- blog后台-发布页 -->
 <template>
 	<div class="article-publish-page px-3">
 		<el-form ref="ruleFormRef" :model="pageFormData" :rules="formRules" label-position="top" size="small" status-icon>
@@ -26,12 +27,6 @@
 			<div class="md-box">
 				<CherryMarkdown ref="mdEditor" :default-content="pageFormData.content" :display-toc="false"> </CherryMarkdown>
 			</div>
-			<!-- <el-row span="24" gutter="20">
-				<el-col :offset="18">
-					<el-button @click="sumbmitDraftFun">存草稿</el-button>
-					<el-button @click="sumbmitFun">发布</el-button>
-				</el-col>
-			</el-row> -->
 			<div class="btn-box text-right">
 				<el-button @click="sumbmitDraftFun">存草稿</el-button>
 				<el-button @click="sumbmitFun">发布</el-button>
@@ -44,11 +39,11 @@
 import CherryMarkdown from '@/components/cherry-markdown/index.vue';
 import { E_ArticleStatus } from '@/utils/enum';
 import { FormInstance, FormRules } from 'element-plus';
+import { postBlobbackstagearticleadd } from '@/apiType/production/result.ts';
 
 defineOptions({
-	name: 'ArticlePublish',
+	name: 'BlogBackendPublish',
 });
-
 const pageFormData = ref({
 	title: '温州皮革厂倒闭了',
 	content: null,
@@ -85,9 +80,11 @@ function sumbmitDraftFun() {
 async function sumbmitFun() {
 	if (!ruleFormRef.value) return;
 	await ruleFormRef.value.validate((valid, fields) => {
-		console.log('======', valid);
 		if (valid) {
-			ElMessage.success('校验成功');
+			postBlobbackstagearticleadd(pageFormData.value).then((result) => {
+				console.log('===result===', result);
+				ElMessage.success('提交成功');
+			});
 		} else {
 			ElMessage.error('error submit!' + fields);
 		}
@@ -105,8 +102,6 @@ async function sumbmitFun() {
 	@include useBlobTheme {
 		--el-text-color-regular: getBlobVar('bgColor');
 	}
-	// .md-box {
-	// 	height: 600px;
 	// }
 	:deep(.el-input__inner) {
 		color: getBlobVar('bgColor');
