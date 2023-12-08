@@ -8,7 +8,7 @@
 			<el-row span="24" gutter="20">
 				<el-col :span="5">
 					<el-form-item label="发布人" prop="publisher">
-						<el-input v-model="pageFormData.publisher" disabled />
+						<el-input v-model="pageFormData.authorName" disabled />
 					</el-form-item>
 				</el-col>
 				<el-col :span="5">
@@ -17,9 +17,31 @@
 					</el-form-item>
 				</el-col>
 				<el-col :span="5">
-					<el-form-item label="文章分类" prop="category">
-						<el-select v-model="pageFormData.category" placeholder="Select" clearable>
-							<el-option v-for="item in categoryOptions" :key="item.value" :label="item.label" :value="item.value" />
+					<el-form-item label="文章标签" prop="articleTags">
+						<el-select
+							v-model="pageFormData.articleTags"
+							multiple
+							filterable
+							remote
+							reserve-keyword
+							placeholder="Please enter a keyword"
+							:remote-method="articleTagsRemoteMethod"
+							:loading="articleTagsLoading"
+						>
+							<el-option v-for="item in articleTagsList" :key="item.id" :label="item.tag_name" :value="item.id" />
+						</el-select>
+					</el-form-item>
+					<el-form-item label="文章树" prop="articleTags">
+						<el-select
+							v-model="pageFormData.articleTreeId"
+							filterable
+							remote
+							reserve-keyword
+							placeholder="Please enter a keyword"
+							:remote-method="articleTreeListRemoteMethod"
+							:loading="articleTagsLoading"
+						>
+							<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" />
 						</el-select>
 					</el-form-item>
 				</el-col>
@@ -37,9 +59,10 @@
 
 <script setup lang="ts">
 import CherryMarkdown from '@/components/cherry-markdown/index.vue';
-import { E_ArticleStatus } from '@/utils/enum';
 import { FormInstance, FormRules } from 'element-plus';
-import { postBlobbackstagearticleadd } from '@/apiType/production/result.ts';
+import { postBlogbackstagearticleadd } from '@/apiType/production/result.ts';
+import { articleTagsLoading, articleTagsRemoteMethod, articleTagsList, articleTreeListRemoteMethod, articleTreeList } from './hooks/useForm';
+import useBlogBackendStore from '@/store/blog-backend';
 
 defineOptions({
 	name: 'BlogBackendPublish',
@@ -47,12 +70,16 @@ defineOptions({
 const pageFormData = ref({
 	title: '温州皮革厂倒闭了',
 	content: null,
-	publisher: '马冬梅',
-	category: null,
-	status: E_ArticleStatus.未发布,
-	updateTime: '更新时间',
-	publishTime: String(new Date()),
+	contentHTML: null,
+	author: null,
+	authorName: null,
+	articleTreeId: null,
+	articleTags: null,
 });
+
+const blogBackendStore = useBlogBackendStore();
+pageFormData.value.author = blogBackendStore.$state.userInfo.id;
+pageFormData.value.authorName = blogBackendStore.$state.userInfo.userName;
 
 const ruleFormRef = ref<FormInstance>();
 const formRules = reactive<FormRules>({
@@ -62,12 +89,6 @@ const formRules = reactive<FormRules>({
 	],
 	category: [{ required: true, message: '请选择文章分类', trigger: 'blur' }],
 });
-
-const categoryOptions = ref([
-	{ label: '丰恺思项目', value: 1 },
-	{ label: 'OA项目', value: 2 },
-	{ label: '大平台项目', value: 3 },
-]);
 
 const mdEditor = ref();
 
@@ -81,7 +102,9 @@ async function sumbmitFun() {
 	if (!ruleFormRef.value) return;
 	await ruleFormRef.value.validate((valid, fields) => {
 		if (valid) {
-			postBlobbackstagearticleadd(pageFormData.value).then((result) => {
+			pageFormData.value.content = mdEditor.value.cherry.getMarkdown();
+			pageFormData.value.contentHTML = mdEditor.value.cherry.getHtml();
+			postBlogbackstagearticleadd(pageFormData.value).then((result) => {
 				console.log('===result===', result);
 				ElMessage.success('提交成功');
 			});
@@ -89,10 +112,6 @@ async function sumbmitFun() {
 			ElMessage.error('error submit!' + fields);
 		}
 	});
-
-	pageFormData.value.content = mdEditor.value.cherry.getMarkdown();
-	console.log('===pageFormData===', pageFormData.value);
-	console.log('===mdEditor===', mdEditor.value.cherry.getMarkdown());
 }
 </script>
 

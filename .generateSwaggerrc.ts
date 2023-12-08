@@ -8,5 +8,5 @@ export default {
 	// 生成文件中的Typescript类型命名前缀，默认AT_
 	interfaceNamePrepend: 'AT_',
 	// 封装的axios实例引入路径，默认import axios from '@/request/index'
-	axiosUrl: "import axios from '@/axios/index';",
+	axiosUrl: "import axios from '@/request/index';",
 };

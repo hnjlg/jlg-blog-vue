@@ -1,5 +1,6 @@
 import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 import { blobHomeContentBackgroundHandleClick } from '@/views/blob/home/hooks/useBackgroundContent';
+import { pageLoading } from '@/views/blog-backend/home/hooks/pageLoading';
 
 const routes: RouteRecordRaw[] = [
 	{
@@ -143,30 +144,48 @@ const routes: RouteRecordRaw[] = [
 		],
 	},
 	{
-		path: '/blob-backend',
+		path: '/blogBackend',
 		component: () => import('@/views/blog-backend/home/index.vue'),
 		meta: {
-			keepAlive: false,
+			keepAlive: true,
 		},
 		children: [
 			{
-				path: '/blog-backend',
-				redirect: '/blog-backend/blog-backend-index',
+				path: '/blogBackend',
+				redirect: '/blogBackend/BlogBackendIndex',
 			},
 			{
-				path: '/blog-backend/blog-backend-index',
+				path: '/blogBackend/BlogBackendIndex',
 				component: () => import('@/views/blog-backend/blog-backend-index/index.vue'),
-				name: 'blog-backend-index',
+				meta: {
+					keepAlive: true,
+					isInitLoading: true,
+					systemPage: true,
+					title: '博客后台首页',
+				},
+				name: 'BlogBackendIndex',
 			},
 			{
-				path: '/blog-backend/blog-backend-publish',
+				path: '/blogBackend/BlogBackendLogin',
+				component: () => import('@/views/blog-backend/BlogBackendLogin/index.vue'),
+				meta: {
+					keepAlive: false,
+					isInitLoading: false,
+					systemPage: false,
+					title: '登录',
+				},
+				name: 'BlogBackendLogin',
+			},
+			{
+				path: '/blogBackend/blog-backend-publish',
 				component: () => import('@/views/blog-backend/blog-backend-publish/index.vue'),
+				meta: {
+					keepAlive: true,
+					isInitLoading: false,
+					systemPage: true,
+					title: '博客后台发布页',
+				},
 				name: 'blog-backend-publish',
-			},
-			{
-				path: '/blog-backend/blog-article-all',
-				component: () => import('@/views/blog-backend/blog-article-all/index.vue'),
-				name: 'blog-article-all',
 			},
 		],
 	},
@@ -177,17 +196,29 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach((to, from, next) => {
-	//如果未匹配到路由
-	if (to.matched.length === 0) {
-		//如果上级也未匹配到路由则跳转主页面，如果上级能匹配到则转上级路由。404还没写
-		next({ path: from.path ? from.path : '404' });
-	} else {
-		next(); //如果匹配到正确跳转
+router.beforeEach((to, _from, next) => {
+	if (to.fullPath.startsWith('/blogBackend')) {
+		if ('isInitLoading' in to.meta && to.meta.isInitLoading) {
+			// 为路由对象添加了isInitLoading的，确认页面是否需要loading
+			pageLoading.value = true;
+		} else {
+			pageLoading.value = false;
+		}
+		if (localStorage.getItem('blog-backend-token') && to.name === 'BlogBackendLogin') {
+			next({ name: 'BlogBackendIndex' });
+		} else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
+			pageLoading.value = false;
+			next({ name: 'BlogBackendLogin' });
+		} else {
+			next();
+		}
 	}
+	next();
 });
-
 router.afterEach((to) => {
+	if ('title' in to.meta) {
+		document.title = to.meta.title + '';
+	}
 	// 博客前台刷新浏览器时，保持正确的背景和首屏渲染
 	if ('backgroundShow' in to.meta) {
 		blobHomeContentBackgroundHandleClick(to.meta);

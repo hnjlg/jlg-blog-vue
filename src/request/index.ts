@@ -1,14 +1,17 @@
 import axios from 'axios';
+import useBlobStore from '@/store/blog-backend';
 
 const request = axios.create({
 	baseURL: import.meta.env.VITE_APP_BASE_URL,
 	timeout: 5000,
 });
 
+const blogBackendStore = useBlobStore();
+
 // 请求数据拦截处理
 request.interceptors.request.use(
 	(config) => {
-		const Authorization = '';
+		const Authorization = 'Bearer ' + localStorage.getItem('blog-backend-token') || blogBackendStore.$state.userInfo.token;
 		config.headers.Authorization = Authorization;
 		return config;
 	},

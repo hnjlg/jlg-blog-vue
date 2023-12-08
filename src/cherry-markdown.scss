@@ -1,13 +1,14 @@
 // 修改cherry-markdown样式
 .cherry {
-	.CodeMirror-cursor {
-		height: 16px !important;
-	}
+	// 编辑器光标样式
+	// .CodeMirror-cursor {
+	// 	height: 16px !important;
+	// }
 	.cherry-toolbar {
 		background: black;
 
 		.cherry-toolbar-button {
-			color: yellow;
+			color: white;
 		}
 	}
 }

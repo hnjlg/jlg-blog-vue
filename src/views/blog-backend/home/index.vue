@@ -1,7 +1,7 @@
 <!-- blog后台layout -->
 <template>
-	<div class="common-layout">
-		<el-container>
+	<div class="blog-backend-container">
+		<el-container v-if="$route.meta.systemPage">
 			<!-- 左侧menu start -->
 			<el-aside style="background-color: aliceblue; height: 100vh">
 				<el-scrollbar>
@@ -22,6 +22,8 @@
 							<el-menu-item-group>
 								<el-menu-item index="1-1" @click="jumpto({ name: 'blog-backend-publish' })">发布文章</el-menu-item>
 								<el-menu-item index="1-2" @click="jumpto({ name: 'blog-article-all' })">全部文章</el-menu-item>
+								<el-menu-item index="1-3" @click="jumpto({ name: 'blog-article-all' })">文章分类</el-menu-item>
+								<el-menu-item index="1-4" @click="jumpto({ name: 'blog-article-all' })">文章标签</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu index="2">
@@ -63,22 +65,32 @@
 			</el-aside>
 			<!-- 左侧menu end -->
 			<el-container>
-				<el-header>Header</el-header>
-				<el-main>
+				<el-header class="bg-">Header</el-header>
+				<el-main v-loading="pageLoading" class="blog-backend-home-content-common blog-backend-home-content-system-page">
 					<router-view v-slot="{ Component }">
-						<KeepAlive v-if="Component">
-							<component :is="Component"></component>
-						</KeepAlive>
+						<keep-alive v-if="$route.meta.keepAlive">
+							<component :is="Component" :key="$route.path" />
+						</keep-alive>
+						<component :is="Component" v-if="!$route.meta.keepAlive" />
 					</router-view>
 				</el-main>
 			</el-container>
 		</el-container>
+		<div v-else v-loading="pageLoading" class="blog-backend-home-content-common blog-backend-home-content-other-page">
+			<router-view v-slot="{ Component }">
+				<keep-alive v-if="$route.meta.keepAlive">
+					<component :is="Component" :key="$route.path" />
+				</keep-alive>
+				<component :is="Component" v-if="!$route.meta.keepAlive" />
+			</router-view>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { Menu as IconMenu, Setting, Location } from '@element-plus/icons-vue';
 import { RouteLocationRaw, useRouter } from 'vue-router';
+import { pageLoading } from './hooks/pageLoading';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -91,4 +103,12 @@ function jumpto(routerInfo: RouteLocationRaw) {
 	router.push(routerInfo);
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.blog-backend-container {
+	height: 100vh;
+
+	.blog-backend-home-content-common {
+		height: 100%;
+	}
+}
+</style>
