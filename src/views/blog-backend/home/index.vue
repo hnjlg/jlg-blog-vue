@@ -12,7 +12,7 @@
 							</template>
 							<el-menu-item-group>
 								<el-menu-item index="1-2" @click="jumpto({ path: '/blob-home' })">前台首页</el-menu-item>
-								<el-menu-item index="1-1" @click="jumpto({ name: 'blog-backend-index' })">后台首页</el-menu-item>
+								<el-menu-item index="1-1" @click="jumpto({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu index="1">
@@ -20,10 +20,10 @@
 								<el-icon><Location /></el-icon>文章管理
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="1-1" @click="jumpto({ name: 'blog-backend-publish' })">发布文章</el-menu-item>
-								<el-menu-item index="1-2" @click="jumpto({ name: 'blog-article-all' })">全部文章</el-menu-item>
-								<el-menu-item index="1-3" @click="jumpto({ name: 'blog-article-all' })">文章分类</el-menu-item>
-								<el-menu-item index="1-4" @click="jumpto({ name: 'blog-article-all' })">文章标签</el-menu-item>
+								<el-menu-item index="1-1" @click="jumpto({ name: 'BlogBackendPublish' })">发布文章</el-menu-item>
+								<el-menu-item index="1-2" @click="jumpto({ name: 'BlogArticleAll' })">全部文章</el-menu-item>
+								<el-menu-item index="1-3" @click="jumpto({ name: 'BlogArticleAll' })">文章分类</el-menu-item>
+								<el-menu-item index="1-4" @click="jumpto({ name: 'BlogArticleAll' })">文章标签</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu index="2">
@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import { Menu as IconMenu, Setting, Location } from '@element-plus/icons-vue';
 import { RouteLocationRaw, useRouter } from 'vue-router';
-import { pageLoading } from './hooks/pageLoading';
+import { pageLoading } from './hooks/variable';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -112,3 +112,4 @@ function jumpto(routerInfo: RouteLocationRaw) {
 	}
 }
 </style>
+./hooks/varliable

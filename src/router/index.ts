@@ -1,11 +1,11 @@
 import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 import { blobHomeContentBackgroundHandleClick } from '@/views/blob/home/hooks/useBackgroundContent';
-import { pageLoading } from '@/views/blog-backend/home/hooks/pageLoading';
+import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 
 const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		redirect: 'blob-backend',
+		redirect: '/blogBackend',
 	},
 	{
 		path: '/home',
@@ -156,7 +156,7 @@ const routes: RouteRecordRaw[] = [
 			},
 			{
 				path: '/blogBackend/BlogBackendIndex',
-				component: () => import('@/views/blog-backend/blog-backend-index/index.vue'),
+				component: () => import('@/views/blog-backend/BlogBackendIndex/index.vue'),
 				meta: {
 					keepAlive: true,
 					isInitLoading: true,
@@ -177,15 +177,26 @@ const routes: RouteRecordRaw[] = [
 				name: 'BlogBackendLogin',
 			},
 			{
-				path: '/blogBackend/blog-backend-publish',
-				component: () => import('@/views/blog-backend/blog-backend-publish/index.vue'),
+				path: '/blogBackend/BlogBackendPublish',
+				component: () => import('@/views/blog-backend/BlogBackendPublish/index.vue'),
+				meta: {
+					keepAlive: true,
+					isInitLoading: true,
+					systemPage: true,
+					title: '博客后台发布页',
+				},
+				name: 'BlogBackendPublish',
+			},
+			{
+				path: '/blogBackend/BlogArticleAll',
+				component: () => import('@/views/blog-backend/BlogArticleAll/index.vue'),
 				meta: {
 					keepAlive: true,
 					isInitLoading: false,
 					systemPage: true,
-					title: '博客后台发布页',
+					title: '博客后台全部文章页',
 				},
-				name: 'blog-backend-publish',
+				name: 'BlogArticleAll',
 			},
 		],
 	},
@@ -206,10 +217,12 @@ router.beforeEach((to, _from, next) => {
 		}
 		if (localStorage.getItem('blog-backend-token') && to.name === 'BlogBackendLogin') {
 			next({ name: 'BlogBackendIndex' });
-		} else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
-			pageLoading.value = false;
-			next({ name: 'BlogBackendLogin' });
-		} else {
+		}
+		// else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
+		// 	pageLoading.value = false;
+		// 	next({ name: 'BlogBackendLogin' });
+		// }
+		else {
 			next();
 		}
 	}

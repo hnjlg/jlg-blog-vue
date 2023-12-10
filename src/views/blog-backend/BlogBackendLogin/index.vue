@@ -74,16 +74,14 @@ const submitHandle = () => {
 	formRef.value?.validate((valid) => {
 		if (valid) {
 			submitLoading.value = true;
-
 			postUserlogin({ userName: loginForm.value.userName, passWord: CryptoJS.SHA256(loginForm.value.passWord).toString() })
 				.then((res) => {
-					ElMessage.success('Login Success');
-					submitLoading.value = false;
+					ElMessage.success('登录成功！');
 					blogBackendStore.changeUserInfo(res.data.content);
 					localStorage.setItem('blog-backend-token', res.data.content.token);
 					router.push('BlogBackendIndex');
 				})
-				.catch(() => {
+				.finally(() => {
 					submitLoading.value = false;
 				});
 		} else {
