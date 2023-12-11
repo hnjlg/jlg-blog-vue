@@ -9,4 +9,5 @@ export default {
 	interfaceNamePrepend: 'AT_',
 	// 封装的axios实例引入路径，默认import axios from '@/request/index'
 	axiosUrl: "import axios from '@/request/index';",
+	isNeedResponse: false,
 };
