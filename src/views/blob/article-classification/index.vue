@@ -42,8 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue';
-import { Star, User, Watch } from '@element-plus/icons-vue';
+import { Star, User, Watch, Search } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 defineOptions({
 	name: 'FindArticle',

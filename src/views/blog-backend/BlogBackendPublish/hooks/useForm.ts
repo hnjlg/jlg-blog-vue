@@ -2,10 +2,11 @@ import { postArticletreearticletreenamequery, postBlogtagsquery } from '@/apiTyp
 
 export const articleTagsLoading = ref(false);
 
+// 文章标签远程检索
 export const articleTagsList = ref([]);
-
 export function articleTagsRemoteMethod(tagName: string) {
 	articleTagsLoading.value = true;
+	if (tagName === '') return;
 	postBlogtagsquery({
 		pageIndex: 1,
 		pageSize: 10,
@@ -19,8 +20,8 @@ export function articleTagsRemoteMethod(tagName: string) {
 		});
 }
 
+// 文章树远程检索
 export const articleTreeList = ref([]);
-
 export function articleTreeListRemoteMethod(name: string) {
 	articleTagsLoading.value = true;
 	if (name === '') return;
