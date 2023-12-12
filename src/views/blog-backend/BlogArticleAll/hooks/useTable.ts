@@ -18,12 +18,12 @@ export default function () {
 		{
 			title: '发表时间',
 			field: 'time',
-			width: 100,
+			width: 130,
 		},
 		{
 			title: '阅读量',
 			field: 'reading_quantity',
-			width: 100,
+			width: 80,
 		},
 	]);
 	return { tableCols };

@@ -1,43 +1,53 @@
 <!-- blog后台-全部文章 -->
 <template>
-	<simple-table
-		:table-data="tableData"
-		:field-list="tableCols"
-		:operation-column-width="100"
-		max-height="84vh"
-		stripe
-		border
-		size="large"
-		@dbclick:row="rowDbClick"
-	>
-		<template #operation-column="row">
-			<el-link type="primary" @click="editlFun(row)">编辑</el-link>
-			<el-link type="error" @click="delFun(row)">删除</el-link>
-		</template>
-	</simple-table>
+	<div class="table-box">
+		<simple-table
+			:table-data="tableData"
+			:field-list="tableCols"
+			:operation-column-width="100"
+			max-height="84vh"
+			stripe
+			border
+			size="large"
+			@dbclick:row="rowDbClick"
+		>
+			<template #operation-column="row">
+				<el-link type="primary" @click="editlFun(row)">编辑</el-link>
+				<el-link type="error" @click="delFun(row)">删除</el-link>
+			</template>
+		</simple-table>
+	</div>
+	<div class="pagination-box flex justify-end align-center mt-2">
+		<div class="pagination-box-pagi">
+			<el-pagination layout="prev, pager, next" :page-size="paginationInfo.pageSize" :pager-count="5" :total="total" />
+		</div>
+		<div class="pagination-box-refresh my-auto cursor-pointer ml-2">
+			<el-icon @click="initPage"><Refresh /></el-icon>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-// import { Star, User, Watch, Edit, Delete } from '@element-plus/icons-vue';
-// import { RouteLocationRaw, useRouter } from 'vue-router';
+import { Refresh } from '@element-plus/icons-vue';
+import { RouteLocationRaw } from 'vue-router';
 import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
 import router from '@/router';
+import { postBlogbackstagearticleallquery } from '@/apiType/production/result';
+import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
+import { onActivated } from 'vue';
 
 defineOptions({
 	name: 'BlogArticleAll',
 });
 
-// const router = useRouter();
-
-// 跳转页面
-// function jumpto(routerInfo: RouteLocationRaw, isNewTab: boolean = false) {
-// 	if (isNewTab) {
-// 		window.open(router.resolve(routerInfo).href, '_blank');
-// 	} else {
-// 		router.push(routerInfo);
-// 	}
-// }
+/* 分页逻辑 */
+const paginationInfo = ref({
+	pageIndex: 1,
+	pageSize: 30,
+});
+const total = ref(0);
+/* 分页逻辑 end */
 
 const { tableCols } = useTable();
 
@@ -76,26 +86,29 @@ const articleList = ref([
 
 const tableData = ref([]);
 function initPage() {
-	// postBlogbackstagearticleallquery({
-	// 	pageIndex: 1,
-	// 	pageSize: 10,
-	// })
-	// 	.then((result) => {
-	// 		tableData.value = result.data.content;
-	// 	})
-	// 	.catch(() => {
-	// 		tableData.value = articleList.value;
-	// 	});
-	tableData.value = articleList.value;
+	pageLoading.value = true;
+	postBlogbackstagearticleallquery(paginationInfo.value)
+		.then((result) => {
+			tableData.value = result.data.content;
+			pageLoading.value = false;
+		})
+		.catch(() => {
+			tableData.value = articleList.value;
+			pageLoading.value = false;
+		});
 }
 
 initPage();
+
+onActivated(() => {
+	pageLoading.value = false;
+});
 
 // 编辑
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function editlFun(row: { [K: string]: any }) {
 	console.log('======', row);
-	router.push({ name: 'BlogBackendPublish', params: { id: row.row.id } });
+	jumpto({ name: 'BlogBackendPublish', params: { id: row.row.id } }, true);
 }
 
 // 删除
@@ -121,9 +134,19 @@ function delFun(row: any) {
 		});
 }
 
+// 跳转页面
+function jumpto(routerInfo: RouteLocationRaw, isNewTab: boolean = false) {
+	if (isNewTab) {
+		window.open(router.resolve(routerInfo).href, '_blank');
+	} else {
+		router.push(routerInfo);
+	}
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function rowDbClick(row: any, column: any, event: any) {
 	console.log('===dbclick===', row, column, event);
+	jumpto({ name: 'BlogBackendPublish', query: { id: row.id, pageType: 'view' } });
 }
 </script>
 <style lang="scss" scoped></style>

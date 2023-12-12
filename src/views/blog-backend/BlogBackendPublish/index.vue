@@ -1,9 +1,17 @@
 <!-- blog后台-发布页 -->
 <template>
 	<div class="article-publish-page px-3">
-		<el-form ref="ruleFormRef" :model="pageFormData" :rules="formRules" label-position="top" size="small" status-icon>
+		<el-form
+			ref="ruleFormRef"
+			:model="pageFormData"
+			:rules="formRules"
+			label-position="top"
+			size="small"
+			status-icon
+			:disabled="$route.query.pageType !== 'add' && $route.query.pageType !== 'edit'"
+		>
 			<el-form-item label="article title" prop="title">
-				<el-input v-model="pageFormData.title" />
+				<el-input v-model="pageFormData.title" clearable resize />
 			</el-form-item>
 			<el-row span="24" gutter="20">
 				<el-col :span="5">
@@ -51,27 +59,30 @@
 				<el-col :span="24">
 					<el-form-item label="article content" prop="content">
 						<div class="md-box">
-							<CherryMarkdown ref="mdEditor" :default-content="pageFormData.content" :display-toc="false"> </CherryMarkdown>
+							<MarkDownShow v-if="$route.query.pageType === 'view'" :content="pageFormData.content"></MarkDownShow>
+							<CherryMarkdown v-else ref="mdEditor" :default-content="pageFormData.content" :display-toc="false"> </CherryMarkdown>
 						</div>
 					</el-form-item>
 				</el-col>
 			</el-row>
-			<div class="btn-box text-right">
-				<el-button @click="sumbmitDraftFun">存草稿</el-button>
-				<el-button @click="sumbmitFun">发布</el-button>
-			</div>
 		</el-form>
+		<div v-if="$route.query.pageType === 'add' || $route.query.pageType === 'edit'" class="btn-box text-right">
+			<el-button @click="sumbmitDraftFun">存草稿</el-button>
+			<el-button @click="sumbmitFun">发布</el-button>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import CherryMarkdown from '@/components/cherry-markdown/index.vue';
+import MarkDownShow from '@/components/markdown-show/index.vue';
 import { FormInstance, FormRules } from 'element-plus';
 import { postBlogbackstagearticleadd } from '@/apiType/production/result.ts';
 import { articleTagsLoading, articleTagsRemoteMethod, articleTagsList, articleTreeListRemoteMethod, articleTreeList } from './hooks/useForm';
 import useBlogBackendStore from '@/store/blog-backend';
-import { useRouter } from 'vue-router';
 import { pageLoading } from '../home/hooks/variable';
+import router from '@/router';
+import { onActivated } from 'vue';
 
 defineOptions({
 	name: 'BlogBackendPublish',
@@ -79,7 +90,7 @@ defineOptions({
 
 const pageFormData = ref({
 	title: null,
-	content: null,
+	content: '',
 	contentHTML: null,
 	author: null,
 	authorName: null,
@@ -92,12 +103,15 @@ pageFormData.value.author = blogBackendStore.$state.userInfo.id;
 pageFormData.value.authorName = blogBackendStore.$state.userInfo.userName;
 
 function initPage() {
-	console.log('initPage');
 	setTimeout(() => {
 		pageLoading.value = false;
 	}, 2000);
 }
 initPage();
+
+onActivated(() => {
+	pageLoading.value = false;
+});
 
 const ruleFormRef = ref<FormInstance>();
 const formRules = reactive<FormRules>({
@@ -114,7 +128,6 @@ const formRules = reactive<FormRules>({
 });
 
 const mdEditor = ref();
-const router = useRouter();
 
 // 存草稿
 function sumbmitDraftFun() {
@@ -131,14 +144,7 @@ async function sumbmitFun() {
 			postBlogbackstagearticleadd(pageFormData.value).then((result) => {
 				console.log('===result===', result);
 				ElMessage.success('submit success!');
-				router.push({
-					name: 'BlogArticleAll',
-					meta: {
-						keepAlive: false,
-						isInitLoading: true,
-						systemPage: true,
-					},
-				});
+				router.push('BlogArticleAll');
 			});
 		} else {
 			ElMessage.error('Please fill out the form according to the prompts!');

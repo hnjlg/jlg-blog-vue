@@ -192,7 +192,7 @@ const routes: RouteRecordRaw[] = [
 				component: () => import('@/views/blog-backend/BlogArticleAll/index.vue'),
 				meta: {
 					keepAlive: true,
-					isInitLoading: false,
+					isInitLoading: true,
 					systemPage: true,
 					title: '博客后台全部文章页',
 				},

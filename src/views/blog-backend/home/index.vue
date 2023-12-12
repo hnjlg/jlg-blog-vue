@@ -22,7 +22,6 @@
 							<el-menu-item-group>
 								<el-menu-item index="1-1" @click="jumpto({ name: 'BlogBackendPublish' })">发布文章</el-menu-item>
 								<el-menu-item index="1-2" @click="jumpto({ name: 'BlogArticleAll' })">全部文章</el-menu-item>
-								<el-menu-item index="1-3" @click="jumpto({ name: 'BlogArticleAll' })">文章分类</el-menu-item>
 								<el-menu-item index="1-4" @click="jumpto({ name: 'BlogArticleAll' })">文章标签</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
@@ -73,7 +72,7 @@
 							</el-avatar>
 							<template #dropdown>
 								<el-dropdown-menu>
-									<el-dropdown-item>我的信息</el-dropdown-item>
+									<el-dropdown-item :disabled="!isLogin">我的信息</el-dropdown-item>
 									<el-dropdown-item divided @click="loginout">退出登录</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
@@ -124,6 +123,7 @@ const isLogin = computed<boolean>(() => (localStorage.getItem('blog-backend-toke
 
 // 退出登录
 function loginout() {
+	router.push({ name: 'BlogBackendLogin' });
 	blogBackendStore.clearUserInfo();
 	localStorage.removeItem('blog-backend-token');
 }
@@ -133,8 +133,8 @@ function clickAvatar() {
 	if (blogBackendStore.$state.userInfo) {
 		console.log('===已登录===');
 	} else {
-		console.log('===未登录===');
 		router.push({ name: 'BlogBackendLogin' });
+		console.log('===未登录===');
 	}
 }
 </script>

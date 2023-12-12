@@ -1,5 +1,6 @@
 import axios from 'axios';
 import useBlobStore from '@/store/blog-backend';
+import router from '@/router';
 
 const request = axios.create({
 	baseURL: import.meta.env.VITE_APP_BASE_URL,
@@ -37,6 +38,7 @@ request.interceptors.response.use(
 			if (response.data.message == '403' || response.data.Message == '403') {
 				// 没权限
 				return new Promise((_resolve, reject) => {
+					router.push('BlogBackendLogin');
 					reject(response);
 				});
 			}

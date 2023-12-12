@@ -53,5 +53,5 @@ function dbClickRow(row: Record<string, unknown>, column: Record<string, unknown
 	emit('dbclick:row', row, column, event);
 }
 // 表格默认列名
-const defaultFieldList = Object.keys(props.tableData[0]);
+const defaultFieldList = props.fieldList?.length === 0 && Object.keys(props.tableData[0]);
 </script>
