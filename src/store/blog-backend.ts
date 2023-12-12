@@ -10,6 +10,10 @@ const useBlobStore = defineStore('blobStore', {
 			this.userInfo = userInfo;
 			localStorage.setItem('blog-backend-userInfo', JSON.stringify(userInfo));
 		},
+		clearUserInfo() {
+			this.userInfo = undefined;
+			localStorage.removeItem('blog-backend-userInfo');
+		},
 	},
 });
 

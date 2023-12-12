@@ -1,86 +1,107 @@
 <!-- blog后台-全部文章 -->
 <template>
-	<div
-		v-for="(item, index) of articleList"
-		:key="index"
-		class="pane-box py-3 mt-2 border-b-[1px] hover:bg-slate-100 flex"
-		@mouseenter="mouseIn(item, index)"
-		@mouseleave="mouseOut(item, index)"
+	<simple-table
+		:table-data="tableData"
+		:field-list="tableCols"
+		:operation-column-width="100"
+		max-height="84vh"
+		stripe
+		border
+		size="large"
+		@dbclick:row="rowDbClick"
 	>
-		<div class="box-item-left px-6 flex-1">
-			<div class="pane-box-item--title">
-				<span class="cursor-pointer" @click="jumpto({ name: 'article-details', query: { id: 11111 } }, true)">{{ item.title }}</span>
-			</div>
-			<div class="pane-box-item--description min-h-[50px] text-sm opacity-75">
-				<span class="cursor-pointer">超级详细的安卓学习笔记</span>
-			</div>
-			<div class="pane-box-item--other">
-				<el-tooltip effect="light" content="nice" placement="top">
-					<el-icon size="16" class="cursor-pointer mr-3"><Star /></el-icon>
-				</el-tooltip>
-				<span class="text-sm">20</span>
-				<el-tooltip effect="light" content="author" placement="top">
-					<el-icon size="16" class="cursor-pointer mx-3"><User /></el-icon>
-				</el-tooltip>
-				<span class="text-sm cursor-pointer">{{ item.author }}</span>
-				<el-tooltip effect="light" content="time" placement="top">
-					<el-icon size="16" class="cursor-pointer ml-3"><Watch /></el-icon>
-				</el-tooltip>
-				<span class="text-sm">{{ item.time }}</span>
-			</div>
-		</div>
-		<div v-show="item.isHover" class="box-item-right m-auto">
-			<el-tooltip effect="light" content="Edit this article" placement="top">
-				<el-icon size="16" class="cursor-pointer mr-2"><Edit /></el-icon>
-			</el-tooltip>
-			<el-tooltip effect="light" content="Delete this article" placement="top">
-				<el-icon size="16" class="cursor-pointer mr-2"><Delete @click="delFun(item, index)" /></el-icon>
-			</el-tooltip>
-		</div>
-	</div>
+		<template #operation-column="row">
+			<el-link type="primary" @click="editlFun(row)">编辑</el-link>
+			<el-link type="error" @click="delFun(row)">删除</el-link>
+		</template>
+	</simple-table>
 </template>
 
 <script setup lang="ts">
-import { Star, User, Watch, Edit, Delete } from '@element-plus/icons-vue';
-import { RouteLocationRaw, useRouter } from 'vue-router';
+// import { Star, User, Watch, Edit, Delete } from '@element-plus/icons-vue';
+// import { RouteLocationRaw, useRouter } from 'vue-router';
+import SimpleTable from '@/components/simple-table/index.vue';
+import useTable from './hooks/useTable';
+import router from '@/router';
 
 defineOptions({
 	name: 'BlogArticleAll',
 });
 
-const router = useRouter();
+// const router = useRouter();
 
 // 跳转页面
-function jumpto(routerInfo: RouteLocationRaw, isNewTab: boolean = false) {
-	if (isNewTab) {
-		window.open(router.resolve(routerInfo).href, '_blank');
-	} else {
-		router.push(routerInfo);
-	}
-}
+// function jumpto(routerInfo: RouteLocationRaw, isNewTab: boolean = false) {
+// 	if (isNewTab) {
+// 		window.open(router.resolve(routerInfo).href, '_blank');
+// 	} else {
+// 		router.push(routerInfo);
+// 	}
+// }
+
+const { tableCols } = useTable();
 
 const articleList = ref([
-	{ id: 1, title: '马什么梅啊？', author: '马冬梅', time: '2023/11/28', isHover: false },
-	{ id: 1, title: 'react从入门到衫裤跑路', author: 'admin', time: '2023/11/28', isHover: false },
-	{ id: 1, title: 'vuerouter从入门到入坟', author: '夏洛', time: '2023/11/28', isHover: false },
-	{ id: 1, title: 'pinia从入门到入坟', author: '大春', time: '2023/11/28', isHover: false },
-	{ id: 1, title: 'vite从入门到入坟', author: '国富 陆', time: '2023/11/28', isHover: false },
-	{ id: 1, title: 'vue从打开到下班', author: '马冬梅', time: '2023/11/28', isHover: false },
+	{
+		id: 1,
+		title: '马什么梅啊？',
+		content: '文章内容。。。。。。。。。。。。。。。。。。。',
+		author: '马冬梅',
+		time: '2023/11/28',
+		reading_quantity: 79,
+		fiexd: 'left',
+		fiexd1: 'left',
+	},
+	{ id: 2, title: 'react从入门到衫裤跑路', author: 'admin', time: '2023/11/28', reading_quantity: 79 },
+	{ id: 3, title: 'vuerouter从入门到入坟', author: '夏洛', time: '2023/11/28', reading_quantity: 79 },
+	{ id: 4, title: 'pinia从入门到入坟', author: '大春', time: '2023/11/28', reading_quantity: 79 },
+	{ id: 8, title: 'vite从入门到入坟', author: '国富 陆', time: '2023/11/28', reading_quantity: 79 },
+	{
+		id: 22,
+		title: 'vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班',
+		author: '马冬梅',
+		time: '2023/11/28',
+	},
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
+	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
 ]);
 
-function mouseIn(articleListItem: { isHover: boolean }, articleListItemIndex: number) {
-	articleListItem.isHover = true;
-	console.log('======', articleListItem, articleListItemIndex);
+const tableData = ref([]);
+function initPage() {
+	// postBlogbackstagearticleallquery({
+	// 	pageIndex: 1,
+	// 	pageSize: 10,
+	// })
+	// 	.then((result) => {
+	// 		tableData.value = result.data.content;
+	// 	})
+	// 	.catch(() => {
+	// 		tableData.value = articleList.value;
+	// 	});
+	tableData.value = articleList.value;
 }
-function mouseOut(articleListItem: { isHover: boolean }, articleListItemIndex: number) {
-	articleListItem.isHover = false;
-	console.log('======', articleListItem, articleListItemIndex);
+
+initPage();
+
+// 编辑
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function editlFun(row: { [K: string]: any }) {
+	console.log('======', row);
+	router.push({ name: 'BlogBackendPublish', params: { id: row.row.id } });
 }
 
 // 删除
-function delFun(item: unknown, index: number) {
-	console.log('======', item, index);
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function delFun(row: any) {
+	console.log('======', row);
 	ElMessageBox.confirm('Are you sure to delete this article?', 'Warning', {
 		confirmButtonText: 'I am true!',
 		cancelButtonText: 'NO,I will think about it again',
@@ -98,6 +119,11 @@ function delFun(item: unknown, index: number) {
 				message: 'Delete canceled',
 			});
 		});
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowDbClick(row: any, column: any, event: any) {
+	console.log('===dbclick===', row, column, event);
 }
 </script>
 <style lang="scss" scoped></style>

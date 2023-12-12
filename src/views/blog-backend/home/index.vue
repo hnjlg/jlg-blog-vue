@@ -65,7 +65,21 @@
 			</el-aside>
 			<!-- 左侧menu end -->
 			<el-container>
-				<el-header class="bg-">Header</el-header>
+				<el-header>
+					<div class="flex justify-end">
+						<el-dropdown>
+							<el-avatar class="text-xs" @click="clickAvatar">
+								{{ isLogin ? blogBackendStore.$state.userInfo.userName : '未登录' }}
+							</el-avatar>
+							<template #dropdown>
+								<el-dropdown-menu>
+									<el-dropdown-item>我的信息</el-dropdown-item>
+									<el-dropdown-item divided @click="loginout">退出登录</el-dropdown-item>
+								</el-dropdown-menu>
+							</template>
+						</el-dropdown>
+					</div>
+				</el-header>
 				<el-main v-loading="pageLoading" class="blog-backend-home-content-common blog-backend-home-content-system-page">
 					<router-view v-slot="{ Component }">
 						<keep-alive v-if="$route.meta.keepAlive">
@@ -91,6 +105,7 @@
 import { Menu as IconMenu, Setting, Location } from '@element-plus/icons-vue';
 import { RouteLocationRaw, useRouter } from 'vue-router';
 import { pageLoading } from './hooks/variable';
+import useBlogBackendStore from '@/store/blog-backend';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -98,9 +113,29 @@ defineOptions({
 
 const router = useRouter();
 
+const blogBackendStore = useBlogBackendStore();
+
 // 跳转路由
 function jumpto(routerInfo: RouteLocationRaw) {
 	router.push(routerInfo);
+}
+
+const isLogin = computed<boolean>(() => (localStorage.getItem('blog-backend-token') ? true : false));
+
+// 退出登录
+function loginout() {
+	blogBackendStore.clearUserInfo();
+	localStorage.removeItem('blog-backend-token');
+}
+
+// 点击头像
+function clickAvatar() {
+	if (blogBackendStore.$state.userInfo) {
+		console.log('===已登录===');
+	} else {
+		console.log('===未登录===');
+		router.push({ name: 'BlogBackendLogin' });
+	}
 }
 </script>
 <style lang="scss" scoped>

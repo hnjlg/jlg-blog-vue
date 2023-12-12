@@ -217,12 +217,10 @@ router.beforeEach((to, _from, next) => {
 		}
 		if (localStorage.getItem('blog-backend-token') && to.name === 'BlogBackendLogin') {
 			next({ name: 'BlogBackendIndex' });
-		}
-		// else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
-		// 	pageLoading.value = false;
-		// 	next({ name: 'BlogBackendLogin' });
-		// }
-		else {
+		} else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
+			pageLoading.value = false;
+			next({ name: 'BlogBackendLogin' });
+		} else {
 			next();
 		}
 	}

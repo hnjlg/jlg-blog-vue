@@ -93,9 +93,9 @@ pageFormData.value.authorName = blogBackendStore.$state.userInfo.userName;
 
 function initPage() {
 	console.log('initPage');
-	nextTick(() => {
+	setTimeout(() => {
 		pageLoading.value = false;
-	});
+	}, 2000);
 }
 initPage();
 
