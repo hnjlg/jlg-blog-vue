@@ -1,6 +1,6 @@
 import axios from 'axios';
 import useBlobStore from '@/store/blog-backend';
-import router from '@/router';
+import { loginout } from '@/views/blog-backend/home/hooks/loginout';
 
 const request = axios.create({
 	baseURL: import.meta.env.VITE_APP_BASE_URL,
@@ -35,13 +35,6 @@ request.interceptors.response.use(
 					reject(response);
 				});
 			}
-			if (response.data.message == '403' || response.data.Message == '403') {
-				// 没权限
-				return new Promise((_resolve, reject) => {
-					router.push('BlogBackendLogin');
-					reject(response);
-				});
-			}
 			// 成功
 			return new Promise((resolve) => {
 				resolve(response);
@@ -55,7 +48,16 @@ request.interceptors.response.use(
 		}
 	},
 	(error) => {
-		ElMessage.error('请求错误');
+		if (error.response && error.response.status === 403) {
+			ElMessage.error('登录信息过期！');
+			nextTick(() => {
+				loginout();
+			});
+		} else {
+			ElMessage.error('请求错误');
+			console.error(error.message);
+		}
+
 		return Promise.reject(error.response);
 	}
 );

@@ -1,36 +1,38 @@
-<!-- blog后台-全部文章 -->
+<!-- blog后台-我的文章 -->
 <template>
-	<div class="table-box">
-		<simple-table
-			:table-data="tableData"
-			:field-list="tableCols"
-			:operation-column-width="100"
-			max-height="84vh"
-			stripe
-			border
-			size="large"
-			@dbclick:row="rowDbClick"
-		>
-			<template #operation-column="row">
-				<el-link type="primary" @click="editlFun(row)">编辑</el-link>
-				<el-link type="error" @click="delFun(row)">删除</el-link>
-			</template>
-		</simple-table>
-	</div>
-	<div class="pagination-box flex justify-end align-center mt-2">
-		<div class="pagination-box-pagi">
-			<el-pagination
-				v-model:current-page="paginationInfo.pageIndex"
-				v-model:page-size="paginationInfo.pageSize"
-				:page-sizes="[1, 10, 30, 50, 100]"
-				layout=" prev, pager, next,jumper, sizes,total"
-				:total="total"
-				@size-change="handleSizeChange"
-				@current-change="handleCurrentChange"
-			/>
+	<div class="blog-backend-page blog-backend-my-article-page">
+		<div class="table-box">
+			<simple-table
+				:table-data="tableData"
+				:field-list="tableCols"
+				:operation-column-width="100"
+				max-height="84vh"
+				stripe
+				border
+				size="large"
+				@dbclick:row="rowDbClick"
+			>
+				<template #operation-column="row">
+					<el-link type="primary" @click="editlFun(row)">编辑</el-link>
+					<el-link type="error" @click="delFun(row)">删除</el-link>
+				</template>
+			</simple-table>
 		</div>
-		<div class="pagination-box-refresh my-auto cursor-pointer ml-2">
-			<el-icon @click="restInitPage"><Refresh /></el-icon>
+		<div class="pagination-box flex justify-end align-center mt-2">
+			<div class="pagination-box-pagi">
+				<el-pagination
+					v-model:current-page="paginationInfo.pageIndex"
+					v-model:page-size="paginationInfo.pageSize"
+					:page-sizes="[1, 10, 30, 50, 100]"
+					layout=" prev, pager, next,jumper, sizes,total"
+					:total="total"
+					@size-change="handleSizeChange"
+					@current-change="handleCurrentChange"
+				/>
+			</div>
+			<div class="pagination-box-refresh my-auto cursor-pointer ml-2">
+				<el-icon @click="restInitPage"><Refresh /></el-icon>
+			</div>
 		</div>
 	</div>
 </template>
@@ -41,14 +43,17 @@ import { RouteLocationRaw } from 'vue-router';
 import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
 import router from '@/router';
-import { postBlogbackstagearticleallquery } from '@/apiType/production/result';
+import { postBlogbackstagearticlequeryforauthor } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import { onActivated } from 'vue';
+import useBlogBackendStore from '@/store/blog-backend';
 import tablehook from '@/mixin/useTableHook';
 
 defineOptions({
 	name: 'BlogArticleAll',
 });
+
+const blogBackendStore = useBlogBackendStore();
 
 /* 分页逻辑 */
 const { paginationInfo, total, handleSizeChange, handleCurrentChange, restInitPage } = tablehook(initPage);
@@ -91,7 +96,8 @@ const articleList = ref([
 const tableData = ref([]);
 function initPage() {
 	pageLoading.value = true;
-	postBlogbackstagearticleallquery(paginationInfo.value)
+	paginationInfo.value.author = blogBackendStore.$state.userInfo.id;
+	postBlogbackstagearticlequeryforauthor(paginationInfo.value)
 		.then((result) => {
 			tableData.value = result.data.content.arr;
 			total.value = result.data.content.total;

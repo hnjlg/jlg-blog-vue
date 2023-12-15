@@ -20,9 +20,10 @@
 								<el-icon><Location /></el-icon>文章管理
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="1-1" @click="jumpto({ name: 'BlogBackendPublish' })">发布文章</el-menu-item>
+								<el-menu-item index="1-1" @click="jumpto({ name: 'BlogBackendPublish', query: { pageType: 'add' } })">发布文章</el-menu-item>
 								<el-menu-item index="1-2" @click="jumpto({ name: 'BlogArticleAll' })">全部文章</el-menu-item>
 								<el-menu-item index="1-4" @click="jumpto({ name: 'BlogArticleAll' })">文章标签</el-menu-item>
+								<el-menu-item index="1-4" @click="jumpto({ name: 'BlogArticleAllMe' })">我的文章</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu index="2">
@@ -68,7 +69,7 @@
 					<div class="flex justify-end">
 						<el-dropdown>
 							<el-avatar class="text-xs" @click="clickAvatar">
-								{{ isLogin ? blogBackendStore.$state.userInfo.userName : '未登录' }}
+								{{ isLogin ? blogBackendStore.$state.userInfo.user_name ?? '未登录' : '未登录' }}
 							</el-avatar>
 							<template #dropdown>
 								<el-dropdown-menu>
@@ -105,6 +106,7 @@ import { Menu as IconMenu, Setting, Location } from '@element-plus/icons-vue';
 import { RouteLocationRaw, useRouter } from 'vue-router';
 import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
+import { loginout } from './hooks/loginout';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -120,13 +122,6 @@ function jumpto(routerInfo: RouteLocationRaw) {
 }
 
 const isLogin = computed<boolean>(() => (localStorage.getItem('blog-backend-token') ? true : false));
-
-// 退出登录
-function loginout() {
-	router.push({ name: 'BlogBackendLogin' });
-	blogBackendStore.clearUserInfo();
-	localStorage.removeItem('blog-backend-token');
-}
 
 // 点击头像
 function clickAvatar() {

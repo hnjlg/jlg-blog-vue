@@ -13,7 +13,7 @@ export function articleTagsRemoteMethod(tagName: string) {
 		tagName: tagName,
 	})
 		.then((result) => {
-			articleTagsList.value = result.data.content;
+			articleTagsList.value = result.data.content.arr;
 		})
 		.finally(() => {
 			articleTagsLoading.value = false;
@@ -31,7 +31,7 @@ export function articleTreeListRemoteMethod(name: string) {
 		articleTreeName: name,
 	})
 		.then((result) => {
-			articleTreeList.value = result.data.content;
+			articleTreeList.value = result.data.content.arr;
 		})
 		.finally(() => {
 			articleTagsLoading.value = false;

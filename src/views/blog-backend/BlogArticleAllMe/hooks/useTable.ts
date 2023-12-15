@@ -10,11 +10,11 @@ export default function () {
 			field: 'status_name',
 			width: 100,
 		},
-		{
-			title: '作者',
-			field: 'author',
-			width: 100,
-		},
+		// {
+		// 	title: '作者',
+		// 	field: 'author',
+		// 	width: 100,
+		// },
 		{
 			title: '发表时间',
 			field: 'add_time',

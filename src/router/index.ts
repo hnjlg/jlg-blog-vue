@@ -198,6 +198,17 @@ const routes: RouteRecordRaw[] = [
 				},
 				name: 'BlogArticleAll',
 			},
+			{
+				path: '/blogBackend/BlogArticleAllMe',
+				component: () => import('@/views/blog-backend/BlogArticleAllMe/index.vue'),
+				meta: {
+					keepAlive: true,
+					isInitLoading: true,
+					systemPage: true,
+					title: '我的文章',
+				},
+				name: 'BlogArticleAllMe',
+			},
 		],
 	},
 ];
