@@ -57,12 +57,6 @@ const route = useRoute();
 
 const menuList = ref<I_MenuItem[]>([
 	{
-		level: 2,
-		title: 'Publish Article',
-		pathName: 'article-publish',
-		icon: 'undraw_body_text_re_9riw_svg',
-	},
-	{
 		level: 1,
 		title: 'Article',
 	},

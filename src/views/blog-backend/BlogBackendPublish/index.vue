@@ -91,7 +91,6 @@ import { articleTagsLoading, articleTagsRemoteMethod, articleTagsList, articleTr
 import useBlogBackendStore from '@/store/blog-backend';
 import { pageLoading } from '../home/hooks/variable';
 import router from '@/router';
-import { onActivated } from 'vue';
 import { useRoute } from 'vue-router';
 
 defineOptions({
@@ -114,22 +113,19 @@ pageFormData.value.authorName = blogBackendStore.$state.userInfo.user_name;
 
 const route = useRoute();
 
-function initPage() {
+async function initPage() {
 	switch (route.query.pageType) {
 		case 'add':
-			{
-				pageLoading.value = false;
-			}
 			break;
 		case 'edit':
 			{
-				getInitData();
+				await getInitData();
 				pageLoading.value = false;
 			}
 			break;
 		case 'view':
 			{
-				getInitData();
+				await getInitData();
 				pageLoading.value = false;
 			}
 			break;
@@ -140,7 +136,7 @@ function initPage() {
 }
 initPage();
 
-function getInitData() {
+async function getInitData() {
 	return new Promise<void>((resolve, reject) => {
 		if (!route.query.id) {
 			ElMessage.error('参数错误!');
@@ -155,10 +151,6 @@ function getInitData() {
 		});
 	});
 }
-
-onActivated(() => {
-	pageLoading.value = false;
-});
 
 const ruleFormRef = ref<FormInstance>();
 const formRules = reactive<FormRules>({

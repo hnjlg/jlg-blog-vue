@@ -9,9 +9,7 @@
 				:key="index"
 				:prop="item.field"
 				:label="item.title"
-				:fixed="item.fiexd"
-				:width="item.width"
-				v-bind="item.colConfig ?? {}"
+				v-bind="item ?? {}"
 				show-overflow-tooltip
 			></el-table-column>
 			<el-table-column v-if="props.operationColumnWidth" fixed="right" label="操作" :width="props.operationColumnWidth">

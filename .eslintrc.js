@@ -74,13 +74,13 @@ module.exports = {
 		'vue/no-v-html': 'error', // 允许使用v-html
 		'prefer-const': 'error', // 优先使用const
 		'@typescript-eslint/ban-types': 'error', // 禁止使用一些类型
-		'vue/require-prop-types': 'error', // 允许组件定义prop类型 可以不定义类型 
-		'vue/require-default-prop': 'off', // 允许组件定义默认值 可以不定义默认值 
+		'vue/require-prop-types': 'error', // 允许组件定义prop类型 可以不定义类型
+		'vue/require-default-prop': 'off', // 允许组件定义默认值 可以不定义默认值
 		'no-undef': ['error', { typeof: false }], //允许使用未定义的变量,因为自动导入了vue
 		'no-console': process.env.NODE_ENV === 'build' ? ['warn', { allow: ['warn'] }] : 'off', //生产模式不允许使用log
 		'no-debugger': process.env.NODE_ENV === 'build' ? 'error' : 'off', //生产默认不允许使用debugger
 		'@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '.*', args: 'none' }], //变量声明未使用
-		'@typescript-eslint/no-explicit-any': 'error', // ts使用any
+		'@typescript-eslint/no-explicit-any': 'warn', // ts使用any
 		'@typescript-eslint/no-var-requires': 'error', // 强制使用 import 且不允许使用 require 设置off关闭检查
 		'vue/require-v-for-key': 'error', // 对保留元素检查 vue3中v-for会自动追加key值，所以不用再强制添加key属性，所以不检查key的填写
 		'vue/valid-v-for': 'error', // 对于非保留(自定义)元素检查  vue3中v-for会自动追加key值，所以不用再强制添加key属性，所以不检查key的填写

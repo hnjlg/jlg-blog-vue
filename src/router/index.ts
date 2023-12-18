@@ -192,7 +192,6 @@ const routes: RouteRecordRaw[] = [
 				component: () => import('@/views/blog-backend/BlogArticleAll/index.vue'),
 				meta: {
 					keepAlive: true,
-					isInitLoading: true,
 					systemPage: true,
 					title: '博客后台全部文章页',
 				},
@@ -220,12 +219,6 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
 	if (to.fullPath.startsWith('/blogBackend')) {
-		if ('isInitLoading' in to.meta && to.meta.isInitLoading) {
-			// 为路由对象添加了isInitLoading的，确认页面是否需要loading
-			pageLoading.value = true;
-		} else {
-			pageLoading.value = false;
-		}
 		if (localStorage.getItem('blog-backend-token') && to.name === 'BlogBackendLogin') {
 			next({ name: 'BlogBackendIndex' });
 		} else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
@@ -245,6 +238,7 @@ router.afterEach((to) => {
 	if ('backgroundShow' in to.meta) {
 		blobHomeContentBackgroundHandleClick(to.meta);
 	}
+	document.title = '丰恺思营销系统';
 });
 
 export default router;

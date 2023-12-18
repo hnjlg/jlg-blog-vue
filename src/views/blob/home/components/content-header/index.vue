@@ -3,7 +3,6 @@
 		<el-icon :class="{ 'blob-content-header-lamp-dark': props.theme === 'dark', 'blob-content-header-lamp': true }" @click="changeTheme"
 			><Opportunity
 		/></el-icon>
-		<div class="blob-content-header-user">游客</div>
 	</div>
 </template>
 
@@ -21,12 +20,9 @@ const props = defineProps<{ theme: T_BlobTheme; changeTheme: () => void }>();
 	justify-content: flex-end;
 	align-items: center;
 
-	.blob-content-header-user {
-		padding: 0 20px;
-	}
-
 	.blob-content-header-lamp {
 		cursor: pointer;
+		margin-right: 15px;
 	}
 
 	.blob-content-header-lamp-dark {

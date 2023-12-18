@@ -45,7 +45,6 @@ import useTable from './hooks/useTable';
 import router from '@/router';
 import { postBlogbackstagearticlequeryforauthor } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
-import { onActivated } from 'vue';
 import useBlogBackendStore from '@/store/blog-backend';
 import tablehook from '@/mixin/useTableHook';
 
@@ -110,10 +109,6 @@ function initPage() {
 }
 
 initPage();
-
-onActivated(() => {
-	pageLoading.value = false;
-});
 
 // 编辑
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

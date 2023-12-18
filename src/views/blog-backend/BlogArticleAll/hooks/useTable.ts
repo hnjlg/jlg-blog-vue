@@ -3,7 +3,7 @@ export default function () {
 		{
 			title: '文章标题',
 			field: 'title',
-			width: 300,
+			minWidth: 300,
 		},
 		{
 			title: '文章状态',
@@ -12,13 +12,13 @@ export default function () {
 		},
 		{
 			title: '作者',
-			field: 'author',
+			field: 'author_name',
 			width: 100,
 		},
 		{
 			title: '发表时间',
 			field: 'add_time',
-			width: 130,
+			width: 220,
 		},
 		{
 			title: '阅读量',
@@ -28,7 +28,7 @@ export default function () {
 		{
 			title: '标签',
 			field: 'tags',
-			width: 130,
+			minWidth: 130,
 		},
 	]);
 	return { tableCols };
