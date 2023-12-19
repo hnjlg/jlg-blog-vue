@@ -1,8 +1,8 @@
 import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
-import { blobHomeContentBackgroundHandleClick } from '@/views/blob/home/hooks/useBackgroundContent';
-import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 
-const routes: RouteRecordRaw[] = [
+import { afterNav, beforeNav } from './navigate';
+
+export const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
 		redirect: '/blogBackend',
@@ -149,6 +149,7 @@ const routes: RouteRecordRaw[] = [
 		meta: {
 			keepAlive: true,
 		},
+		name: 'BlogBackend',
 		children: [
 			{
 				path: '/blogBackend',
@@ -176,69 +177,22 @@ const routes: RouteRecordRaw[] = [
 				},
 				name: 'BlogBackendLogin',
 			},
-			{
-				path: '/blogBackend/BlogBackendPublish',
-				component: () => import('@/views/blog-backend/BlogBackendPublish/index.vue'),
-				meta: {
-					keepAlive: true,
-					isInitLoading: true,
-					systemPage: true,
-					title: '博客后台发布页',
-				},
-				name: 'BlogBackendPublish',
-			},
-			{
-				path: '/blogBackend/BlogArticleAll',
-				component: () => import('@/views/blog-backend/BlogArticleAll/index.vue'),
-				meta: {
-					keepAlive: true,
-					systemPage: true,
-					title: '博客后台全部文章页',
-				},
-				name: 'BlogArticleAll',
-			},
-			{
-				path: '/blogBackend/BlogArticleAllMe',
-				component: () => import('@/views/blog-backend/BlogArticleAllMe/index.vue'),
-				meta: {
-					keepAlive: true,
-					isInitLoading: true,
-					systemPage: true,
-					title: '我的文章',
-				},
-				name: 'BlogArticleAllMe',
-			},
 		],
 	},
 ];
 
-const router = createRouter({
+export const componets: { [key: string]: () => Promise<void | typeof import('@/views/blog-backend/BlogBackendPublish/index.vue')> } = {
+	BlogBackendPublish: () => import('@/views/blog-backend/BlogBackendPublish/index.vue'),
+	BlogArticleAll: () => import('@/views/blog-backend/BlogArticleAll/index.vue'),
+	BlogArticleAllMe: () => import('@/views/blog-backend/BlogArticleAllMe/index.vue'),
+};
+
+export const router = createRouter({
 	history: createWebHashHistory('/'),
 	routes,
 });
 
-router.beforeEach((to, _from, next) => {
-	if (to.fullPath.startsWith('/blogBackend')) {
-		if (localStorage.getItem('blog-backend-token') && to.name === 'BlogBackendLogin') {
-			next({ name: 'BlogBackendIndex' });
-		} else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
-			pageLoading.value = false;
-			next({ name: 'BlogBackendLogin' });
-		} else {
-			next();
-		}
-	}
-	next();
-});
-router.afterEach((to) => {
-	if ('title' in to.meta) {
-		document.title = to.meta.title + '';
-	}
-	// 博客前台刷新浏览器时，保持正确的背景和首屏渲染
-	if ('backgroundShow' in to.meta) {
-		blobHomeContentBackgroundHandleClick(to.meta);
-	}
-	document.title = '丰恺思营销系统';
-});
+router.beforeEach(beforeNav);
+router.afterEach(afterNav);
 
 export default router;

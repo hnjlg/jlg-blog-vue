@@ -2,6 +2,7 @@
 <template>
 	<div class="blog-backend-container">
 		<el-container v-if="$route.meta.systemPage">
+			<!-- {{ blogBackendStore.getRouterInfo }} -->
 			<!-- 左侧menu start -->
 			<el-aside style="background-color: aliceblue; height: 100vh">
 				<el-scrollbar>
@@ -115,6 +116,7 @@ defineOptions({
 const router = useRouter();
 
 const blogBackendStore = useBlogBackendStore();
+console.log('======', blogBackendStore.getRouterInfo);
 
 // 跳转路由
 function jumpto(routerInfo: RouteLocationRaw) {

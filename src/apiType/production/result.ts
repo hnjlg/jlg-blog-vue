@@ -4,18 +4,26 @@ type ItemInTu<T, K> = T extends [infer F, ...infer R] ? (F extends K ? true : It
 export declare type U_I_NoNull<T, U extends Array<keyof T>> = { [K in keyof T as ItemInTu<U, K> extends true ? never : K]: T[K] } & {
 	[K in keyof T as ItemInTu<U, K> extends true ? K : never]-?: T[K];
 };
+export const postArticletagstagsquery = <NUDATA extends (keyof AT_ArticleTagsTagsQueryRequest)[] = []>(
+	data: U_I_NoNull<AT_ArticleTagsTagsQueryRequest, NUDATA>
+) => {
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_ArticleTagsTagsQueryResponse[] } }>(
+		`/article-tags/tags/query`,
+		data
+	);
+};
 export const postArticletreebyIddelete = <NUDATA extends (keyof AT_ArticleTreeByIdDeleteRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTreeByIdDeleteRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/article-tree/byId/delete`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tree/byId/delete`, data);
 };
 export const postArticletreeallquery = () => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/article-tree/all/query`);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tree/all/query`);
 };
 export const postArticletreearticletreenamequery = <NUDATA extends (keyof AT_ArticleTreeArticleTreeNameQueryRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTreeArticleTreeNameQueryRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_MySQLResult } }>(
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_MySQLResult[] } }>(
 		`/article-tree/article-tree-name/query`,
 		data
 	);
@@ -23,7 +31,7 @@ export const postArticletreearticletreenamequery = <NUDATA extends (keyof AT_Art
 export const postBlogbackstagearticleallquery = <NUDATA extends (keyof AT_BlogBackstageArticleAllQueryRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleAllQueryRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogBackstageArticleAllQueryResponse } }>(
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogBackstageArticleAllQueryResponse[] } }>(
 		`/blog-backstage/article/all/query`,
 		data
 	);
@@ -36,7 +44,7 @@ export const postBlogbackstagearticlequeryforarticleId = <NUDATA extends (keyof 
 export const postBlogbackstagearticlequeryforarticleTreeId = <NUDATA extends (keyof AT_BlogBackstageArticleQueryForArticleTreeIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleQueryForArticleTreeIdRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_BlogBackstageArticleQueryForArticleTreeIdResponse }>(
+	return axios.post<{ status: number; message: string; content: AT_BlogBackstageArticleQueryForArticleTreeIdResponse[] }>(
 		`/blog-backstage/article/query/for/articleTreeId`,
 		data
 	);
@@ -44,7 +52,7 @@ export const postBlogbackstagearticlequeryforarticleTreeId = <NUDATA extends (ke
 export const postBlogbackstagearticlequeryforauthor = <NUDATA extends (keyof AT_BlogBackstageArticleQueryForAuthorRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleQueryForAuthorRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogBackstageArticleQueryForAuthorResponse } }>(
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogBackstageArticleQueryForAuthorResponse[] } }>(
 		`/blog-backstage/article/query/for/author`,
 		data
 	);
@@ -52,32 +60,32 @@ export const postBlogbackstagearticlequeryforauthor = <NUDATA extends (keyof AT_
 export const postBlogbackstagearticledelete = <NUDATA extends (keyof AT_BlogBackstageArticleDeleteRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleDeleteRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/blog-backstage/article/delete`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/delete`, data);
 };
 export const postBlogbackstagearticledraftadd = <NUDATA extends (keyof AT_BlogBackstageArticleDraftAddRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleDraftAddRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/blog-backstage/article/draft/add`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/draft/add`, data);
 };
 export const postBlogbackstagearticlereject = <NUDATA extends (keyof AT_BlogBackstageArticleRejectRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleRejectRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/blog-backstage/article/reject`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/reject`, data);
 };
 export const postBlogbackstagearticlereview = <NUDATA extends (keyof AT_BlogBackstageArticleReviewRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleReviewRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/blog-backstage/article/review`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/review`, data);
 };
 export const postBlogbackstagearticletakeback = <NUDATA extends (keyof AT_BlogBackstageArticleTakebackRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleTakebackRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/blog-backstage/article/takeback`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/takeback`, data);
 };
 export const postBlogbackstagearticleadd = <NUDATA extends (keyof AT_BlogBackstageArticleAddRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleAddRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/blog-backstage/article/add`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/add`, data);
 };
 export const postBlogarticlequeryforarticleId = <NUDATA extends (keyof AT_BlogBackstageQueryForArticleIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageQueryForArticleIdRequest, NUDATA>
@@ -87,12 +95,12 @@ export const postBlogarticlequeryforarticleId = <NUDATA extends (keyof AT_BlogBa
 export const postBlogarticlequeryforarticleTreeId = <NUDATA extends (keyof AT_BlogQueryForArticleIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogQueryForArticleIdRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_BlogQueryForArticleIdResponse }>(`/blog/article/query/for/articleTreeId`, data);
+	return axios.post<{ status: number; message: string; content: AT_BlogQueryForArticleIdResponse[] }>(`/blog/article/query/for/articleTreeId`, data);
 };
 export const postBlogarticleliketitlequery = <NUDATA extends (keyof AT_BlogArticleLikeTitleRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogArticleLikeTitleRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogArticleLikeTitleResponse } }>(
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogArticleLikeTitleResponse[] } }>(
 		`/blog/article/like/title/query`,
 		data
 	);
@@ -100,44 +108,82 @@ export const postBlogarticleliketitlequery = <NUDATA extends (keyof AT_BlogArtic
 export const postBlogarticlearticleInterview = <NUDATA extends (keyof AT_BlogArticleInterviewRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogArticleInterviewRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/blog/article/articleInterview`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog/article/articleInterview`, data);
 };
 export const getBloghotarticlequery = (limit: number) => {
-	return axios.get<{ status: number; message: string; content: AT_BlogHotArticleQueryResponse }>(
+	return axios.get<{ status: number; message: string; content: AT_BlogHotArticleQueryResponse[] }>(
 		`/blog/hot/article/query?${limit ? 'limit=' + limit : ''}`
 	);
 };
 export const postBlogarticlesquerybyTagId = <NUDATA extends (keyof AT_BlogArticleQueryByTagIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogArticleQueryByTagIdRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogArticleQueryByTagIdResponse } }>(
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogArticleQueryByTagIdResponse[] } }>(
 		`/blog/articles/query/byTagId`,
 		data
 	);
 };
 export const postBlogtagsquery = <NUDATA extends (keyof AT_BlogTagsQueryRequest)[] = []>(data: U_I_NoNull<AT_BlogTagsQueryRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogTagsQueryResponse } }>(`/blog/tags/query`, data);
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_BlogTagsQueryResponse[] } }>(`/blog/tags/query`, data);
 };
 export const getBloghottagsquery = (limit: number) => {
-	return axios.get<{ status: number; message: string; content: AT_BlogHotTagsQueryResponse }>(
+	return axios.get<{ status: number; message: string; content: AT_BlogHotTagsQueryResponse[] }>(
 		`/blog/hot/tags/query?${limit ? 'limit=' + limit : ''}`
 	);
 };
+export const getRouterconfiguserrouterquery = () => {
+	return axios.get<{ status: number; message: string; content: AT_RouterConfigUserRouterQueryResponse[] }>(`/router-config/user/router/query`);
+};
 export const postUserdelete = <NUDATA extends (keyof AT_UserDeleteRequest)[] = []>(data: U_I_NoNull<AT_UserDeleteRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/user/delete`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/delete`, data);
 };
 export const postUserlogin = <NUDATA extends (keyof AT_UserLoginRequest)[] = []>(data: U_I_NoNull<AT_UserLoginRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: AT_UserLoginResponse }>(`/user/login`, data);
+	return axios.post<{ status: number; message: string; content: any }>(`/user/login`, data);
 };
 export const postUserallquery = <NUDATA extends (keyof AT_UserQueryAllRequest)[] = []>(data: U_I_NoNull<AT_UserQueryAllRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_UserQueryAllResponse } }>(`/user/all/query`, data);
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_UserQueryAllResponse[] } }>(`/user/all/query`, data);
 };
 export const postUserregister = <NUDATA extends (keyof AT_UserRegisterRequest)[] = []>(data: U_I_NoNull<AT_UserRegisterRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/user/register`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/register`, data);
 };
 export const postUserupdate = <NUDATA extends (keyof AT_UserUpdateRequest)[] = []>(data: U_I_NoNull<AT_UserUpdateRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult }>(`/user/update`, data);
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/update`, data);
 };
+export declare interface AT_RouterMeta {
+	/*是否缓存路由组件*/
+	keepAlive: boolean;
+	/*是否是系统业务页面*/
+	systemPage: boolean;
+	/*页面标题*/
+	title: string;
+}
+
+export declare interface AT_RouterConfigUserRouterQueryResponse {
+	/*路由路径*/
+	path: string;
+	/*路由组件名*/
+	componentName: string;
+	meta: AT_RouterMeta;
+	/*路由Name*/
+	name: string;
+}
+
+export declare interface AT_ArticleTagsTagsQueryResponse {
+	/*标签id*/
+	id: number;
+	/*标签名称*/
+	tag_name: string;
+}
+
+export declare interface AT_ArticleTagsTagsQueryRequest {
+	/*要获取的页数*/
+	pageIndex: number;
+	/*每页显示的标签数量*/
+	pageSize: number;
+	/*标签名tagName查询*/
+	tagName: string;
+}
+
 export declare interface AT_UserQueryAllResponse {
 	/*用户id*/
 	id: number;
@@ -168,9 +214,9 @@ export declare interface AT_UserLoginResponse {
 	/*用户token*/
 	token: string;
 	/*用户名*/
-	userName: string;
+	user_name: string;
 	/*用户Code*/
-	userCode: string;
+	user_code: string;
 }
 
 export declare interface AT_UserLoginRequest {

@@ -9,4 +9,13 @@ import 'cherry-markdown/dist/cherry-markdown.css';
 // 自定义覆盖修改cherry-markdown样式文件
 import './cherry-markdown.scss';
 import App from './App.vue';
-createApp(App).use(createPinia()).use(router).mount('#app');
+
+const app = createApp(App);
+
+const pinia = createPinia();
+
+app.use(pinia);
+
+app.use(router);
+
+app.mount('#app');
