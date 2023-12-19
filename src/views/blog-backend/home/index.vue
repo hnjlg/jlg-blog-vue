@@ -2,7 +2,6 @@
 <template>
 	<div class="blog-backend-container">
 		<el-container v-if="$route.meta.systemPage">
-			<!-- {{ blogBackendStore.getRouterInfo }} -->
 			<!-- 左侧menu start -->
 			<el-aside style="background-color: aliceblue; height: 100vh">
 				<el-scrollbar>
@@ -21,10 +20,11 @@
 								<el-icon><Location /></el-icon>文章管理
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="1-1" @click="jumpto({ name: 'BlogBackendPublish', query: { pageType: 'add' } })">发布文章</el-menu-item>
-								<el-menu-item index="1-2" @click="jumpto({ name: 'BlogArticleAll' })">全部文章</el-menu-item>
-								<el-menu-item index="1-4" @click="jumpto({ name: 'BlogArticleAll' })">文章标签</el-menu-item>
-								<el-menu-item index="1-4" @click="jumpto({ name: 'BlogArticleAllMe' })">我的文章</el-menu-item>
+								<template v-for="(item, index) in blogBackendStore.getRouterInfo" :key="index">
+									<el-menu-item v-if="item.meta" :index="'1-' + index" @click="jumpto(item)">
+										{{ item.meta.title }}
+									</el-menu-item>
+								</template>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu index="2">
@@ -104,19 +104,18 @@
 
 <script setup lang="ts">
 import { Menu as IconMenu, Setting, Location } from '@element-plus/icons-vue';
-import { RouteLocationRaw, useRouter } from 'vue-router';
+import { RouteLocationRaw } from 'vue-router';
 import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
 import { loginout } from './hooks/loginout';
+import { router } from '@/router/index';
 
 defineOptions({
 	name: 'BlobBackendHome',
 });
 
-const router = useRouter();
-
 const blogBackendStore = useBlogBackendStore();
-console.log('======', blogBackendStore.getRouterInfo);
+console.log('===blogBackendStore.getRouterInfo===', blogBackendStore.getRouterInfo);
 
 // 跳转路由
 function jumpto(routerInfo: RouteLocationRaw) {

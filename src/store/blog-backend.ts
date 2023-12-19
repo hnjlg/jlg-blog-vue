@@ -1,6 +1,5 @@
 import { AT_RouterConfigUserRouterQueryResponse, AT_UserLoginResponse } from '@/apiType/production/result';
 import { defineStore } from 'pinia';
-import { routes } from '@/router';
 import { RouteRecordRaw } from 'vue-router';
 
 const useBlobStore = defineStore<
@@ -24,7 +23,8 @@ const useBlobStore = defineStore<
 	}),
 	getters: {
 		getRouterInfo() {
-			return routes.find((route) => route.name === 'BlogBackend');
+			// return routes.find((route) => route.name === 'BlogBackend');
+			return this.routerInfo;
 		},
 	},
 	actions: {

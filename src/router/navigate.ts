@@ -4,6 +4,7 @@ import { NavigationGuardWithThis, NavigationHookAfter } from 'vue-router';
 import { routes, router, componets } from './index';
 
 import useBlogBackendStore from '@/store/blog-backend';
+import { isFristLoading } from '@/views/blog-backend/home/hooks/variable';
 
 export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) => {
 	if (to.fullPath.startsWith('/blogBackend')) {
@@ -14,10 +15,14 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 		} else {
 			next();
 		}
-		if (!['BlogBackendLogin'].includes(String(to.name))) {
+		if (isFristLoading.value && !['BlogBackendLogin'].includes(to.name)) {
+			isFristLoading.value = false;
 			const blogBackendStore = useBlogBackendStore();
 			getRouterconfiguserrouterquery().then((result) => {
-				// console.log('===blogBackendStore===', blogBackendStore);
+				const RealDisplayRoutes = [...result.data.content, ...Array.from(routes.find((route) => route.name === 'BlogBackend').children)].filter(
+					(item) => item.name !== 'BlogBackendLogin'
+				);
+				blogBackendStore.changeRouterInfo(RealDisplayRoutes);
 				routes.forEach((route) => {
 					if (route.path === '/blogBackend') {
 						result.data.content.forEach((item) => {
@@ -30,9 +35,6 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 						});
 					}
 				});
-				// console.log('====12==', routes);
-
-				blogBackendStore.changeRouterInfo(result.data.content);
 			});
 		}
 	}
