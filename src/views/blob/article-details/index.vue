@@ -5,22 +5,13 @@
 		</div>
 		<div class="article-header-bottom flex justify-between h-7 my-4">
 			<div class="flex-1 text-center">
-				<el-icon><Watch /></el-icon>{{ modelValue.publishTime }}
+				<el-icon><Watch /></el-icon>{{ modelValue.add_time }}
 			</div>
 			<div class="flex-1 text-center">
-				<el-icon><User /></el-icon>{{ modelValue.publisher }}
+				<el-icon><User /></el-icon>{{ modelValue.author_name }}
 			</div>
 			<div class="flex-1 text-center">
-				<el-icon><Document /></el-icon
-				>{{
-					modelValue.category === E_ArticleCategory.丰恺思项目
-						? '丰恺思项目'
-						: modelValue.category === E_ArticleCategory.OA项目
-						? 'OA项目'
-						: modelValue.category === E_ArticleCategory.大平台项目
-						? '大平台项目'
-						: '大平台项目'
-				}}
+				<el-icon><Document /></el-icon>
 			</div>
 		</div>
 	</div>
@@ -43,7 +34,8 @@
 import MarkDownShow from '@/components/markdown-show/index.vue';
 import { pageModel } from './index.vue.d';
 import { Watch, User, Document, Star } from '@element-plus/icons-vue';
-import { E_ArticleCategory } from '@/utils/enum.ts';
+import { postBlogarticlequeryforarticleId } from '@/apiType/production/result';
+import router from '@/router/index';
 
 defineOptions({
 	name: 'ArticleDetails',
@@ -53,33 +45,21 @@ const modelValue = ref<pageModel>({
 	title: '夏洛不烦恼',
 	content:
 		'这里是文章内容11111<h1>一级标题</h1><h2>二级标题</h2><h1>一级标题</h1><h3><strong>标题</strong></h3>##1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111<br>11111111111111<br>111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111111111111111<br>111111111111111111111111<br>11111111111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111111111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111<br>111111111<br>11111111111111111111111111<br>11111111111111111111111111111111111111111111111111111111111<h1>一级标题</h1><h2>二级标题</h2><h1>一级标题</h1><h2>二级标题</h2>这里是文章内容11111<h1>一级标题</h1><h2>二级标题</h2><h1>一级标题</h1><h3><strong>标题</strong></h3>##1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111<br>11111111111111<br>111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111111111111111<br>111111111111111111111111<br>11111111111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111111111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111<br>11111111111111111111111111111111111111111111111111111111111<br>1111111111111111111111111111111111111111111<br>111111111<br>11111111111111111111111111<br>11111111111111111111111111111111111111111111111111111111111<h1>一级标题</h1><h2>二级标题</h2><h1>一级标题</h1><h2>二级标题</h2>',
-	publisher: '马冬梅',
-	category: 1,
-	status: 1,
-	updateTime: '',
-	publishTime: '2023/12/12',
+	author_name: '马冬梅',
+	tags: '',
+	status_name: '',
+	add_time: '2023/12/12',
 });
 
-// const route = useRoute();
-
-// function getInitData() {
-// 	return new Promise((resolve) => {
-// 		// const articleId = route.query.id;
-// 		// console.log('======', articleId);
-// 		modelValue.value = {
-// 			title: '温州皮革厂倒闭了',
-// 			content: '<h1>一级标题</h1><h2>二级标题</h2><h1>一级标题</h1><h2>二级标题</h2>',
-// 			publisher: '马冬梅',
-// 			category: 1,
-// 			status: 1,
-// 			updateTime: String(new Date()),
-// 			publishTime: String(new Date()),
-// 		};
-// 		console.log('======', modelValue.value);
-// 		resolve('');
-// 	});
-// }
-// await getInitData();
+function getInitData() {
+	return new Promise(() => {
+		postBlogarticlequeryforarticleId({ articleId: Number(router.currentRoute.value.query.id) }).then((result) => {
+			modelValue.value = { ...modelValue.value, ...result.data.content };
+			console.log('======', modelValue.value);
+		});
+	});
+}
+getInitData();
 
 // 点赞
 function likeFun() {
@@ -88,9 +68,6 @@ function likeFun() {
 </script>
 <style lang="scss" scoped>
 @import '@/assets/styles/scroll.scss';
-// .article-header {
-// 	height: 100px;
-// }
 .article-content {
 	height: calc(100% - 4rem - $blob-header-goback-height);
 	overflow-y: scroll;

@@ -11,7 +11,11 @@
 				:label="item.title"
 				v-bind="item ?? {}"
 				show-overflow-tooltip
-			></el-table-column>
+			>
+				<template v-if="!!item.slotName" #default>
+					<slot :name="item.slotName"></slot>
+				</template>
+			</el-table-column>
 			<el-table-column v-if="props.operationColumnWidth" fixed="right" label="操作" :width="props.operationColumnWidth">
 				<template #default="scope">
 					<div class="flex justify-around whitespace-nowrap truncate">
@@ -45,6 +49,8 @@ const props = withDefaults(
 	}
 );
 
+const elTableRef = ref();
+
 const emit = defineEmits(['dbclick:row']);
 
 function dbClickRow(row: Record<string, unknown>, column: Record<string, unknown>, event: () => void) {
@@ -52,4 +58,7 @@ function dbClickRow(row: Record<string, unknown>, column: Record<string, unknown
 }
 // 表格默认列名
 const defaultFieldList = props.fieldList?.length === 0 && Object.keys(props.tableData[0]);
+
+const $slots = useSlots();
+console.log('===slots===', $slots);
 </script>

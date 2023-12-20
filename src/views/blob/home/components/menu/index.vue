@@ -68,13 +68,13 @@ const menuList = ref<I_MenuItem[]>([
 	},
 	{
 		level: 2,
-		title: 'Article Classification',
+		title: 'Find Article',
 		pathName: 'article-classification',
 		icon: 'undraw_blog_post_re_fy5x_svg',
 	},
 	{
 		level: 2,
-		title: 'Find Article',
+		title: 'Find Tags',
 		pathName: 'find-article',
 		icon: 'undraw_body_text_re_9riw_svg',
 	},

@@ -1,9 +1,8 @@
 export declare interface pageModel {
 	title: string;
 	content: string;
-	publisher: string;
-	category: number | null;
-	status: number;
-	updateTime: string;
-	publishTime: string;
+	author_name: string;
+	tags: string;
+	status_name: string;
+	add_time: string;
 }

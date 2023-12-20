@@ -179,6 +179,10 @@ export const routes: RouteRecordRaw[] = [
 			},
 		],
 	},
+	{
+		path: '/:pathMatch(.*)*',
+		redirect: '/blogBackend',
+	},
 ];
 
 export const componets: { [key: string]: () => Promise<void | typeof import('@/views/blog-backend/BlogBackendPublish/index.vue')> } = {

@@ -11,6 +11,7 @@
 			size="large"
 			@dbclick:row="rowDbClick"
 		>
+			<!-- <template #status-name="row">{{ row }}</template> -->
 			<template #operation-column="row">
 				<el-link type="primary" @click="editlFun(row)">编辑</el-link>
 				<el-link type="error" @click="delFun(row)">删除</el-link>
@@ -41,7 +42,7 @@ import { RouteLocationRaw } from 'vue-router';
 import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
 import router from '@/router';
-import { postBlogbackstagearticleallquery } from '@/apiType/production/result';
+import { postBlogbackstagearticleallquery, postBlogbackstagearticledelete } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tablehook from '@/mixin/useTableHook';
 
@@ -121,9 +122,18 @@ function delFun(row: any) {
 		type: 'warning',
 	})
 		.then(() => {
-			ElMessage({
-				type: 'success',
-				message: 'Delete completed',
+			postBlogbackstagearticledelete(row.row.row.id).then((result) => {
+				if (result.data.status === 1) {
+					ElMessage({
+						type: 'success',
+						message: 'Delete completed',
+					});
+				} else {
+					ElMessage({
+						type: 'error',
+						message: 'Delete failed',
+					});
+				}
 			});
 		})
 		.catch(() => {
