@@ -39,7 +39,10 @@ export const postBlogbackstagearticleallquery = <NUDATA extends (keyof AT_BlogBa
 export const postBlogbackstagearticlequeryforarticleId = <NUDATA extends (keyof AT_BlogBackstageArticleQueryForArticleRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleQueryForArticleRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: any }>(`/blog-backstage/article/query/for/articleId`, data);
+	return axios.post<{ status: number; message: string; content: AT_BlogBackstageArticleQueryForArticleResponse }>(
+		`/blog-backstage/article/query/for/articleId`,
+		data
+	);
 };
 export const postBlogbackstagearticlequeryforarticleTreeId = <NUDATA extends (keyof AT_BlogBackstageArticleQueryForArticleTreeIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleQueryForArticleTreeIdRequest, NUDATA>
@@ -90,7 +93,10 @@ export const postBlogbackstagearticleadd = <NUDATA extends (keyof AT_BlogBacksta
 export const postBlogarticlequeryforarticleId = <NUDATA extends (keyof AT_BlogBackstageQueryForArticleIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageQueryForArticleIdRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: any }>(`/blog/article/query/for/articleId`, data);
+	return axios.post<{ status: number; message: string; content: AT_BlogBackstageQueryForArticleIdResponse }>(
+		`/blog/article/query/for/articleId`,
+		data
+	);
 };
 export const postBlogarticlequeryforarticleTreeId = <NUDATA extends (keyof AT_BlogQueryForArticleIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogQueryForArticleIdRequest, NUDATA>
@@ -138,7 +144,7 @@ export const postUserdelete = <NUDATA extends (keyof AT_UserDeleteRequest)[] = [
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/delete`, data);
 };
 export const postUserlogin = <NUDATA extends (keyof AT_UserLoginRequest)[] = []>(data: U_I_NoNull<AT_UserLoginRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: any }>(`/user/login`, data);
+	return axios.post<{ status: number; message: string; content: AT_UserLoginResponse }>(`/user/login`, data);
 };
 export const postUserallquery = <NUDATA extends (keyof AT_UserQueryAllRequest)[] = []>(data: U_I_NoNull<AT_UserQueryAllRequest, NUDATA>) => {
 	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_UserQueryAllResponse[] } }>(`/user/all/query`, data);
@@ -340,6 +346,10 @@ export declare interface AT_BlogBackstageQueryForArticleIdResponse {
 	author: number;
 	/*文章发布时间*/
 	add_time: string;
+	/*文章的内容*/
+	content: string;
+	/*文章的内容（包含html标签元素）*/
+	content_html: string;
 	/*文章标签*/
 	tags: string;
 }

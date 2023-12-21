@@ -20,7 +20,7 @@
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRouter } from 'vue-router';
 import useBlogBackendStore from '@/store/blog-backend';
-import { postUserlogin } from '@/apiType/production/result';
+import { getRouterconfiguserrouterquery, postUserlogin } from '@/apiType/production/result';
 import CryptoJS from 'crypto-js';
 
 defineOptions({
@@ -79,7 +79,10 @@ const submitHandle = () => {
 					ElMessage.success('登录成功！');
 					blogBackendStore.changeUserInfo(res.data.content);
 					localStorage.setItem('blog-backend-token', res.data.content.token);
-					router.push('BlogBackendIndex');
+					getRouterconfiguserrouterquery().then((result) => {
+						blogBackendStore.changeRouterInfo(result.data.content);
+						router.push('BlogBackendIndex');
+					});
 				})
 				.finally(() => {
 					submitLoading.value = false;

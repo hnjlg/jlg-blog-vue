@@ -7,6 +7,7 @@
 			drawerClosed,
 		}"
 	></Navigation-Menu>
+
 	<router-view v-slot="{ Component }">
 		<keep-alive v-if="$route.meta.keepAlive">
 			<component :is="Component" />
@@ -17,6 +18,8 @@
 
 <script setup lang="ts">
 import NavigationMenu from '@/components/navigation-menu/index.vue';
+import router from '@/router';
+
 const navigationMenuShow = ref<boolean>(false);
 const navigationSwitchUrl = ref<string>('中');
 const navigationSwitchHandle = () => {
@@ -31,6 +34,9 @@ const drawerClosed = () => {
 	console.log('drawer close animate done');
 	navigationSwitchUrl.value = '中';
 };
+setTimeout(() => {
+	console.log('===rrr===', router.getRoutes());
+}, 2000);
 </script>
 <style lang="scss" scoped>
 .navigation-menu-container-switch {

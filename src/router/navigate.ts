@@ -4,7 +4,6 @@ import { NavigationGuardWithThis, NavigationHookAfter } from 'vue-router';
 import { routes, router, componets } from './index';
 
 import useBlogBackendStore from '@/store/blog-backend';
-import { isFristLoading } from '@/views/blog-backend/home/hooks/variable';
 
 export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) => {
 	if (to.fullPath.startsWith('/blogBackend')) {
@@ -12,34 +11,33 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 			next({ name: 'BlogBackendIndex' });
 		} else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
 			next({ name: 'BlogBackendLogin' });
+		} else if (localStorage.getItem('blog-backend-token') && !['BlogBackendLogin'].includes(String(to.name))) {
+			console.log('===to===', to);
+
+			const blogBackendStore = useBlogBackendStore();
+			getRouterconfiguserrouterquery().then((result) => {
+				blogBackendStore.changeRouterInfo(result.data.content);
+			});
+			routes.forEach((route) => {
+				if (route.path === '/blogBackend') {
+					blogBackendStore.routerInfo.forEach((item) => {
+						router.addRoute('BlogBackend', {
+							path: item.path,
+							component: componets[item.componentName],
+							name: item.name,
+							meta: (item.meta ?? {}) as { [k in string]: any },
+						});
+					});
+				}
+			});
+			next();
 		} else {
 			next();
 		}
-		if (isFristLoading.value && !['BlogBackendLogin'].includes(to.name)) {
-			isFristLoading.value = false;
-			const blogBackendStore = useBlogBackendStore();
-			getRouterconfiguserrouterquery().then((result) => {
-				const RealDisplayRoutes = [...result.data.content, ...Array.from(routes.find((route) => route.name === 'BlogBackend').children)].filter(
-					(item) => item.name !== 'BlogBackendLogin'
-				);
-				blogBackendStore.changeRouterInfo(RealDisplayRoutes);
-				routes.forEach((route) => {
-					if (route.path === '/blogBackend') {
-						result.data.content.forEach((item) => {
-							router.addRoute('BlogBackend', {
-								path: item.path,
-								component: componets[item.componentName],
-								name: item.name,
-								meta: (item.meta ?? {}) as { [k in string]: any },
-							});
-						});
-					}
-				});
-			});
-		}
+	} else {
+		console.log('===不是后台===');
+		next();
 	}
-
-	next();
 };
 
 export const afterNav: NavigationHookAfter = (to) => {

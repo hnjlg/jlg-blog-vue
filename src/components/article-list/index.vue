@@ -33,6 +33,7 @@
 import { Star, User, Watch } from '@element-plus/icons-vue';
 // import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+
 defineOptions({
 	name: 'ArticleList',
 });
@@ -41,15 +42,21 @@ const props = withDefaults(
 	defineProps<{
 		tableData: Array<Record<string, unknown>>;
 		title?: string | number | null | undefined;
-		correspondence: any;
+		correspondence?: {
+			title: string;
+			description?: string;
+			publishTime: string;
+		};
 	}>(),
 	{
 		tableData: () => [],
 		title: null,
-		correspondence: {
-			title: 'title',
-			description: 'description',
-			publishTime: 'time',
+		correspondence: () => {
+			return {
+				title: 'title',
+				description: 'description',
+				publishTime: 'time',
+			};
 		},
 	}
 );

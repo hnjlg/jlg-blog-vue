@@ -12,8 +12,8 @@
 				v-bind="item ?? {}"
 				show-overflow-tooltip
 			>
-				<template v-if="!!item.slotName" #default>
-					<slot :name="item.slotName"></slot>
+				<template v-if="item.slotName" #default="scope">
+					<slot :name="item.slotName" :row="scope.row"></slot>
 				</template>
 			</el-table-column>
 			<el-table-column v-if="props.operationColumnWidth" fixed="right" label="操作" :width="props.operationColumnWidth">

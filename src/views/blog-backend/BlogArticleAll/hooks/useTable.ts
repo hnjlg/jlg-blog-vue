@@ -9,7 +9,7 @@ export default function () {
 			title: '文章状态',
 			field: 'status_name',
 			width: 100,
-			// slotName: 'status-name',
+			slotName: 'status-name',
 		},
 		{
 			title: '作者',

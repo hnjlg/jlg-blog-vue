@@ -11,7 +11,7 @@
 			size="large"
 			@dbclick:row="rowDbClick"
 		>
-			<!-- <template #status-name="row">{{ row }}</template> -->
+			<template #status-name="{ row }">{{ row }}</template>
 			<template #operation-column="row">
 				<el-link type="primary" @click="editlFun(row)">编辑</el-link>
 				<el-link type="error" @click="delFun(row)">删除</el-link>

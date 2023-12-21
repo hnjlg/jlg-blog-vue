@@ -20,8 +20,8 @@
 								<el-icon><Location /></el-icon>文章管理
 							</template>
 							<el-menu-item-group>
-								<template v-for="(item, index) in blogBackendStore.getRouterInfo" :key="index">
-									<el-menu-item v-if="item.meta" :index="'1-' + index" @click="jumpto(item)">
+								<template v-for="(item, index) in RealDisplayRoute" :key="index">
+									<el-menu-item v-if="item.meta" :index="`1-${index + 1}`" @click="jumpto(item)">
 										{{ item.meta.title }}
 									</el-menu-item>
 								</template>
@@ -133,10 +133,15 @@ function clickAvatar() {
 		console.log('===未登录===');
 	}
 }
+
+const RealDisplayRoute = computed(
+	() => blogBackendStore.getRouterInfo.find((item) => item.name === 'BlogBackend')?.children?.filter((item) => item.name !== 'BlogBackendLogin')
+);
 </script>
 <style lang="scss" scoped>
 .blog-backend-container {
 	height: 100vh;
+	background-color: red;
 
 	.blog-backend-home-content-common {
 		height: 100%;
