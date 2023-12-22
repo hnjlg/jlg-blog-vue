@@ -5,7 +5,7 @@ import { afterNav, beforeNav } from './navigate';
 export const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		redirect: '/blogBackend',
+		redirect: '/blogBackend/BlogBackendIndex',
 	},
 	{
 		path: '/home',
@@ -143,42 +143,42 @@ export const routes: RouteRecordRaw[] = [
 			},
 		],
 	},
-	{
-		path: '/blogBackend',
-		component: () => import('@/views/blog-backend/home/index.vue'),
-		meta: {
-			keepAlive: true,
-		},
-		name: 'BlogBackend',
-		children: [
-			{
-				path: '/blogBackend',
-				redirect: '/blogBackend/BlogBackendIndex',
-			},
-			{
-				path: '/blogBackend/BlogBackendIndex',
-				component: () => import('@/views/blog-backend/BlogBackendIndex/index.vue'),
-				meta: {
-					keepAlive: true,
-					isInitLoading: true,
-					systemPage: true,
-					title: '博客后台首页',
-				},
-				name: 'BlogBackendIndex',
-			},
-			{
-				path: '/blogBackend/BlogBackendLogin',
-				component: () => import('@/views/blog-backend/BlogBackendLogin/index.vue'),
-				meta: {
-					keepAlive: false,
-					isInitLoading: false,
-					systemPage: false,
-					title: '登录',
-				},
-				name: 'BlogBackendLogin',
-			},
-		],
-	},
+	// {
+	// 	path: '/blogBackend',
+	// 	component: () => import('@/views/blog-backend/home/index.vue'),
+	// 	meta: {
+	// 		keepAlive: true,
+	// 	},
+	// 	name: 'BlogBackend',
+	// 	children: [
+	// 		{
+	// 			path: '/blogBackend',
+	// 			redirect: '/blogBackend/BlogBackendIndex',
+	// 		},
+	// 		{
+	// 			path: '/blogBackend/BlogBackendLogin',
+	// 			component: () => import('@/views/blog-backend/BlogBackendLogin/index.vue'),
+	// 			meta: {
+	// 				keepAlive: false,
+	// 				isInitLoading: false,
+	// 				systemPage: false,
+	// 				title: '登录',
+	// 			},
+	// 			name: 'BlogBackendLogin',
+	// 		},
+	// 		{
+	// 			path: '/blogBackend/BlogBackendIndex',
+	// 			component: () => import('@/views/blog-backend/BlogBackendIndex/index.vue'),
+	// 			meta: {
+	// 				keepAlive: true,
+	// 				isInitLoading: true,
+	// 				systemPage: true,
+	// 				title: '博客后台首页',
+	// 			},
+	// 			name: 'BlogBackendIndex',
+	// 		},
+	// 	],
+	// },
 	// {
 	// 	path: '/:pathMatch(.*)*',
 	// 	redirect: '/blogBackend',
@@ -189,6 +189,9 @@ export const componets: { [key: string]: () => Promise<void | typeof import('@/v
 	BlogBackendPublish: () => import('@/views/blog-backend/BlogBackendPublish/index.vue'),
 	BlogArticleAll: () => import('@/views/blog-backend/BlogArticleAll/index.vue'),
 	BlogArticleAllMe: () => import('@/views/blog-backend/BlogArticleAllMe/index.vue'),
+	BlogBackendIndex: () => import('@/views/blog-backend/BlogBackendIndex/index.vue'),
+	BlogBackendLogin: () => import('@/views/blog-backend/BlogBackendLogin/index.vue'),
+	BlogBackend: () => import('@/views/blog-backend/home/index.vue'),
 };
 
 export const router = createRouter({

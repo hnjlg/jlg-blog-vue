@@ -23,7 +23,7 @@ export const postArticletreeallquery = () => {
 export const postArticletreearticletreenamequery = <NUDATA extends (keyof AT_ArticleTreeArticleTreeNameQueryRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTreeArticleTreeNameQueryRequest, NUDATA>
 ) => {
-	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_MySQLResult[] } }>(
+	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_ArticleTreeArticleTreeNameQueryResponse[] } }>(
 		`/article-tree/article-tree-name/query`,
 		data
 	);
@@ -284,6 +284,10 @@ export declare interface AT_BlogHotArticleQueryResponse {
 	title: string;
 	/*文章阅读量*/
 	reading_quantity: number;
+	/*作者id*/
+	author: number;
+	/*作者名*/
+	author_name: string;
 	/*文章发布时间*/
 	add_time: string;
 	/*文章标签*/
@@ -332,7 +336,7 @@ export declare interface AT_BlogQueryForArticleIdResponse {
 
 export declare interface AT_BlogQueryForArticleIdRequest {
 	/*文章树id*/
-	articleTreeId: number;
+	article_tree_id: number;
 }
 
 export declare interface AT_BlogBackstageQueryForArticleIdResponse {
@@ -344,6 +348,8 @@ export declare interface AT_BlogBackstageQueryForArticleIdResponse {
 	reading_quantity: number;
 	/*作者id*/
 	author: number;
+	/*作者名称*/
+	author_name: string;
 	/*文章发布时间*/
 	add_time: string;
 	/*文章的内容*/
@@ -394,11 +400,11 @@ export declare interface AT_BlogBackstageArticleDraftAddRequest {
 	/*新增文章的内容*/
 	content: string;
 	/*新增文章的内容（包含html标签元素）*/
-	contentHTML: string;
+	content_html: string;
 	/*用户id*/
 	author: number;
 	/*文章树id*/
-	articleTreeId: number;
+	article_tree_id: number;
 	articleTags: number[];
 }
 
@@ -444,7 +450,7 @@ export declare interface AT_BlogBackstageArticleQueryForArticleTreeIdResponse {
 
 export declare interface AT_BlogBackstageArticleQueryForArticleTreeIdRequest {
 	/*文章树id*/
-	articleTreeId: number;
+	article_tree_id: number;
 }
 
 export declare interface AT_BlogBackstageArticleQueryForArticleResponse {
@@ -505,6 +511,15 @@ export declare interface AT_BlogBackstageArticleAllQueryRequest {
 	pageSize: number;
 }
 
+export declare interface AT_ArticleTreeArticleTreeNameQueryResponse {
+	/*文章树id*/
+	id: number;
+	/*文章树名称*/
+	article_tree_name: string;
+	/*父级文章树id*/
+	parent_article_tree_id: number;
+}
+
 export declare interface AT_ArticleTreeArticleTreeNameQueryRequest {
 	/*要获取的页数*/
 	pageIndex: number;
@@ -516,7 +531,7 @@ export declare interface AT_ArticleTreeArticleTreeNameQueryRequest {
 
 export declare interface AT_ArticleTreeByIdDeleteRequest {
 	/*文章树id*/
-	articleTreeId: number;
+	article_tree_id: number;
 }
 
 export declare interface AT_UserRegisterRequest {

@@ -1,5 +1,5 @@
 <template>
-	<div ref="cherryMarkdownContent">
+	<div ref="cherryMarkdownContent" class="cherry">
 		<div></div>
 	</div>
 </template>
@@ -30,4 +30,3 @@ onMounted(() => {
 	replaceNode();
 });
 </script>
-<style lang="scss" scoped></style>

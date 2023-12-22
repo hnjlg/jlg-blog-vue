@@ -5,7 +5,7 @@
 		</div>
 		<div class="article-header-bottom flex justify-between h-7 my-4">
 			<div class="flex-1 text-center">
-				<el-icon><Watch /></el-icon>{{ modelValue.add_time }}
+				<el-icon><Watch /></el-icon>{{ dayjs(modelValue.add_time).format('YYYY/MM/DD') }}
 			</div>
 			<div class="flex-1 text-center">
 				<el-icon><User /></el-icon>{{ modelValue.author_name }}
@@ -18,51 +18,52 @@
 	<div class="article-content px-2 min-h-[50%]">
 		<MarkDownShow :content="modelValue.content_html"></MarkDownShow>
 	</div>
-	<div class="article-footer px-2">
-		<div class="absolute bottom-0 right-0 h-8">
-			<div class="w-12 px-4 cursor-pointer hover:text-3xl" @click="likeFun">
-				<el-tooltip class="box-item" effect="light" content="讲得不错！赞" placement="top">
-					<el-icon size="24"><Star /></el-icon>
-				</el-tooltip>
-			</div>
-		</div>
-	</div>
 </template>
 
 <script setup lang="ts">
 import MarkDownShow from '@/components/markdown-show/index.vue';
 import { pageModel } from './index.vue.d';
-import { Watch, User, Document, Star } from '@element-plus/icons-vue';
-import { postBlogarticlequeryforarticleId } from '@/apiType/production/result';
+import { Watch, User, Document } from '@element-plus/icons-vue';
+import { postBlogarticlearticleInterview, postBlogarticlequeryforarticleId } from '@/apiType/production/result';
 import router from '@/router/index';
+import dayjs from 'dayjs';
 
 defineOptions({
 	name: 'ArticleDetails',
 });
 
 const modelValue = ref<pageModel>({
-	title: '夏洛不烦恼',
+	id: -1,
+	title: '',
 	content: '',
 	content_html: '',
-	author_name: '马冬梅',
+	author_name: '',
 	tags: '',
 	status_name: '',
-	add_time: '1970/1/1',
+	add_time: '',
 });
 
 function getInitData() {
 	return new Promise(() => {
-		postBlogarticlequeryforarticleId({ articleId: Number(router.currentRoute.value.query.id) }).then((result) => {
-			modelValue.value = { ...modelValue.value, ...result.data.content };
-		});
+		postBlogarticlequeryforarticleId({ articleId: Number(router.currentRoute.value.query.id) })
+			.then((result) => {
+				modelValue.value = { ...modelValue.value, ...result.data.content };
+			})
+			.catch(() => {
+				router.go(-1);
+			});
 	});
 }
 getInitData();
 
-// 点赞
-function likeFun() {
-	ElMessage.success('点赞成功！');
-}
+const readTime = setTimeout(() => {
+	postBlogarticlearticleInterview({
+		articleId: modelValue.value.id,
+	});
+}, 10000);
+onDeactivated(() => {
+	clearTimeout(readTime);
+});
 </script>
 <style lang="scss" scoped>
 @import '@/assets/styles/scroll.scss';

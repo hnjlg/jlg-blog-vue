@@ -115,7 +115,6 @@ defineOptions({
 });
 
 const blogBackendStore = useBlogBackendStore();
-console.log('===blogBackendStore.getRouterInfo===', blogBackendStore.getRouterInfo);
 
 // 跳转路由
 function jumpto(routerInfo: RouteLocationRaw) {
@@ -134,15 +133,19 @@ function clickAvatar() {
 	}
 }
 
-const RealDisplayRoute = computed(
-	() => blogBackendStore.getRouterInfo.find((item) => item.name === 'BlogBackend')?.children?.filter((item) => item.name !== 'BlogBackendLogin')
+// 菜单目录
+const RealDisplayRoute = computed(() =>
+	router
+		.getRoutes()
+		.filter(
+			(item) =>
+				item.name && item.path.startsWith('/blogBackend') && !['BlogBackend', 'BlogBackendIndex', 'BlogBackendLogin'].includes(String(item.name))
+		)
 );
 </script>
 <style lang="scss" scoped>
 .blog-backend-container {
 	height: 100vh;
-	background-color: red;
-
 	.blog-backend-home-content-common {
 		height: 100%;
 	}

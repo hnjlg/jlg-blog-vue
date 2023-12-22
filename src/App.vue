@@ -18,7 +18,6 @@
 
 <script setup lang="ts">
 import NavigationMenu from '@/components/navigation-menu/index.vue';
-import router from '@/router';
 
 const navigationMenuShow = ref<boolean>(false);
 const navigationSwitchUrl = ref<string>('中');
@@ -34,9 +33,6 @@ const drawerClosed = () => {
 	console.log('drawer close animate done');
 	navigationSwitchUrl.value = '中';
 };
-setTimeout(() => {
-	console.log('===rrr===', router.getRoutes());
-}, 2000);
 </script>
 <style lang="scss" scoped>
 .navigation-menu-container-switch {

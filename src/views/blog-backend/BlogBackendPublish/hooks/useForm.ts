@@ -1,9 +1,14 @@
-import { postArticletreearticletreenamequery, postBlogtagsquery } from '@/apiType/production/result';
+import {
+	AT_ArticleTreeArticleTreeNameQueryResponse,
+	AT_BlogTagsQueryResponse,
+	postArticletreearticletreenamequery,
+	postBlogtagsquery,
+} from '@/apiType/production/result';
 
 export const articleTagsLoading = ref(false);
 
 // 文章标签远程检索
-export const articleTagsList = ref([]);
+export const articleTagsList = ref<AT_BlogTagsQueryResponse[]>([]);
 export function articleTagsRemoteMethod(tagName: string) {
 	articleTagsLoading.value = true;
 	if (tagName === '') return;
@@ -21,7 +26,7 @@ export function articleTagsRemoteMethod(tagName: string) {
 }
 
 // 文章树远程检索
-export const articleTreeList = ref([]);
+export const articleTreeList = ref<AT_ArticleTreeArticleTreeNameQueryResponse[]>([]);
 export function articleTreeListRemoteMethod(name: string) {
 	articleTagsLoading.value = true;
 	if (name === '') return;

@@ -1,4 +1,5 @@
 export declare interface pageModel {
+	id: number;
 	title: string;
 	content: string;
 	content_html: string;

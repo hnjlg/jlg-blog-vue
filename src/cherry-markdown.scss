@@ -4,11 +4,16 @@
 	// .CodeMirror-cursor {
 	// 	height: 16px !important;
 	// }
+	justify-content: center;
 	.cherry-toolbar {
 		background: black;
 
 		.cherry-toolbar-button {
 			color: white;
 		}
+	}
+	@include useBlobTheme {
+		background-color: getBlobVar('textColor');
+		color: getBlobVar('bgColor');
 	}
 }

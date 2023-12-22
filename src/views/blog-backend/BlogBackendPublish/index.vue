@@ -8,7 +8,7 @@
 			label-position="top"
 			size="small"
 			status-icon
-			:disabled="$route.query.pageType !== 'add' && $route.query.pageType !== 'edit'"
+			:disabled="$route.query.pageTy === 'view'"
 		>
 			<el-form-item label="article title" prop="title">
 				<el-input v-model="pageFormData.title" clearable resize />
@@ -16,15 +16,14 @@
 			<el-row span="24" gutter="20">
 				<el-col :span="5">
 					<el-form-item label="author" prop="authorName">
-						<el-input v-if="$route.query.pageType === 'view'" v-model="pageFormData.author_name"></el-input>
-						<el-input v-else v-model="pageFormData.authorName" disabled />
+						<el-input v-model="pageFormData.author_name" disabled></el-input>
 					</el-form-item>
 				</el-col>
 				<el-col :span="5">
 					<el-form-item label="article tags" prop="articleTags">
-						<el-input v-if="$route.query.pageType === 'view'" v-model="pageFormData.tags"></el-input>
+						<el-input v-if="$route.query.pageType === 'view' && 'tags' in pageFormData" :value="pageFormData.tags"></el-input>
 						<el-select
-							v-else
+							v-else-if="'articleTags' in pageFormData"
 							v-model="pageFormData.articleTags"
 							multiple
 							filterable
@@ -42,7 +41,10 @@
 				</el-col>
 				<el-col :span="5">
 					<el-form-item label="article tree" prop="article_tree_id">
-						<el-input v-if="$route.query.pageType === 'view'" v-model="pageFormData.article_tree_name"></el-input>
+						<el-input
+							v-if="$route.query.pageType === 'view' && 'article_tree_name' in pageFormData"
+							:value="pageFormData.article_tree_name"
+						></el-input>
 						<el-select
 							v-else
 							v-model="pageFormData.article_tree_id"
@@ -63,8 +65,8 @@
 			<el-row>
 				<el-col :span="24">
 					<el-form-item label="article content" prop="content">
-						<div class="md-box">
-							<MarkDownShow v-if="$route.query.pageType === 'view'" :content="pageFormData.contentHTML"></MarkDownShow>
+						<div class="md-box flex-1">
+							<MarkDownShow v-if="$route.query.pageType === 'view'" :content="pageFormData.content_html"></MarkDownShow>
 							<CherryMarkdown v-else ref="mdEditor" :default-content="pageFormData.content" :display-toc="false"> </CherryMarkdown>
 						</div>
 					</el-form-item>
@@ -86,6 +88,8 @@ import {
 	postBlogbackstagearticleadd,
 	postBlogbackstagearticlequeryforarticleId,
 	postBlogbackstagearticledraftadd,
+	AT_BlogBackstageArticleDraftAddRequest,
+	AT_BlogBackstageArticleQueryForArticleResponse,
 } from '@/apiType/production/result.ts';
 import { articleTagsLoading, articleTagsRemoteMethod, articleTagsList, articleTreeListRemoteMethod, articleTreeList } from './hooks/useForm';
 import useBlogBackendStore from '@/store/blog-backend';
@@ -96,20 +100,21 @@ import { useRoute } from 'vue-router';
 defineOptions({
 	name: 'BlogBackendPublish',
 });
-
-const pageFormData = ref({
-	title: null,
+const blogBackendStore = useBlogBackendStore();
+const pageFormData = ref<
+	| ((Omit<AT_BlogBackstageArticleDraftAddRequest, 'article_tree_id'> & { article_tree_id: number | null }) & {
+			author_name: string;
+	  })
+	| AT_BlogBackstageArticleQueryForArticleResponse
+>({
+	title: '',
 	content: '',
 	content_html: '',
-	author: null,
-	authorName: null,
+	author: blogBackendStore.$state.userInfo.id,
+	author_name: '',
 	article_tree_id: null,
-	articleTags: null,
+	articleTags: [],
 });
-
-const blogBackendStore = useBlogBackendStore();
-pageFormData.value.author = blogBackendStore.$state.userInfo.id;
-pageFormData.value.authorName = blogBackendStore.$state.userInfo.user_name;
 
 const route = useRoute();
 
@@ -144,9 +149,6 @@ async function getInitData() {
 		}
 		postBlogbackstagearticlequeryforarticleId({ articleId: Number(route.query.id) }).then((result) => {
 			pageFormData.value = result.data.content;
-			pageFormData.value.contentHTML = pageFormData.value.content_html;
-			// articleTagsRemoteMethod(pageFormData.value.tags);
-			// articleTreeListRemoteMethod(pageFormData.value.article_tree_name);
 			resolve();
 		});
 	});
@@ -171,11 +173,18 @@ const mdEditor = ref();
 // 存草稿
 async function sumbmitDraftFun() {
 	pageFormData.value.content = mdEditor.value.cherry.getMarkdown();
-	pageFormData.value.contentHTML = mdEditor.value.cherry.getHtml();
+	pageFormData.value.content_html = mdEditor.value.cherry.getHtml();
 	if (!ruleFormRef.value) return;
 	await ruleFormRef.value.validate((valid) => {
-		if (valid) {
-			postBlogbackstagearticledraftadd(pageFormData.value).then(() => {
+		if (valid && typeof pageFormData.value.article_tree_id === 'number' && 'articleTags' in pageFormData.value) {
+			postBlogbackstagearticledraftadd({
+				title: pageFormData.value.title,
+				content: pageFormData.value.content,
+				content_html: pageFormData.value.content_html,
+				article_tree_id: pageFormData.value.article_tree_id,
+				articleTags: pageFormData.value.articleTags,
+				author: pageFormData.value.author,
+			}).then(() => {
 				ElMessage.success('submit success!');
 				router.push('BlogArticleAll');
 			});
@@ -191,8 +200,15 @@ async function sumbmitFun() {
 	pageFormData.value.content_html = mdEditor.value.cherry.getHtml();
 	if (!ruleFormRef.value) return;
 	await ruleFormRef.value.validate((valid) => {
-		if (valid) {
-			postBlogbackstagearticleadd(pageFormData.value).then(() => {
+		if (valid && typeof pageFormData.value.article_tree_id === 'number' && 'articleTags' in pageFormData.value) {
+			postBlogbackstagearticleadd({
+				title: pageFormData.value.title,
+				content: pageFormData.value.content,
+				content_html: pageFormData.value.content_html,
+				article_tree_id: pageFormData.value.article_tree_id,
+				articleTags: pageFormData.value.articleTags,
+				author: pageFormData.value.author,
+			}).then(() => {
 				ElMessage.success('submit success!');
 				router.push('BlogArticleAll');
 			});

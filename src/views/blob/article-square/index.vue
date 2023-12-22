@@ -6,6 +6,8 @@
 				:correspondence="{
 					title: 'title',
 					publishTime: 'add_time',
+					lookAmount: 'reading_quantity',
+					author: 'author_name',
 				}"
 				@click="handleClick"
 			></ArticleList>

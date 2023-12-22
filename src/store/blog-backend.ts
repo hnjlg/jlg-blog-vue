@@ -40,8 +40,6 @@ const useBlobStore = defineStore<
 						...(route.children ?? []),
 						...this.routerInfo
 							.map((item) => {
-								console.log('===componets[item.componentName]===', componets[item.componentName]);
-
 								return {
 									path: item.path,
 									component: componets[item.componentName],
