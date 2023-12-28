@@ -3,8 +3,11 @@
 	<div class="page-content">
 		<el-empty v-if="!props.tableData" description="暂时还没有主子愿意公开文章哦！" />
 		<div v-else>
-			<div v-for="(item, index) in props.tableData" :key="index" class="pane-box py-3 mt-2 border-b-[1px] hover:bg-slate-100 flex">
+			<div v-for="(item, index) in props.tableData" :key="index" class="pane-box py-3 mt-2 border-b-[1px] flex">
 				<div class="pane-box-item-right px-6 flex-1">
+					<template v-if="props.isDisplayHot && 5 - index * 2 > 0">
+						<el-icon v-for="iitem in 5 - index * 2" :key="iitem" color="#ff4400"><Star /></el-icon>
+					</template>
 					<div class="pane-box-item--title max-h-12">
 						<span class="cursor-pointer truncate" @click="emit('click', item, index)">{{ item[props.correspondence.title] }}</span>
 					</div>
@@ -31,7 +34,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { View, User, Watch } from '@element-plus/icons-vue';
+import { View, User, Watch, Star } from '@element-plus/icons-vue';
 import dayjs from 'dayjs';
 
 defineOptions({
@@ -49,6 +52,7 @@ const props = withDefaults(
 			lookAmount: string;
 			author: string;
 		};
+		isDisplayHot?: boolean;
 	}>(),
 	{
 		tableData: () => [],
@@ -62,7 +66,19 @@ const props = withDefaults(
 				author: 'author',
 			};
 		},
+		isDisplayHot: false,
 	}
 );
+
 const emit = defineEmits(['click']);
 </script>
+<style scoped lang="scss">
+.page-content {
+	.pane-box:hover {
+		@include useBlobTheme {
+			background-color: getBlobVar('textColor');
+			color: getBlobVar('bgColor');
+		}
+	}
+}
+</style>

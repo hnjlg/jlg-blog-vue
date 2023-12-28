@@ -9,3 +9,8 @@ export enum E_ArticleStatus {
 	审核未通过,
 	已发布,
 }
+
+export enum E_UserType {
+	普通用户 = 1,
+	管理员,
+}

@@ -78,34 +78,34 @@ const menuList = ref<I_MenuItem[]>([
 		pathName: 'find-article',
 		icon: 'undraw_body_text_re_9riw_svg',
 	},
-	{
-		level: 1,
-		title: 'DOCS',
-	},
-	{
-		level: 2,
-		title: 'FKS Technology DOCS',
-		pathName: 'fks-technology-docs',
-		icon: 'undraw_my_personal_files_re_3q0p_svg',
-	},
-	{
-		level: 2,
-		title: 'FKS Component Library DOCS',
-		pathName: 'fks-component-library-docs',
-		icon: 'undraw_online_article_re_daq5_svg',
-	},
-	{
-		level: 2,
-		title: 'OA Technology DOCS',
-		pathName: 'oa-technology-docs',
-		icon: 'undraw_online_articles_re_yrkj_svg',
-	},
-	{
-		level: 2,
-		title: 'JLG Component Library DOCS',
-		pathName: 'jlg-component-library-docs',
-		icon: 'undraw_online_information_re_erks_svg',
-	},
+	// {
+	// 	level: 1,
+	// 	title: 'DOCS',
+	// },
+	// {
+	// 	level: 2,
+	// 	title: 'FKS Technology DOCS',
+	// 	pathName: 'fks-technology-docs',
+	// 	icon: 'undraw_my_personal_files_re_3q0p_svg',
+	// },
+	// {
+	// 	level: 2,
+	// 	title: 'FKS Component Library DOCS',
+	// 	pathName: 'fks-component-library-docs',
+	// 	icon: 'undraw_online_article_re_daq5_svg',
+	// },
+	// {
+	// 	level: 2,
+	// 	title: 'OA Technology DOCS',
+	// 	pathName: 'oa-technology-docs',
+	// 	icon: 'undraw_online_articles_re_yrkj_svg',
+	// },
+	// {
+	// 	level: 2,
+	// 	title: 'JLG Component Library DOCS',
+	// 	pathName: 'jlg-component-library-docs',
+	// 	icon: 'undraw_online_information_re_erks_svg',
+	// },
 	{
 		level: 1,
 		title: 'Other',

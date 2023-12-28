@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import Cherry from 'cherry-markdown/dist/cherry-markdown.core';
 import { generateUniqueID } from '@/utils/value';
+import { postFileupload } from '@/apiType/production/result';
 
 defineOptions({
 	name: 'CherryMarkdown',
@@ -29,6 +30,7 @@ const uuid = generateUniqueID();
 const cherry = new Cherry({
 	id: uuid,
 	value: props.defaultContent ?? '',
+	fileUpload: myFileUpload,
 });
 
 const toc = computed(() => {
@@ -60,6 +62,21 @@ defineExpose({
 	unmount,
 	uuid,
 });
+
+/**
+ * 上传文件函数
+ * @param file 上传文件的文件对象
+ * @param callback 回调函数，回调函数接收两个参数，第一个参数为文件上传后的url，第二个参数可选，为额外配置信息
+ */
+function myFileUpload(file: Blob, callback?: (url: string) => any) {
+	const formdata = new FormData();
+	formdata.set('file', file);
+	postFileupload(formdata).then((result) => {
+		if (result.data.status === 1 && callback) {
+			callback(import.meta.env.VITE_APP_BASE_URL + '/' + result.data.content.filename);
+		}
+	});
+}
 </script>
 
 <style lang="scss" scoped>

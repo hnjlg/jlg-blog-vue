@@ -4,7 +4,7 @@
 		<simple-table
 			:table-data="tableData"
 			:field-list="tableCols"
-			:operation-column-width="100"
+			:operation-column-width="120"
 			max-height="84vh"
 			stripe
 			border
@@ -12,8 +12,38 @@
 			@dbclick:row="rowDbClick"
 		>
 			<template #operation-column="row">
+				<el-dropdown trigger="click">
+					<span>
+						<el-icon><MoreFilled /></el-icon>
+					</span>
+					<template #dropdown>
+						<el-dropdown-menu>
+							<el-dropdown-item :icon="CircleCheck" @click="PassFun(row)"> 审核通过 </el-dropdown-item>
+							<el-dropdown-item :icon="CircleClose" @click="NoPassFun(row)"> 审核不通过 </el-dropdown-item>
+						</el-dropdown-menu>
+					</template>
+				</el-dropdown>
 				<el-link type="primary" @click="editlFun(row)">编辑</el-link>
 				<el-link type="error" @click="delFun(row)">删除</el-link>
+			</template>
+			<template #add-time="{ row }">{{ dayjs(String(row.add_time)).format('YYYY/MM/DD') }}</template>
+			<template #status-name="{ row }">
+				<el-dropdown trigger="contextmenu">
+					<span>
+						<el-tooltip effect="dark" content="右键修改" placement="right-start">
+							<el-tag :type="statusCrossType(row)" :effect="row.status_value == 1 || row.status_value == 4 ? 'plain' : 'light'">
+								{{ row.status_name }}
+							</el-tag>
+						</el-tooltip>
+					</span>
+					<template #dropdown>
+						<el-dropdown-menu>
+							<el-dropdown-item v-for="(item, index) in StatusList" :key="index" :icon="CirclePlus" @click="editStatusFun(item, row)">
+								{{ item.label }}
+							</el-dropdown-item>
+						</el-dropdown-menu>
+					</template>
+				</el-dropdown>
 			</template>
 		</simple-table>
 	</div>
@@ -36,14 +66,26 @@
 </template>
 
 <script setup lang="ts">
-import { Refresh } from '@element-plus/icons-vue';
+import { Refresh, CirclePlus, MoreFilled, CircleClose, CircleCheck } from '@element-plus/icons-vue';
 import { RouteLocationRaw } from 'vue-router';
 import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
 import router from '@/router';
-import { postBlogbackstagearticleallquery, postBlogbackstagearticledelete } from '@/apiType/production/result';
+import {
+	type AT_BlogBackstageArticleQueryForAuthorResponse,
+	postBlogbackstagearticleallquery,
+	postBlogbackstagearticledelete,
+	postBlogbackstagearticlereject,
+	postBlogbackstagearticlereview,
+	type AT_BlogBackstageArticleAllQueryResponse,
+	type AT_SelectListItem,
+	postBlogbackstagearticlestatusallquery,
+	postBlogbackstagearticletakeback,
+	AT_ArticleStatus,
+} from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tablehook from '@/mixin/useTableHook';
+import dayjs from 'dayjs';
 
 defineOptions({
 	name: 'BlogArticleAll',
@@ -54,40 +96,7 @@ const { paginationInfo, total, handleSizeChange, handleCurrentChange, restInitPa
 
 const { tableCols } = useTable();
 
-const articleList = ref([
-	{
-		id: 1,
-		title: '马什么梅啊？',
-		content: '文章内容。。。。。。。。。。。。。。。。。。。',
-		author: '马冬梅',
-		time: '2023/11/28',
-		reading_quantity: 79,
-		fiexd: 'left',
-		fiexd1: 'left',
-	},
-	{ id: 2, title: 'react从入门到衫裤跑路', author: 'admin', time: '2023/11/28', reading_quantity: 79 },
-	{ id: 3, title: 'vuerouter从入门到入坟', author: '夏洛', time: '2023/11/28', reading_quantity: 79 },
-	{ id: 4, title: 'pinia从入门到入坟', author: '大春', time: '2023/11/28', reading_quantity: 79 },
-	{ id: 8, title: 'vite从入门到入坟', author: '国富 陆', time: '2023/11/28', reading_quantity: 79 },
-	{
-		id: 22,
-		title: 'vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班vue从打开到下班',
-		author: '马冬梅',
-		time: '2023/11/28',
-	},
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-	{ id: 22, title: 'vue从打开到下班', content: '文章内容。。。。。。。。。。。。。。。。。。。', author: '马冬梅', time: '2023/11/28' },
-]);
-
-const tableData = ref([]);
+const tableData = ref<AT_BlogBackstageArticleAllQueryResponse[]>([]);
 function initPage() {
 	pageLoading.value = true;
 	postBlogbackstagearticleallquery(paginationInfo.value)
@@ -97,7 +106,6 @@ function initPage() {
 			pageLoading.value = false;
 		})
 		.catch(() => {
-			tableData.value = articleList.value;
 			pageLoading.value = false;
 		});
 }
@@ -107,14 +115,15 @@ initPage();
 // 编辑
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function editlFun(row: { [K: string]: any }) {
-	console.log('======', row);
-	jumpto({ name: 'BlogBackendPublish', params: { id: row.row.id } }, true);
+	if (row.row.status_value === AT_ArticleStatus.待审) {
+		ElMessage.warning('该文章正在审核中，无法编辑');
+		return;
+	}
+	jumpto({ name: 'BlogBackendPublish', params: { id: row.row.id } });
 }
 
 // 删除
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function delFun(row: any) {
-	console.log('======', row);
 	ElMessageBox.confirm('Are you sure to delete this article?', 'Warning', {
 		confirmButtonText: 'I am true!',
 		cancelButtonText: 'NO,I will think about it again',
@@ -123,23 +132,14 @@ function delFun(row: any) {
 		.then(() => {
 			postBlogbackstagearticledelete(row.row.row.id).then((result) => {
 				if (result.data.status === 1) {
-					ElMessage({
-						type: 'success',
-						message: 'Delete completed',
-					});
+					ElMessage.success('Delete completed');
 				} else {
-					ElMessage({
-						type: 'error',
-						message: 'Delete failed',
-					});
+					ElMessage.error('Delete failed');
 				}
 			});
 		})
 		.catch(() => {
-			ElMessage({
-				type: 'info',
-				message: 'Delete canceled',
-			});
+			ElMessage.info('Delete canceled');
 		});
 }
 
@@ -152,10 +152,66 @@ function jumpto(routerInfo: RouteLocationRaw, isNewTab: boolean = false) {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function rowDbClick(row: any, column: any, event: any) {
 	console.log('===dbclick===', row, column, event);
 	jumpto({ name: 'BlogBackendPublish', query: { id: row.id, pageType: 'view' } });
+}
+
+function statusCrossType(row: AT_BlogBackstageArticleQueryForAuthorResponse & { status_value: number }) {
+	switch (row.status_value) {
+		case AT_ArticleStatus.草稿:
+			return 'info';
+		case AT_ArticleStatus.待审:
+			return 'warning';
+		case AT_ArticleStatus.公开:
+			return 'success';
+		case AT_ArticleStatus.私有:
+			return 'danger';
+		case AT_ArticleStatus.驳回:
+			return 'danger';
+		default:
+			break;
+	}
+}
+
+const StatusList = ref<AT_SelectListItem[]>([]);
+postBlogbackstagearticlestatusallquery().then((result) => {
+	if (result.data.status === 1) {
+		StatusList.value = result.data.content;
+	}
+});
+
+function editStatusFun(item: AT_SelectListItem, row: AT_BlogBackstageArticleQueryForAuthorResponse) {
+	// 转私有
+	if (item.value === 4) {
+		postBlogbackstagearticletakeback({
+			articleId: row.id,
+		}).then((result) => {
+			if (result.data.status === 1) {
+				ElMessage.success('操作成功');
+				restInitPage();
+			}
+		});
+	}
+}
+
+// 审核通过
+function PassFun(row: { row: { row: AT_BlogBackstageArticleAllQueryResponse } }) {
+	console.log('===row===', row.row.row);
+	postBlogbackstagearticlereview({ articleId: row.row.row.id }).then((result) => {
+		if (result.data.status === 1) {
+			ElMessage.success('操作成功');
+			restInitPage();
+		}
+	});
+}
+function NoPassFun(row: { row: { row: AT_BlogBackstageArticleAllQueryResponse } }) {
+	postBlogbackstagearticlereject({ articleId: row.row.row.id }).then((result) => {
+		if (result.data.status === 1) {
+			ElMessage.success('操作成功');
+			restInitPage();
+		}
+	});
 }
 </script>
 <style lang="scss" scoped></style>

@@ -9,6 +9,7 @@ export default function () {
 			title: '文章状态',
 			field: 'status_name',
 			width: 100,
+			slotName: 'status-name',
 		},
 		{
 			title: '作者',
@@ -19,6 +20,7 @@ export default function () {
 			title: '发表时间',
 			field: 'add_time',
 			width: 220,
+			slotName: 'add-time',
 		},
 		{
 			title: '阅读量',

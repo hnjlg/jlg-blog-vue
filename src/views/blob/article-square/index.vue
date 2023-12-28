@@ -1,7 +1,7 @@
 <template>
 	<div class="article-square-page w-full h-full flex">
-		<div class="article-square-page-left w-1/2 overflow-auto">
-			<ArticleList
+		<div class="article-square-page-left">
+			<article-list
 				:table-data="tableData"
 				:correspondence="{
 					title: 'title',
@@ -9,10 +9,11 @@
 					lookAmount: 'reading_quantity',
 					author: 'author_name',
 				}"
+				:is-display-hot="true"
 				@click="handleClick"
-			></ArticleList>
+			></article-list>
 		</div>
-		<div class="article-square-page-right w-1/2">123</div>
+		<!-- <div class="article-square-page-right w-1/2">123</div> -->
 	</div>
 </template>
 

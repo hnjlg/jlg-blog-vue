@@ -55,14 +55,12 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 					getRouterconfiguserrouterquery().then((result) => {
 						blogBackendStore.changeRouterInfo(result.data.content);
 						blogBackendStore.routerInfo.forEach((item) => {
-							if (!router.hasRoute(item.name)) {
-								router.addRoute('BlogBackend', {
-									path: item.path,
-									component: componets[item.componentName],
-									name: item.name,
-									meta: (item.meta ?? {}) as { [k in string]: any },
-								});
-							}
+							router.addRoute('BlogBackend', {
+								path: item.path,
+								component: componets[item.componentName],
+								name: item.name,
+								meta: (item.meta ?? {}) as { [k in string]: any },
+							});
 						});
 						next({ ...to, replace: true });
 					});

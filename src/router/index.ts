@@ -78,42 +78,42 @@ export const routes: RouteRecordRaw[] = [
 				},
 				name: 'find-article',
 			},
-			{
-				path: '/blob-home/fks-technology-docs',
-				component: () => import('@/views/blob/fks-technology-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'fks-technology-docs',
-			},
-			{
-				path: '/blob-home/fks-component-library-docs',
-				component: () => import('@/views/blob/fks-component-library-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'fks-component-library-docs',
-			},
-			{
-				path: '/blob-home/oa-technology-docs',
-				component: () => import('@/views/blob/oa-technology-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'oa-technology-docs',
-			},
-			{
-				path: '/blob-home/jlg-component-library-docs',
-				component: () => import('@/views/blob/jlg-component-library-docs/index.vue'),
-				meta: {
-					keepAlive: true,
-					backgroundShow: false,
-				},
-				name: 'jlg-component-library-docs',
-			},
+			// {
+			// 	path: '/blob-home/fks-technology-docs',
+			// 	component: () => import('@/views/blob/fks-technology-docs/index.vue'),
+			// 	meta: {
+			// 		keepAlive: true,
+			// 		backgroundShow: false,
+			// 	},
+			// 	name: 'fks-technology-docs',
+			// },
+			// {
+			// 	path: '/blob-home/fks-component-library-docs',
+			// 	component: () => import('@/views/blob/fks-component-library-docs/index.vue'),
+			// 	meta: {
+			// 		keepAlive: true,
+			// 		backgroundShow: false,
+			// 	},
+			// 	name: 'fks-component-library-docs',
+			// },
+			// {
+			// 	path: '/blob-home/oa-technology-docs',
+			// 	component: () => import('@/views/blob/oa-technology-docs/index.vue'),
+			// 	meta: {
+			// 		keepAlive: true,
+			// 		backgroundShow: false,
+			// 	},
+			// 	name: 'oa-technology-docs',
+			// },
+			// {
+			// 	path: '/blob-home/jlg-component-library-docs',
+			// 	component: () => import('@/views/blob/jlg-component-library-docs/index.vue'),
+			// 	meta: {
+			// 		keepAlive: true,
+			// 		backgroundShow: false,
+			// 	},
+			// 	name: 'jlg-component-library-docs',
+			// },
 			{
 				path: '/blob-home/contributors',
 				component: () => import('@/views/blob/contributors/index.vue'),
@@ -143,42 +143,6 @@ export const routes: RouteRecordRaw[] = [
 			},
 		],
 	},
-	// {
-	// 	path: '/blogBackend',
-	// 	component: () => import('@/views/blog-backend/home/index.vue'),
-	// 	meta: {
-	// 		keepAlive: true,
-	// 	},
-	// 	name: 'BlogBackend',
-	// 	children: [
-	// 		{
-	// 			path: '/blogBackend',
-	// 			redirect: '/blogBackend/BlogBackendIndex',
-	// 		},
-	// 		{
-	// 			path: '/blogBackend/BlogBackendLogin',
-	// 			component: () => import('@/views/blog-backend/BlogBackendLogin/index.vue'),
-	// 			meta: {
-	// 				keepAlive: false,
-	// 				isInitLoading: false,
-	// 				systemPage: false,
-	// 				title: '登录',
-	// 			},
-	// 			name: 'BlogBackendLogin',
-	// 		},
-	// 		{
-	// 			path: '/blogBackend/BlogBackendIndex',
-	// 			component: () => import('@/views/blog-backend/BlogBackendIndex/index.vue'),
-	// 			meta: {
-	// 				keepAlive: true,
-	// 				isInitLoading: true,
-	// 				systemPage: true,
-	// 				title: '博客后台首页',
-	// 			},
-	// 			name: 'BlogBackendIndex',
-	// 		},
-	// 	],
-	// },
 	// {
 	// 	path: '/:pathMatch(.*)*',
 	// 	redirect: '/blogBackend',

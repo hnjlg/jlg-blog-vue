@@ -60,6 +60,9 @@ export const postBlogbackstagearticlequeryforauthor = <NUDATA extends (keyof AT_
 		data
 	);
 };
+export const postBlogbackstagearticlestatusallquery = () => {
+	return axios.post<{ status: number; message: string; content: AT_SelectListItem[] }>(`/blog-backstage/article-status/all/query`);
+};
 export const postBlogbackstagearticledelete = <NUDATA extends (keyof AT_BlogBackstageArticleDeleteRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleDeleteRequest, NUDATA>
 ) => {
@@ -69,6 +72,16 @@ export const postBlogbackstagearticledraftadd = <NUDATA extends (keyof AT_BlogBa
 	data: U_I_NoNull<AT_BlogBackstageArticleDraftAddRequest, NUDATA>
 ) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/draft/add`, data);
+};
+export const postBlogbackstagearticledraftturnwaitreview = <NUDATA extends (keyof AT_BlogBackstageArticleDraftTurnWaitReviewRequest)[] = []>(
+	data: U_I_NoNull<AT_BlogBackstageArticleDraftTurnWaitReviewRequest, NUDATA>
+) => {
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/draft/turn/wait-review`, data);
+};
+export const postBlogbackstagearticleedit = <NUDATA extends (keyof AT_BlogBackstageArticleEditRequest)[] = []>(
+	data: U_I_NoNull<AT_BlogBackstageArticleEditRequest, NUDATA>
+) => {
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/edit`, data);
 };
 export const postBlogbackstagearticlereject = <NUDATA extends (keyof AT_BlogBackstageArticleRejectRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageArticleRejectRequest, NUDATA>
@@ -137,6 +150,9 @@ export const getBloghottagsquery = (limit: number) => {
 		`/blog/hot/tags/query?${limit ? 'limit=' + limit : ''}`
 	);
 };
+export const postFileupload = <NUDATA extends (keyof AT_FileUploadRequest)[] = []>(data: U_I_NoNull<AT_FileUploadRequest, NUDATA>) => {
+	return axios.post<{ status: number; message: string; content: AT_FileUploadResult }>(`/file/upload`, data);
+};
 export const getRouterconfiguserrouterquery = () => {
 	return axios.get<{ status: number; message: string; content: AT_RouterConfigUserRouterQueryResponse[] }>(`/router-config/user/router/query`);
 };
@@ -155,6 +171,70 @@ export const postUserregister = <NUDATA extends (keyof AT_UserRegisterRequest)[]
 export const postUserupdate = <NUDATA extends (keyof AT_UserUpdateRequest)[] = []>(data: U_I_NoNull<AT_UserUpdateRequest, NUDATA>) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/update`, data);
 };
+export declare interface AT_FileUploadRequest {
+	/*文件流*/
+	file: string;
+}
+
+export declare interface AT_FileUploadResult {
+	/*字段名*/
+	fieldname: string;
+	/*上传文件名*/
+	originalname: string;
+	/*文件编码*/
+	encoding: string;
+	/*文件类型*/
+	mimetype: string;
+	/*保存路径*/
+	destination: string;
+	/*保存文件名*/
+	filename: string;
+	/*保存文件路径*/
+	path: string;
+	/*文件大小*/
+	size: number;
+}
+
+export declare interface AT_BlogBackstageArticleDraftTurnWaitReviewRequest {
+	/*文章id*/
+	articleId: number;
+}
+
+export enum AT_UserStanding {
+	普通用户 = 1,
+	管理员 = 2,
+}
+
+export enum AT_ArticleStatus {
+	草稿 = 1,
+	待审 = 2,
+	公开 = 3,
+	私有 = 4,
+	驳回 = 5,
+}
+
+export declare interface AT_SelectListItem {
+	/*文本*/
+	label: string;
+	/*值*/
+	value: number;
+}
+
+export declare interface AT_BlogBackstageArticleEditRequest {
+	/*编辑文章的id*/
+	articleId: number;
+	/*编辑文章的标题*/
+	title: string;
+	/*编辑文章的内容*/
+	content: string;
+	/*编辑文章的内容（包含html标签元素）*/
+	content_html: string;
+	/*文章树id*/
+	article_tree_id: number;
+	/*文章标签列表*/
+	articleTags: number[];
+}
+
 export declare interface AT_RouterMeta {
 	/*是否缓存路由组件*/
 	keepAlive: boolean;
@@ -203,8 +283,8 @@ export declare interface AT_UserQueryAllResponse {
 	user_standing_id: number;
 	/*用户类型名称*/
 	standing_name: string;
-	/*用户类型的值*/
-	standing_value: number;
+	/*用户类型值*/
+	standing_value: AT_UserStanding;
 }
 
 export declare interface AT_UserQueryAllRequest {
@@ -223,6 +303,8 @@ export declare interface AT_UserLoginResponse {
 	user_name: string;
 	/*用户Code*/
 	user_code: string;
+	/*用户身份*/
+	standing: AT_UserStanding;
 }
 
 export declare interface AT_UserLoginRequest {
@@ -306,6 +388,10 @@ export declare interface AT_BlogArticleLikeTitleResponse {
 	title: string;
 	/*文章阅读量*/
 	reading_quantity: number;
+	/*作者id*/
+	author: number;
+	/*作者名称*/
+	author_name: string;
 	/*文章发布时间*/
 	add_time: string;
 	/*文章标签*/
@@ -372,8 +458,6 @@ export declare interface AT_BlogBackstageArticleAddRequest {
 	content: string;
 	/*新增文章的内容（包含html标签元素）*/
 	content_html: string;
-	/*用户id*/
-	author: number;
 	/*文章树id*/
 	article_tree_id: number;
 	articleTags: number[];
@@ -401,8 +485,6 @@ export declare interface AT_BlogBackstageArticleDraftAddRequest {
 	content: string;
 	/*新增文章的内容（包含html标签元素）*/
 	content_html: string;
-	/*用户id*/
-	author: number;
 	/*文章树id*/
 	article_tree_id: number;
 	articleTags: number[];
@@ -470,8 +552,12 @@ export declare interface AT_BlogBackstageArticleQueryForArticleResponse {
 	author_name: string;
 	/*文章发布时间*/
 	add_time: string;
-	/*文章标签*/
-	tags: string;
+	/*文章标签拼接*/
+	tag_names: string;
+	/*文章标签id拼接*/
+	tag_ids: string;
+	/*文章标签列表*/
+	tags: AT_SelectListItem[];
 	/*文章所属目录id*/
 	article_tree_id: number;
 	/*文章所属目录名称*/
@@ -497,7 +583,7 @@ export declare interface AT_BlogBackstageArticleAllQueryResponse {
 	/*状态名称*/
 	status_name: string;
 	/*状态值*/
-	status_value: number;
+	status_value: AT_ArticleStatus;
 	/*作者id*/
 	author: number;
 	/*作者名称*/

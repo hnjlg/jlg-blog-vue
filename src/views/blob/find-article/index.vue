@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="page-label__hot min-h-[100px] my-8">
-			<div class="text-lg font-bold">热门标签</div>
+			<div v-if="HotArticleTagsList.length !== 0" class="text-lg font-bold">热门标签</div>
 			<div class="flex flex-wrap">
 				<span
 					v-for="(item, index) in HotArticleTagsList"

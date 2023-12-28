@@ -11,7 +11,7 @@
 			:disabled="$route.query.pageTy === 'view'"
 		>
 			<el-form-item label="article title" prop="title">
-				<el-input v-model="pageFormData.title" clearable resize />
+				<el-input v-model="pageFormData.title" clearable resize :disabled="$route.query.pageType === 'view'" />
 			</el-form-item>
 			<el-row span="24" gutter="20">
 				<el-col :span="5">
@@ -21,9 +21,9 @@
 				</el-col>
 				<el-col :span="5">
 					<el-form-item label="article tags" prop="articleTags">
-						<el-input v-if="$route.query.pageType === 'view' && 'tags' in pageFormData" :value="pageFormData.tags"></el-input>
+						<el-input v-if="$route.query.pageType === 'view' && 'tags' in pageFormData" :value="pageFormData.tag_names" disabled></el-input>
 						<el-select
-							v-else-if="'articleTags' in pageFormData"
+							v-else
 							v-model="pageFormData.articleTags"
 							multiple
 							filterable
@@ -44,6 +44,7 @@
 						<el-input
 							v-if="$route.query.pageType === 'view' && 'article_tree_name' in pageFormData"
 							:value="pageFormData.article_tree_name"
+							disabled
 						></el-input>
 						<el-select
 							v-else
@@ -74,8 +75,9 @@
 			</el-row>
 		</el-form>
 		<div v-if="$route.query.pageType === 'add' || $route.query.pageType === 'edit'" class="btn-box text-right">
-			<el-button @click="sumbmitDraftFun">存草稿</el-button>
-			<el-button @click="sumbmitFun">发布</el-button>
+			<el-button v-if="$route.query.pageType === 'add'" @click="sumbmitDraftFun">存草稿</el-button>
+			<el-button v-if="$route.query.pageType === 'edit'" @click="sumbmitEditFun">修改</el-button>
+			<el-button v-if="$route.query.pageType === 'add'" @click="sumbmitFun">发布</el-button>
 		</div>
 	</div>
 </template>
@@ -90,6 +92,7 @@ import {
 	postBlogbackstagearticledraftadd,
 	AT_BlogBackstageArticleDraftAddRequest,
 	AT_BlogBackstageArticleQueryForArticleResponse,
+	postBlogbackstagearticleedit,
 } from '@/apiType/production/result.ts';
 import { articleTagsLoading, articleTagsRemoteMethod, articleTagsList, articleTreeListRemoteMethod, articleTreeList } from './hooks/useForm';
 import useBlogBackendStore from '@/store/blog-backend';
@@ -102,23 +105,34 @@ defineOptions({
 });
 const blogBackendStore = useBlogBackendStore();
 const pageFormData = ref<
-	| ((Omit<AT_BlogBackstageArticleDraftAddRequest, 'article_tree_id'> & { article_tree_id: number | null }) & {
-			author_name: string;
-	  })
-	| AT_BlogBackstageArticleQueryForArticleResponse
+	(Omit<AT_BlogBackstageArticleDraftAddRequest, 'article_tree_id'> & {
+		article_tree_id: null | number;
+	}) &
+		(Omit<AT_BlogBackstageArticleQueryForArticleResponse, 'article_tree_id'> & {
+			article_tree_id: null | number;
+		})
 >({
+	id: -1,
 	title: '',
 	content: '',
 	content_html: '',
 	author: blogBackendStore.$state.userInfo.id,
-	author_name: '',
+	author_name: blogBackendStore.$state.userInfo.user_name,
 	article_tree_id: null,
 	articleTags: [],
+	reading_quantity: 0,
+	add_time: '',
+	tag_names: '',
+	tag_ids: '',
+	tags: [],
+	article_tree_name: '',
 });
+const mdEditor = ref();
 
 const route = useRoute();
 
 async function initPage() {
+	pageLoading.value = true;
 	switch (route.query.pageType) {
 		case 'add':
 			break;
@@ -148,7 +162,17 @@ async function getInitData() {
 			reject();
 		}
 		postBlogbackstagearticlequeryforarticleId({ articleId: Number(route.query.id) }).then((result) => {
-			pageFormData.value = result.data.content;
+			pageFormData.value = { ...pageFormData.value, ...result.data.content };
+			nextTick(() => {
+				mdEditor.value?.cherry.setMarkdown(pageFormData.value.content_html ?? '');
+			});
+			articleTagsList.value = result.data.content.tags.map((item) => {
+				return {
+					tag_name: item.label,
+					id: item.value,
+				};
+			});
+			pageFormData.value.articleTags = result.data.content.tags.map((item) => item.value);
 			resolve();
 		});
 	});
@@ -168,8 +192,6 @@ const formRules = reactive<FormRules>({
 	],
 });
 
-const mdEditor = ref();
-
 // 存草稿
 async function sumbmitDraftFun() {
 	pageFormData.value.content = mdEditor.value.cherry.getMarkdown();
@@ -183,10 +205,9 @@ async function sumbmitDraftFun() {
 				content_html: pageFormData.value.content_html,
 				article_tree_id: pageFormData.value.article_tree_id,
 				articleTags: pageFormData.value.articleTags,
-				author: pageFormData.value.author,
 			}).then(() => {
 				ElMessage.success('submit success!');
-				router.push('BlogArticleAll');
+				router.push({ name: 'BlogArticleAllMe' });
 			});
 		} else {
 			ElMessage.error('Please fill out the form according to the prompts!');
@@ -207,10 +228,35 @@ async function sumbmitFun() {
 				content_html: pageFormData.value.content_html,
 				article_tree_id: pageFormData.value.article_tree_id,
 				articleTags: pageFormData.value.articleTags,
-				author: pageFormData.value.author,
 			}).then(() => {
 				ElMessage.success('submit success!');
-				router.push('BlogArticleAll');
+				router.push({ name: 'BlogArticleAllMe' });
+			});
+		} else {
+			ElMessage.error('Please fill out the form according to the prompts!');
+		}
+	});
+}
+
+// 编辑
+async function sumbmitEditFun() {
+	pageFormData.value.content = mdEditor.value.cherry.getMarkdown();
+	pageFormData.value.content_html = mdEditor.value.cherry.getHtml();
+	if (!ruleFormRef.value) return;
+	await ruleFormRef.value.validate((valid) => {
+		if (valid && typeof pageFormData.value.article_tree_id === 'number' && 'articleTags' in pageFormData.value) {
+			postBlogbackstagearticleedit({
+				title: pageFormData.value.title,
+				articleId: Number(route.query.id),
+				content: pageFormData.value.content,
+				content_html: pageFormData.value.content_html,
+				article_tree_id: pageFormData.value.article_tree_id,
+				articleTags: pageFormData.value.articleTags ?? [],
+			}).then((result) => {
+				if (result.data.status === 1) {
+					ElMessage.success('submit success!');
+					router.push({ name: 'BlogArticleAllMe' });
+				}
 			});
 		} else {
 			ElMessage.error('Please fill out the form according to the prompts!');

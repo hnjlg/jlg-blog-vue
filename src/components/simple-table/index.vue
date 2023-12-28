@@ -2,7 +2,8 @@
 	<div v-if="props.title" class="border-l-8 my-10px px-2">
 		<span class="text-lg font-bold">{{ props.title }}</span>
 	</div>
-	<el-table ref="elTableRef" style="width: 100%" v-bind="$attrs" :data="props.tableData" @row-dblclick="dbClickRow">
+	<el-empty v-if="!props.tableData || props.tableData.length === 0" description="还么有创作文章！" />
+	<el-table v-else ref="elTableRef" style="width: 100%" v-bind="$attrs" :data="props.tableData" @row-dblclick="dbClickRow">
 		<template v-if="props.fieldList">
 			<el-table-column
 				v-for="(item, index) in props.fieldList"
@@ -50,6 +51,19 @@ const props = withDefaults(
 );
 
 const elTableRef = ref();
+
+// const instance = getCurrentInstance();
+
+nextTick(() => {
+	console.log('===1===', elTableRef.value);
+});
+onMounted(() => {
+	console.log('=== ===', elTableRef.value);
+	// const entries = Object.entries(elTableRef.value.$.exposed);
+	// for (const [key, value] of entries) {
+	// 	instance.exposed[key] = value;
+	// }
+});
 
 const emit = defineEmits(['dbclick:row']);
 

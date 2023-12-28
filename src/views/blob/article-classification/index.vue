@@ -1,60 +1,66 @@
 <template>
 	<div class="article-classification-page px-3">
-		<div
+		<!-- <div
 			class="page-search flex items-center h-10 px-4 bg-slate-100 hover:bg-slate-200 rounded-full text-stone-500 shadow-2xl shadow-slate-500/50 cursor-pointer select-none transition"
 		>
 			<el-icon><Search /></el-icon><span class="pl-2">搜索</span><span class="animate-blink">|</span>
+		</div> -->
+		<div
+			class="page-label__search flex items-center h-10 px-4 bg-slate-100 hover:bg-slate-200 rounded-full text-stone-500 shadow-2xl shadow-slate-500/50 cursor-pointer select-none transition"
+		>
+			<el-icon><Search /></el-icon>
+			<el-input v-model.trim="searchKey" clearable class="caret-slate-500" @keyup.enter="searchFun"> </el-input>
 		</div>
 		<div class="page-content py-4">
-			<div v-infinite-scroll="load" infinite-scroll-delay="800" infinite-scroll-distance="30" infinite-scroll-immediate="true">
-				<div v-for="iitem in count" :key="iitem" class="pane-box py-3 mt-2 border-b-[1px] hover:bg-slate-100 flex">
-					<div class="pane-box-item-left min-w-[100px] max-w-150px cursor-pointer bg-slate-100">背景图(先假装有图)</div>
-					<div class="pane-box-item-right px-6 flex-1">
-						<div class="pane-box-item--title">
-							<span class="cursor-pointer" @click="gotoArticleDetail">2023最新版安卓逆向教程——第一天：Android Studio的安装与配置</span>
-						</div>
-						<div class="pane-box-item--description min-h-[50px] text-sm opacity-75">
-							<span class="cursor-pointer">超级详细的安卓学习笔记</span>
-						</div>
-						<div class="pane-box-item--other">
-							<el-tooltip effect="light" content="讲得不错！赞" placement="top">
-								<el-icon size="16" class="cursor-pointer mr-2"><Star /></el-icon>
-							</el-tooltip>
-							<span class="text-sm">20</span>
-							<el-tooltip effect="light" content="作者" placement="top">
-								<el-icon size="16" class="cursor-pointer mx-2"><User /></el-icon>
-							</el-tooltip>
-							<span class="text-sm cursor-pointer">马冬梅</span>
-							<el-tooltip effect="light" content="发表时间" placement="top">
-								<el-icon size="16" class="cursor-pointer ml-2"><Watch /></el-icon>
-							</el-tooltip>
-							<span class="text-sm">2023/11/28</span>
-						</div>
-					</div>
-				</div>
+			<div v-if="tableData.length !== 0" class="border-l-8 my-10px px-2">
+				<span class="text-lg font-bold">搜索结果：</span>
 			</div>
+			<article-list
+				v-if="tableData.length !== 0"
+				:table-data="tableData"
+				:correspondence="{
+					title: 'title',
+					publishTime: 'add_time',
+					lookAmount: 'reading_quantity',
+					author: 'author_name',
+				}"
+				@click="handleClick"
+			></article-list>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { Star, User, Watch, Search } from '@element-plus/icons-vue';
-import { useRouter } from 'vue-router';
+import { Search } from '@element-plus/icons-vue';
+import { router } from '@/router';
+import ArticleList from '@/components/article-list/index.vue';
+import { postBlogarticleliketitlequery, type AT_BlogArticleLikeTitleResponse } from '@/apiType/production/result';
 defineOptions({
 	name: 'FindArticle',
 });
 
-const router = useRouter();
+// const router = useRouter();
+
+const searchKey = ref('');
 
 // 跳转页面
-function gotoArticleDetail() {
-	router.push({ name: 'article-details', query: { id: 11111 } });
+function handleClick(item: AT_BlogArticleLikeTitleResponse) {
+	router.push({ name: 'article-details', query: { id: item.id } });
 }
 
-const count = ref(3);
-const load = () => {
-	count.value += 2;
-};
+const tableData = ref<AT_BlogArticleLikeTitleResponse[]>([]);
+
+function searchFun() {
+	postBlogarticleliketitlequery({
+		pageIndex: 1,
+		pageSize: 10,
+		title: searchKey.value,
+	}).then((result) => {
+		if (result.data.status === 1) {
+			tableData.value = result.data.content.arr;
+		}
+	});
+}
 </script>
 
 <style scoped lang="scss">
@@ -76,5 +82,32 @@ const load = () => {
 	// @include useBlobTheme {
 	// 	--el-color-primary: getBlobVar('textColor');
 	// }
+
+	.pane-box:hover {
+		@include useBlobTheme {
+			background-color: getBlobVar('textColor');
+			color: getBlobVar('bgColor');
+		}
+	}
+	.page-label__search {
+		:deep(.el-select) {
+			width: 100%;
+			.el-select__tags {
+				max-width: inherit !important;
+				background-color: inherit;
+				box-shadow: inherit;
+			}
+			.el-input__wrapper {
+				background-color: inherit;
+				box-shadow: inherit;
+			}
+		}
+		:deep(.el-input) {
+			.el-input__wrapper {
+				background-color: inherit;
+				box-shadow: inherit;
+			}
+		}
+	}
 }
 </style>

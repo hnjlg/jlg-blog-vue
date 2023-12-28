@@ -5,14 +5,14 @@
 			<!-- 左侧menu start -->
 			<el-aside style="background-color: aliceblue; height: 100vh">
 				<el-scrollbar>
-					<el-menu :default-openeds="['1', '2']" default-active="1-1">
+					<el-menu :default-openeds="['0', '1']" :default-active="$route.path">
 						<el-sub-menu index="0">
 							<template #title>
 								<el-icon><Location /></el-icon>首页
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="1-2" @click="jumpto({ path: '/blob-home' })">前台首页</el-menu-item>
-								<el-menu-item index="1-1" @click="jumpto({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
+								<el-menu-item @click="jumpto({ path: '/blob-home' })">前台首页</el-menu-item>
+								<el-menu-item index="/blogBackend/BlogBackendIndex" @click="jumpto({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu index="1">
@@ -20,10 +20,8 @@
 								<el-icon><Location /></el-icon>文章管理
 							</template>
 							<el-menu-item-group>
-								<template v-for="(item, index) in RealDisplayRoute" :key="index">
-									<el-menu-item v-if="item.meta" :index="`1-${index + 1}`" @click="jumpto(item)">
-										{{ item.meta.title }}
-									</el-menu-item>
+								<template v-for="item in blogBackendStore.$state.routerInfo" :key="item.path">
+									<el-menu-item v-if="item.meta" :index="item.path" @click="jumpto(item)"> {{ item.meta.title }} </el-menu-item>
 								</template>
 							</el-menu-item-group>
 						</el-sub-menu>
@@ -132,16 +130,6 @@ function clickAvatar() {
 		console.log('===未登录===');
 	}
 }
-
-// 菜单目录
-const RealDisplayRoute = computed(() =>
-	router
-		.getRoutes()
-		.filter(
-			(item) =>
-				item.name && item.path.startsWith('/blogBackend') && !['BlogBackend', 'BlogBackendIndex', 'BlogBackendLogin'].includes(String(item.name))
-		)
-);
 </script>
 <style lang="scss" scoped>
 .blog-backend-container {
