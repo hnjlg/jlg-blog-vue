@@ -19,7 +19,6 @@
 	"dependencies": {
 		"@element-plus/icons": "^0.0.11",
 		"@element-plus/icons-vue": "^2.1.0",
-		"@types/crypto-js": "^4.2.1",
 		"axios": "^1.6.0",
 		"cherry-markdown": "^0.8.27",
 		"crypto-js": "^4.2.0",
@@ -39,6 +38,7 @@
 		"@babel/eslint-parser": "^7.22.15",
 		"@commitlint/cli": "^18.2.0",
 		"@commitlint/config-conventional": "^18.1.0",
+		"@types/crypto-js": "^4.2.1",
 		"@types/node": "^20.9.0",
 		"@typescript-eslint/eslint-plugin": "^6.10.0",
 		"@typescript-eslint/parser": "^6.10.0",

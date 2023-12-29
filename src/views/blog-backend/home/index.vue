@@ -11,8 +11,8 @@
 								<el-icon><Location /></el-icon>首页
 							</template>
 							<el-menu-item-group>
-								<el-menu-item @click="jumpto({ path: '/blob-home' })">前台首页</el-menu-item>
-								<el-menu-item index="/blogBackend/BlogBackendIndex" @click="jumpto({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
+								<el-menu-item @click="jumpTo({ path: '/blob-home' })">前台首页</el-menu-item>
+								<el-menu-item index="/blogBackend/BlogBackendIndex" @click="jumpTo({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu index="1">
@@ -21,7 +21,7 @@
 							</template>
 							<el-menu-item-group>
 								<template v-for="item in blogBackendStore.$state.routerInfo" :key="item.path">
-									<el-menu-item v-if="item.meta" :index="item.path" @click="jumpto(item)"> {{ item.meta.title }} </el-menu-item>
+									<el-menu-item v-if="item.meta" :index="item.path" @click="jumpTo(item)"> {{ item.meta.title }} </el-menu-item>
 								</template>
 							</el-menu-item-group>
 						</el-sub-menu>
@@ -73,7 +73,7 @@
 							<template #dropdown>
 								<el-dropdown-menu>
 									<el-dropdown-item :disabled="!isLogin">我的信息</el-dropdown-item>
-									<el-dropdown-item divided @click="loginout">退出登录</el-dropdown-item>
+									<el-dropdown-item divided @click="loginOut">退出登录</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
 						</el-dropdown>
@@ -105,29 +105,20 @@ import { Menu as IconMenu, Setting, Location } from '@element-plus/icons-vue';
 import { RouteLocationRaw } from 'vue-router';
 import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
-import { loginout } from './hooks/loginout';
+import { loginOut } from './hooks/loginOut';
 import { router } from '@/router/index';
-import io from 'socket.io-client';
+import socketInit from '@/mixin/useSocketHook';
 
 defineOptions({
 	name: 'BlobBackendHome',
 });
 
+socketInit();
+
 const blogBackendStore = useBlogBackendStore();
 
-const socketIo = io('http://192.168.13.225:3000', {
-	withCredentials: true, // 允许发送凭据（例如 cookie）
-	transports: ['websocket'], // 明确指定使用 WebSocket 连接，以避免跨域问题
-});
-
-socketIo.on('newMessage', (data) => {
-	console.log(data, 'data');
-});
-
-socketIo.emit('testGet');
-
 // 跳转路由
-function jumpto(routerInfo: RouteLocationRaw) {
+function jumpTo(routerInfo: RouteLocationRaw) {
 	router.push(routerInfo);
 }
 

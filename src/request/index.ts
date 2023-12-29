@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { loginout } from '@/views/blog-backend/home/hooks/loginout';
+import { loginOut } from '@/views/blog-backend/home/hooks/loginOut';
 import { interceptorsReq, interceptorsRes } from './interceptors';
 
 const request = axios.create({
@@ -15,7 +15,7 @@ request.interceptors.response.use(interceptorsRes, (error) => {
 	if (error.response && error.response.status === 403) {
 		ElMessage.error('登录信息过期！');
 		nextTick(() => {
-			loginout();
+			loginOut();
 		});
 	} else {
 		ElMessage.error(error.response.data.message);
