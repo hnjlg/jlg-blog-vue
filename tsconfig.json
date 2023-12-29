@@ -1,19 +1,21 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
+		"target": "esnext",
 		"useDefineForClassFields": true,
-		"module": "ESNext",
+		"module": "esnext",
 		"lib": [
-			"ES2020",
-			"DOM",
-			"DOM.Iterable"
+			"esnext",
+			"dom"
 		],
-		"skipLibCheck": true,
+		// 不生成map文件
+		"sourceMap": false,
 		/* Bundler mode */
-		"moduleResolution": "bundler",
+		"moduleResolution": "node",
 		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
+		// 不生成js文件
+		"noEmitOnError": true,
 		"noEmit": true,
 		"jsx": "preserve",
 		/* Linting */
@@ -21,10 +23,14 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
-		"baseUrl": "./",
+		// 希望完全禁用对 node_modules 中的所有文件的检查，您可以使用 allowJs 选项，并将其设置为 false。这将告诉编译器完全忽略 JavaScript 文件
+		"allowJs": false,
+		// 是否跳过检测第三方库的d.ts文件
+		"skipLibCheck": true,
+		"baseUrl": ".",
 		"paths": {
 			"@/*": [
-				"./src/*"
+				"src/*"
 			],
 		},
 		"types": [
@@ -39,6 +45,10 @@
 		"src/**/*.vue",
 		"auto-imports.d.ts",
 		"import-init.d.ts"
+	],
+	"exclude": [
+		"dist",
+		"node_modules"
 	],
 	"references": [
 		{

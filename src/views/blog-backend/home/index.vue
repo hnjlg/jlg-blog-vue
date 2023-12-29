@@ -107,12 +107,24 @@ import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
 import { loginout } from './hooks/loginout';
 import { router } from '@/router/index';
+import io from 'socket.io-client';
 
 defineOptions({
 	name: 'BlobBackendHome',
 });
 
 const blogBackendStore = useBlogBackendStore();
+
+const socketIo = io('http://192.168.13.225:3000', {
+	withCredentials: true, // 允许发送凭据（例如 cookie）
+	transports: ['websocket'], // 明确指定使用 WebSocket 连接，以避免跨域问题
+});
+
+socketIo.on('newMessage', (data) => {
+	console.log(data, 'data');
+});
+
+socketIo.emit('testGet');
 
 // 跳转路由
 function jumpto(routerInfo: RouteLocationRaw) {
@@ -139,4 +151,3 @@ function clickAvatar() {
 	}
 }
 </style>
-./hooks/varliable

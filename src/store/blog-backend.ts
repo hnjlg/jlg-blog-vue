@@ -29,7 +29,7 @@ const useBlobStore = defineStore<
 		paths: ['routerInfo', 'userInfo'],
 	},
 	state: () => ({
-		userInfo: { id: -1, user_name: '', token: '', user_code: '' },
+		userInfo: { id: -1, user_name: '', token: '', user_code: '', standing: 1 },
 		routerInfo: [],
 	}),
 	getters: {
@@ -60,7 +60,7 @@ const useBlobStore = defineStore<
 			localStorage.setItem('blog-backend-userInfo', JSON.stringify(userInfo));
 		},
 		clearUserInfo() {
-			this.userInfo = { id: -1, user_name: '', token: '', user_code: '' };
+			this.userInfo = { id: -1, user_name: '', token: '', user_code: '', standing: 1 };
 			localStorage.removeItem('blog-backend-userInfo');
 		},
 		changeRouterInfo(routerInfo) {

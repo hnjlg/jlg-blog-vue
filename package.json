@@ -11,7 +11,7 @@
 		"prettier:fix": "prettier --write .",
 		"eslint:fix": "eslint --fix .",
 		"prepare": "husky install",
-		"pre-commit": "lint-staged",
+		"pre-commit": "concurrently \"tsc\" \"lint-staged\"",
 		"preinstall": "npx only-allow npm",
 		"style": "stylelint \"./**/*.{css,scss,sass,vue,html}\" --fix",
 		"jlg_generate_by_swagger": "npx jlg_generate_by_swagger"
@@ -30,6 +30,7 @@
 		"normalize.css": "^8.0.1",
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.1",
+		"socket.io-client": "^4.7.2",
 		"vue": "^3.3.4",
 		"vue-router": "^4.0.14"
 	},
@@ -43,6 +44,7 @@
 		"@typescript-eslint/parser": "^6.10.0",
 		"@vitejs/plugin-vue": "^4.2.3",
 		"autoprefixer": "^10.4.16",
+		"concurrently": "^8.2.2",
 		"cross-env": "^7.0.3",
 		"eslint": "^8.53.0",
 		"eslint-config-prettier": "^9.0.0",
@@ -72,7 +74,7 @@
 		"vite": "^4.4.5",
 		"vite-plugin-eslint": "^1.8.1",
 		"vite-svg-loader": "^4.0.0",
-		"vue-tsc": "^1.8.5"
+		"vue-tsc": "^1.8.27"
 	},
 	"engines": {
 		"node": "18.12.x"
