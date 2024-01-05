@@ -61,6 +61,15 @@ export const routes: RouteRecordRaw[] = [
 				name: 'article-square',
 			},
 			{
+				path: '/blob-home/article-tree',
+				component: () => import('@/views/blob/article-tree/index.vue'),
+				meta: {
+					keepAlive: true,
+					backgroundShow: false,
+				},
+				name: 'article-tree',
+			},
+			{
 				path: '/blob-home/article-classification',
 				component: () => import('@/views/blob/article-classification/index.vue'),
 				meta: {

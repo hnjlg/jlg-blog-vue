@@ -1,3 +1,4 @@
+<!-- 搜索文章页面 -->
 <template>
 	<div class="article-classification-page px-3">
 		<!-- <div
@@ -12,20 +13,24 @@
 			<el-input v-model.trim="searchKey" clearable class="caret-slate-500" @keyup.enter="searchFun"> </el-input>
 		</div>
 		<div class="page-content py-4">
-			<div v-if="tableData.length !== 0" class="border-l-8 my-10px px-2">
-				<span class="text-lg font-bold">搜索结果：</span>
-			</div>
-			<article-list
-				v-if="tableData.length !== 0"
-				:table-data="tableData"
-				:correspondence="{
-					title: 'title',
-					publishTime: 'add_time',
-					lookAmount: 'reading_quantity',
-					author: 'author_name',
-				}"
-				@click="handleClick"
-			></article-list>
+			<transition name="el-zoom-in-top">
+				<div v-show="tableData.length !== 0">
+					<div class="border-l-8 my-10px px-2">
+						<span class="text-lg font-bold">搜索结果：</span>
+					</div>
+					<article-list
+						:table-data="tableData"
+						:correspondence="{
+							title: 'title',
+							publishTime: 'add_time',
+							lookAmount: 'reading_quantity',
+							author: 'author_name',
+						}"
+						@click="handleClick"
+					></article-list>
+				</div>
+			</transition>
+			<el-empty v-if="tableData.length === 0" description="快来搜索吧！" />
 		</div>
 	</div>
 </template>
@@ -51,6 +56,7 @@ function handleClick(item: AT_BlogArticleLikeTitleResponse) {
 const tableData = ref<AT_BlogArticleLikeTitleResponse[]>([]);
 
 function searchFun() {
+	if (searchKey.value === '') return;
 	postBlogarticleliketitlequery({
 		pageIndex: 1,
 		pageSize: 10,

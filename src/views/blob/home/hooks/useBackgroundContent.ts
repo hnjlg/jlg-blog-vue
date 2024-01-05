@@ -15,13 +15,13 @@ export const blobHomeContentBackgroundHandleClick = (meta: RouteMeta) => {
 			return;
 		}
 		if (meta.backgroundShow && currentShow.value === 'content') {
-			gsap.fromTo(BackgroundDivElement, { zIndex: 1, rotate: '8deg', duration: 1 }, { zIndex: 2, rotate: '-2deg', duration: 1 });
-			gsap.fromTo(DivElement, { zIndex: 2, rotate: '-2deg', duration: 1 }, { zIndex: 1, rotate: '8deg', duration: 1 });
+			gsap.fromTo(BackgroundDivElement, { zIndex: 1, rotate: '8deg', duration: 1 }, { zIndex: 2, rotate: '0deg', duration: 1 });
+			gsap.fromTo(DivElement, { zIndex: 2, rotate: '0deg', duration: 1 }, { zIndex: 1, rotate: '8deg', duration: 1 });
 			currentShow.value = 'content-background';
 		}
 		if (!meta.backgroundShow && currentShow.value === 'content-background') {
-			gsap.fromTo(BackgroundDivElement, { zIndex: 2, rotate: '-2deg', duration: 1 }, { zIndex: 1, rotate: '8deg', duration: 1 });
-			gsap.fromTo(DivElement, { zIndex: 1, rotate: '8deg', duration: 1 }, { zIndex: 2, rotate: '-2deg', duration: 1 });
+			gsap.fromTo(BackgroundDivElement, { zIndex: 2, rotate: '0deg', duration: 1 }, { zIndex: 1, rotate: '8deg', duration: 1 });
+			gsap.fromTo(DivElement, { zIndex: 1, rotate: '8deg', duration: 1 }, { zIndex: 2, rotate: '0deg', duration: 1 });
 			currentShow.value = 'content';
 		}
 	});

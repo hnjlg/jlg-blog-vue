@@ -3,7 +3,7 @@
 	<div class="page-content">
 		<el-empty v-if="!props.tableData" description="暂时还没有主子愿意公开文章哦！" />
 		<div v-else>
-			<div v-for="(item, index) in props.tableData" :key="index" class="pane-box py-3 mt-2 border-b-[1px] flex">
+			<div v-for="(item, index) in props.tableData" :key="index" class="pane-box py-3 mt-2 border-b-[1px] transition duration-500 flex">
 				<div class="pane-box-item-right px-6 flex-1">
 					<template v-if="props.isDisplayHot && 5 - index * 2 > 0">
 						<el-icon v-for="iitem in 5 - index * 2" :key="iitem" color="#ff4400"><Star /></el-icon>

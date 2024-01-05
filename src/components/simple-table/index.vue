@@ -1,3 +1,4 @@
+<!-- 表格 -->
 <template>
 	<div v-if="props.title" class="border-l-8 my-10px px-2">
 		<span class="text-lg font-bold">{{ props.title }}</span>
@@ -52,17 +53,13 @@ const props = withDefaults(
 
 const elTableRef = ref();
 
-// const instance = getCurrentInstance();
+const instance = getCurrentInstance();
 
 nextTick(() => {
-	console.log('===1===', elTableRef.value);
-});
-onMounted(() => {
-	console.log('=== ===', elTableRef.value);
-	// const entries = Object.entries(elTableRef.value.$.exposed);
-	// for (const [key, value] of entries) {
-	// 	instance.exposed[key] = value;
-	// }
+	const entries = Object.entries(elTableRef.value.$.exposed);
+	for (const [key, value] of entries) {
+		instance!.exposed![key] = value;
+	}
 });
 
 const emit = defineEmits(['dbclick:row']);
@@ -72,7 +69,4 @@ function dbClickRow(row: Record<string, unknown>, column: Record<string, unknown
 }
 // 表格默认列名
 const defaultFieldList = props.fieldList?.length === 0 && Object.keys(props.tableData[0]);
-
-const $slots = useSlots();
-console.log('===slots===', $slots);
 </script>

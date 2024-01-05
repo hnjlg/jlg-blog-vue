@@ -1,88 +1,112 @@
+<!-- 搜索标签页面 -->
 <template>
 	<div class="article-classification-page px-3">
 		<div
-			class="page-label__search flex items-center h-10 px-4 bg-slate-100 hover:bg-slate-200 rounded-full text-stone-500 shadow-2xl shadow-slate-500/50 cursor-pointer select-none transition"
+			class="page-label__search flex items-center sticky top-0 h-10 px-4 bg-slate-100 hover:bg-slate-200 rounded-full text-stone-500 shadow-2xl shadow-slate-500/50 cursor-pointer z-10 select-none transition"
 		>
 			<!-- <el-icon><Search /></el-icon><span class="pl-2">搜索</span><span class="animate-blink">|</span> -->
-			<el-icon @click="searchFun"><Search /></el-icon>
+			<el-icon><Search /></el-icon>
 			<!-- <el-input v-model.trim="searchKey" clearable class="caret-slate-500" @keyup.enter="searchFun"> </el-input> -->
 			<el-select
-				v-model="searchKey"
+				v-model.trim="searchKey"
 				filterable
 				remote
 				reserve-keyword
-				placeholder="Please enter a keyword"
+				placeholder="Please enter a tag keyword"
+				clearable
 				:remote-method="articleTagsRemoteMethod"
 				:loading="articleTagsLoading"
-				@keyup.enter="searchFun"
 			>
-				<el-option v-for="item in articleTagsList" :key="item.id" :label="item.tag_name" :value="item.id" />
+				<el-option v-for="item in articleTagsList" :key="item.id" :label="item.tag_name" :value="item.tag_name" />
 			</el-select>
 		</div>
 
-		<div class="page-label__hot min-h-[100px] my-8">
-			<div v-if="HotArticleTagsList.length !== 0" class="text-lg font-bold">热门标签</div>
+		<div class="page-label__hot min-h-[50px] my-8">
+			<div v-if="HotArticleTagsList.length !== 0" class="border-l-8 my-10px px-2">
+				<div class="text-lg font-bold">热门标签</div>
+				<span
+					class="text-base text-stone-500 px-4 m-1 bg-slate-100 hover:bg-slate-200 rounded-full cursor-pointer select-none"
+					@click="tagHandleEvent22222"
+					>打开抽屉
+				</span>
+			</div>
 			<div class="flex flex-wrap">
 				<span
 					v-for="(item, index) in HotArticleTagsList"
 					:key="index"
 					class="text-base text-stone-500 px-4 m-1 bg-slate-100 hover:bg-slate-200 rounded-full cursor-pointer select-none"
+					@click="tagHandleEvent(item)"
 				>
-					{{ item.tag_name }}
+					{{ item.tag_name + '(' + item.article_count + ')' }}
 				</span>
 			</div>
 		</div>
-		<div v-show="SearchArticleTagsList.length !== 0" class="page-label__all">
-			<div class="text-lg font-bold">搜索结果</div>
-			<div class="flex flex-wrap">
-				<span
-					v-for="(item, index) in SearchArticleTagsList"
-					:key="index"
-					class="text-base text-stone-500 px-4 m-1 bg-slate-100 hover:bg-slate-200 rounded-full cursor-pointer select-none"
-				>
-					{{ item.tag_name }}
-				</span>
+		<transition name="el-zoom-in-top">
+			<div v-show="articleTagsList.length !== 0" class="page-label__all">
+				<div class="border-l-8 my-10px px-2">
+					<span class="text-lg font-bold">搜索结果</span>
+				</div>
+				<div class="flex flex-wrap">
+					<span
+						v-for="(item, index) in articleTagsList"
+						:key="index"
+						class="text-base text-stone-500 px-4 m-1 bg-slate-100 hover:bg-slate-200 rounded-full cursor-pointer select-none"
+						@click="tagHandleEvent(item)"
+					>
+						{{ item.tag_name }}
+					</span>
+				</div>
 			</div>
-		</div>
+		</transition>
+		<transition name="el-zoom-in-top">
+			<div v-show="tableData.length !== 0" class="page-label__article min-h-[100px] my-8">
+				<div class="border-l-8 my-10px px-2">
+					<div class="text-lg font-bold">文章列表</div>
+				</div>
+				<article-list
+					:table-data="tableData"
+					:correspondence="{
+						title: 'title',
+						publishTime: 'add_time',
+						lookAmount: 'reading_quantity',
+						author: 'author_name',
+					}"
+					@click="handleClick"
+				></article-list>
+			</div>
+		</transition>
+		<el-empty v-if="tableData.length === 0" description="快来搜索吧！" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { getBloghottagsquery, postBlogtagsquery } from '@/apiType/production/result';
+import {
+	getBloghottagsquery,
+	postBlogarticlesquerybyTagId,
+	postBlogtagsquery,
+	type AT_BlogHotArticleQueryResponse,
+	type AT_BlogTagsQueryResponse,
+	type AT_BlogHotTagsQueryResponse,
+} from '@/apiType/production/result';
 import { Search } from '@element-plus/icons-vue';
+import ArticleList from '@/components/article-list/index.vue';
+import { router } from '@/router/index';
+import drawer from '@/mixin/drawer';
+
 defineOptions({
 	name: 'ArticleClassification',
 });
 
-const HotArticleTagsList = ref<any[]>([]);
-getBloghottagsquery(5).then((result) => {
+const HotArticleTagsList = ref<AT_BlogHotTagsQueryResponse[]>([]);
+getBloghottagsquery(10).then((result) => {
 	HotArticleTagsList.value = result.data.content;
 });
 
 const searchKey = ref('');
 
-const SearchArticleTagsList = ref<any[]>([]);
-function searchFun() {
-	return new Promise<void>((resolve) => {
-		postBlogtagsquery({
-			pageIndex: 1,
-			pageSize: 10,
-			tagName: searchKey.value,
-		})
-			.then((result) => {
-				SearchArticleTagsList.value = result.data.content.arr;
-				ElMessage.success('搜索成功');
-			})
-			.finally(() => {
-				articleTagsLoading.value = false;
-			});
-		resolve();
-	});
-}
-
 const articleTagsLoading = ref(false);
 // 文章标签远程检索
-const articleTagsList = ref([]);
+const articleTagsList = ref<AT_BlogTagsQueryResponse[]>([]);
 function articleTagsRemoteMethod(tagName: string) {
 	articleTagsLoading.value = true;
 	if (tagName === '') return;
@@ -96,6 +120,36 @@ function articleTagsRemoteMethod(tagName: string) {
 		})
 		.finally(() => {
 			articleTagsLoading.value = false;
+		});
+}
+
+const tableData = ref<AT_BlogHotArticleQueryResponse[]>([]);
+
+function tagHandleEvent(item: AT_BlogTagsQueryResponse) {
+	tableData.value = [];
+	postBlogarticlesquerybyTagId({
+		pageIndex: 1,
+		pageSize: 30,
+		tagId: item.id,
+	}).then((result) => {
+		if (result.data.status === 1) {
+			console.log('===result===', result);
+			tableData.value = result.data.content.arr;
+		}
+	});
+}
+
+function handleClick(item: AT_BlogHotArticleQueryResponse) {
+	router.push({ name: 'article-details', query: { id: item.id } });
+}
+
+function tagHandleEvent22222() {
+	drawer('ArticlePublish', { id: 1, modalType: 'add' })
+		.then(() => {
+			console.log('===确定===');
+		})
+		.catch(() => {
+			console.log('===取消===');
 		});
 }
 </script>
