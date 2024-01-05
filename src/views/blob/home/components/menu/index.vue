@@ -68,6 +68,12 @@ const menuList = ref<I_MenuItem[]>([
 	},
 	{
 		level: 2,
+		title: 'Article Tree',
+		pathName: 'article-tree',
+		icon: 'undraw_my_personal_files_re_3q0p_svg',
+	},
+	{
+		level: 2,
 		title: 'Find Article',
 		pathName: 'article-classification',
 		icon: 'undraw_blog_post_re_fy5x_svg',

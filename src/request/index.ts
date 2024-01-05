@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { loginOut } from '@/views/blog-backend/home/hooks/loginOut';
+import { loginOut } from '@/views/blog-backend/home/hooks/loginout';
 import { interceptorsReq, interceptorsRes } from './interceptors';
 
 const request = axios.create({
