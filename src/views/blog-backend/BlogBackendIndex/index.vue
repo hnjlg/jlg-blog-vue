@@ -20,7 +20,21 @@ function initPage() {
 		console.log(data, 'data');
 	});
 
-	socketIo.emit('testGet');
+	socketIo.emit('reqHistoryMsg');
+
+	socketIo.on('resHistoryMsg', (data) => {
+		console.log(data, 'data');
+	});
+
+	socketIo.on('resNewMessage', (data) => {
+		console.log(data, 'data2');
+	});
+
+	socketIo.emit('reqReadMessage');
+
+	socketIo.on('resReadMessage', (data) => {
+		console.log(data, 'data');
+	});
 }
 initPage();
 </script>
