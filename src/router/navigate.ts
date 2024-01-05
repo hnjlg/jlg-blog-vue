@@ -40,6 +40,14 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 				},
 				name: 'BlogBackendLogin',
 			});
+			router.addRoute('BlogBackend', {
+				path: '/blogBackend/BlogBackendRegister',
+				component: () => import('@/views/blog-backend/BlogBackendRegister/index.vue'),
+				meta: {
+					keepAlive: false,
+				},
+				name: 'BlogBackendRegister',
+			});
 		}
 		// 后台已登录
 		if (localStorage.getItem('blog-backend-token')) {
@@ -72,11 +80,13 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 			}
 		}
 		// 后台未登录&&不是去登录页
-		else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin') {
+		else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin' && to.name !== 'BlogBackendRegister') {
 			next({ name: 'BlogBackendLogin' });
 		}
 		// 后台未登录&&去登录页
 		else {
+			console.log(to);
+			console.log('111');
 			next();
 		}
 	} else {
