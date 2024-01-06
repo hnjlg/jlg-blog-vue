@@ -144,7 +144,7 @@ function handleClick(item: AT_BlogHotArticleQueryResponse) {
 }
 
 function tagHandleEvent22222() {
-	drawer('ArticlePublish', { id: 1, modalType: 'add' })
+	drawer('ArticlePublish', '发布文章', { id: 1, modalType: 'add' })
 		.then(() => {
 			console.log('===确定===');
 		})
@@ -156,6 +156,9 @@ function tagHandleEvent22222() {
 
 <style scoped lang="scss">
 .article-classification-page {
+	:deep(.el-input) {
+		--el-input-focus-border: red;
+	}
 	@keyframes blink {
 		0% {
 			opacity: 1;

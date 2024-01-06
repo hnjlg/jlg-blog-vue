@@ -1,19 +1,22 @@
 // 修改cherry-markdown样式
-.cherry {
-	// 编辑器光标样式
-	// .CodeMirror-cursor {
-	// 	height: 16px !important;
-	// }
-	justify-content: center;
-	.cherry-toolbar {
-		background: black;
+// .cherry {
+// 编辑器光标样式
+// .CodeMirror-cursor {
+// 	height: 16px !important;
+// }
+// justify-content: center;
+// .cherry-toolbar {
+// 	background: black;
 
-		.cherry-toolbar-button {
-			color: white;
-		}
-	}
-	@include useBlobTheme {
-		background-color: getBlobVar('textColor');
-		color: getBlobVar('bgColor');
-	}
-}
+// 	.cherry-toolbar-button {
+// 		color: white;
+// 	}
+// }
+// @include useBlobTheme {
+// 	background-color: getBlobVar('textColor');
+// 	color: getBlobVar('bgColor');
+// }
+// }
+
+@import './assets/markdown-theme/github-night.css';
+@import './assets/markdown-theme/sneh-dark.css';

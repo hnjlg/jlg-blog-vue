@@ -1,6 +1,6 @@
 <!-- 文章编辑组件 -->
 <template>
-	<el-drawer v-model="dialogVisible" title="发布文章" v-bind="$attrs" direction="ltr" size="80%">
+	<el-drawer v-model="dialogVisible" :title="props.modalTitle" v-bind="$attrs" direction="ltr" size="80%">
 		{{ props }}
 		<el-form
 			ref="ruleFormRef"
@@ -79,9 +79,9 @@
 		<template #footer>
 			<div v-if="props.propsData.modalType === 'add' || props.propsData.modalType === 'edit'" class="btn-box text-right">
 				<el-button @click="handleCancel">取消</el-button>
-				<el-button v-if="props.propsData.modalType === 'add'" @click="sumbmitDraftFun">存草稿</el-button>
+				<el-button v-if="props.propsData.modalType === 'add'" type="primary" plain @click="sumbmitDraftFun">存草稿</el-button>
 				<el-button v-if="props.propsData.modalType === 'edit'" @click="sumbmitEditFun">修改</el-button>
-				<el-button v-if="props.propsData.modalType === 'add'" @click="sumbmitFun">发布</el-button>
+				<el-button v-if="props.propsData.modalType === 'add'" type="primary" @click="sumbmitFun">发布</el-button>
 			</div>
 		</template>
 	</el-drawer>
@@ -110,6 +110,10 @@ defineOptions({
 });
 
 const props = defineProps({
+	modalTitle: {
+		type: String,
+		default: '',
+	},
 	propsData: {
 		type: Object,
 		default: () => ({}),
@@ -319,6 +323,6 @@ function articleTreeListRemoteMethod(name: string) {
 }
 
 onUnmounted(() => {
-	console.log('===xiaohui===');
+	console.log('===销毁===');
 });
 </script>

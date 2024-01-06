@@ -12,15 +12,26 @@ defineOptions({
 });
 
 function initPage() {
-	console.log('initPage', socketIo);
 	nextTick(() => {
 		pageLoading.value = false;
 	});
-	socketIo.on('newMessage', (data) => {
-		console.log(data, 'data');
+	// socketIo.value?.on('newMessage', (data) => {
+	// 	console.log(data, 'data');
+	// });
+
+	// socketIo.value?.emit('testGet');
+
+	socketIo.value?.emit('reqHistoryMsg');
+
+	socketIo.value?.on('resHistoryMsg', (data) => {
+		console.log(data, 'datadatadatadatadatadatadata');
 	});
 
-	socketIo.emit('testGet');
+	// socketIo.value?.emit('resNewMessage');
+
+	socketIo.value?.on('resNewMessage', (data) => {
+		console.log(data, 'datadatadatadatadatadatadata');
+	});
 }
 initPage();
 </script>

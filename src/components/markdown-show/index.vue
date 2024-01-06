@@ -1,10 +1,11 @@
 <template>
-	<div ref="cherryMarkdownContent" class="cherry">
+	<div ref="cherryMarkdownContent" :class="mdTheme">
 		<div></div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { mdTheme } from '@/views/blob/home/components/background-content-header/hooks/useMdTheme';
 defineOptions({
 	name: 'MarkdownShow',
 });

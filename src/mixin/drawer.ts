@@ -6,7 +6,7 @@ document.body.appendChild(divDom);
 
 const DrawerList = new Map([['ArticlePublish', Drawer]]);
 
-function drawer(modalName: string, option: any) {
+function drawer(modalKey: string, modalTitle: string, option: any) {
 	return new Promise((resolve, reject) => {
 		function onSubmit(data: any) {
 			render(null, divDom);
@@ -27,7 +27,9 @@ function drawer(modalName: string, option: any) {
 			第二个参数是要传递的 prop，
 			第三个参数是子节点。
     	*/
-		const vNode = h(DrawerList.get(modalName) ?? 'div', {
+		const vNode = h(DrawerList.get(modalKey) ?? 'div', {
+			modalKey,
+			modalTitle,
 			propsData: option,
 			// 打开弹窗
 			modelValue: true,
