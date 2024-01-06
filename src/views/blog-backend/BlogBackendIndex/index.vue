@@ -19,7 +19,13 @@ function initPage() {
 	// 	console.log(data, 'data');
 	// });
 
-	// socketIo.value?.emit('testGet');
+	// socketIo.value?.emit('reqHistoryMsg');
+
+	socketIo.value?.emit('reqReadMessage');
+
+	socketIo.value?.on('resReadMessage', (data) => {
+		console.log(data, 'data');
+	});
 
 	socketIo.value?.emit('reqHistoryMsg');
 

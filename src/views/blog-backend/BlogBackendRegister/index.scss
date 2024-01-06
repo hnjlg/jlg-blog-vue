@@ -1,0 +1,11 @@
+.blob-register-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+
+	.form {
+		min-width: 400px;
+		min-height: 300px;
+	}
+}
