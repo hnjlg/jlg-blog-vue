@@ -9,7 +9,7 @@ const init = () => {
 
 	const Authorization = localStorage.getItem('blog-backend-token') || blogBackendStore.$state.userInfo.token;
 
-	socketIo.value = io(`http://192.168.13.225:3000?Authorization=${Authorization}`, {
+	socketIo.value = io(`${import.meta.env.VITE_APP_BASE_URL}?Authorization=${Authorization}`, {
 		withCredentials: true, // 允许发送凭据（例如 cookie）
 		transports: ['websocket'], // 明确指定使用 WebSocket 连接，以避免跨域问题
 	});

@@ -20,7 +20,7 @@
 								<el-icon><Location /></el-icon>文章管理
 							</template>
 							<el-menu-item-group>
-								<template v-for="item in blogBackendStore.$state.routerInfo" :key="item.path">
+								<template v-for="item in blogBackendStore.routerInfo" :key="item.path">
 									<el-menu-item v-if="item.meta" :index="item.path" @click="jumpTo(item)"> {{ item.meta.title }} </el-menu-item>
 								</template>
 							</el-menu-item-group>
@@ -68,7 +68,7 @@
 					<div class="flex justify-end">
 						<el-dropdown>
 							<el-avatar class="text-xs" @click="clickAvatar">
-								{{ isLogin ? blogBackendStore.$state.userInfo.user_name ?? '未登录' : '未登录' }}
+								{{ isLogin ? blogBackendStore.userInfo.user_name ?? '未登录' : '未登录' }}
 							</el-avatar>
 							<template #dropdown>
 								<el-dropdown-menu>
@@ -126,7 +126,7 @@ const isLogin = computed<boolean>(() => (localStorage.getItem('blog-backend-toke
 
 // 点击头像
 function clickAvatar() {
-	if (blogBackendStore.$state.userInfo) {
+	if (blogBackendStore.userInfo) {
 		console.log('===已登录===');
 	} else {
 		router.push({ name: 'BlogBackendLogin' });

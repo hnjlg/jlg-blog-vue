@@ -18,10 +18,10 @@
 
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import { useRouter } from 'vue-router';
 import useBlogBackendStore from '@/store/blog-backend';
-import { postUserlogin } from '@/apiType/production/result';
+import { getRouterconfiguserrouterquery, postUserlogin } from '@/apiType/production/result';
 import CryptoJS from 'crypto-js';
+import { router } from '@/router/index';
 
 defineOptions({
 	name: 'BlogBackendLogin',
@@ -36,7 +36,6 @@ const loginForm = ref({
 	passWord: '',
 });
 
-const router = useRouter();
 const rules = ref<FormRules>({
 	userName: [
 		{ required: true, message: 'Please input userName', trigger: 'blur' },
@@ -75,14 +74,13 @@ const submitHandle = () => {
 		if (valid) {
 			submitLoading.value = true;
 			postUserlogin({ userName: loginForm.value.userName, passWord: CryptoJS.SHA256(loginForm.value.passWord).toString() })
-				.then((res) => {
-					ElMessage.success('登录成功！');
+				.then(async (res) => {
 					blogBackendStore.changeUserInfo(res.data.content);
 					localStorage.setItem('blog-backend-token', res.data.content.token);
-					// getRouterconfiguserrouterquery().then((result) => {
-					// blogBackendStore.changeRouterInfo(result.data.content);
+					const result = await getRouterconfiguserrouterquery();
+					blogBackendStore.changeRouterInfo(result.data.content);
+					ElMessage.success('登录成功！');
 					router.push('BlogBackendIndex');
-					// });
 				})
 				.finally(() => {
 					submitLoading.value = false;

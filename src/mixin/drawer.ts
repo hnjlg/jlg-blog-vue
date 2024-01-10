@@ -4,7 +4,11 @@ import Drawer from '@/components/article-publish/index.vue';
 const divDom = document.createElement('div');
 document.body.appendChild(divDom);
 
-const DrawerList = new Map([['ArticlePublish', Drawer]]);
+const DrawerList = new Map(
+	Object.entries({
+		ArticlePublish: Drawer,
+	})
+);
 
 function drawer(modalKey: string, modalTitle: string, option: any) {
 	return new Promise((resolve, reject) => {

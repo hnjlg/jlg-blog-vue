@@ -1,6 +1,9 @@
 <!-- blog后台-我的文章 -->
 <template>
 	<div class="blog-backend-page blog-backend-my-article-page">
+		<!-- <div>
+			<el-button type="primary">发布</el-button>
+		</div> -->
 		<div class="table-box">
 			<simple-table
 				:table-data="tableData"
@@ -77,7 +80,7 @@ import tablehook from '@/mixin/useTableHook';
 import dayjs from 'dayjs';
 
 defineOptions({
-	name: 'BlogArticleAll',
+	name: 'BlogArticleAllMe',
 });
 
 const blogBackendStore = useBlogBackendStore();

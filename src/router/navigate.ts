@@ -1,54 +1,21 @@
-import { getRouterconfiguserrouterquery } from '@/apiType/production/result';
 import { blobHomeContentBackgroundHandleClick } from '@/views/blob/home/hooks/useBackgroundContent';
 import { NavigationGuardWithThis, NavigationHookAfter } from 'vue-router';
 import { router, componets } from './index';
 import useBlogBackendStore from '@/store/blog-backend';
+import initRoutes from './initRoutes';
 
 let isFirstLoad = true;
 
+let i = 0;
 export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) => {
+	console.log('======', isFirstLoad, ++i);
+
 	// 进入后台
 	if (to.fullPath.startsWith('/blogBackend')) {
 		if (isFirstLoad) {
-			router.addRoute({
-				path: '/blogBackend',
-				component: componets.BlogBackend,
-				redirect: '/BlogBackendIndex',
-				name: 'BlogBackend',
-				meta: {
-					keepAlive: true,
-				},
-				children: [],
-			});
-			router.addRoute('BlogBackend', {
-				path: '/blogBackend/BlogBackendIndex',
-				component: componets.BlogBackendIndex,
-				meta: {
-					keepAlive: true,
-					systemPage: true,
-					title: '博客后台首页',
-				},
-				name: 'BlogBackendIndex',
-			});
-			router.addRoute('BlogBackend', {
-				path: '/blogBackend/BlogBackendLogin',
-				component: () => import('@/views/blog-backend/BlogBackendLogin/index.vue'),
-				meta: {
-					keepAlive: false,
-					systemPage: false,
-					title: '登录',
-				},
-				name: 'BlogBackendLogin',
-			});
-			router.addRoute('BlogBackend', {
-				path: '/blogBackend/BlogBackendRegister',
-				component: () => import('@/views/blog-backend/BlogBackendRegister/index.vue'),
-				meta: {
-					keepAlive: false,
-				},
-				name: 'BlogBackendRegister',
-			});
+			initRoutes();
 		}
+
 		// 后台已登录
 		if (localStorage.getItem('blog-backend-token')) {
 			// 后台已登录&&去登录页=拦截放行到首页
@@ -56,25 +23,17 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 				next({ name: 'BlogBackendIndex' });
 			}
 			// 后台已登录&&去登录页、注册、404等系统页面之外的页面
-			else if (!['BlogBackendLogin'].includes(String(to.name))) {
-				if (isFirstLoad) {
-					isFirstLoad = false;
-					const blogBackendStore = useBlogBackendStore();
-					getRouterconfiguserrouterquery().then((result) => {
-						blogBackendStore.changeRouterInfo(result.data.content);
-						blogBackendStore.routerInfo.forEach((item) => {
-							router.addRoute('BlogBackend', {
-								path: item.path,
-								component: componets[item.componentName],
-								name: item.name,
-								meta: (item.meta ?? {}) as { [k in string]: any },
-							});
-						});
-						next({ ...to, replace: true });
+			else if (!['BlogBackendLogin', 'BlogBackendRegister'].includes(String(to.name)) && isFirstLoad) {
+				const blogBackendStore = useBlogBackendStore();
+				blogBackendStore.routerInfo.forEach((item) => {
+					router.addRoute('BlogBackend', {
+						path: item.path,
+						component: componets[item.componentName],
+						name: item.name,
+						meta: (item.meta ?? {}) as { [k in string]: any },
 					});
-				} else {
-					next();
-				}
+				});
+				next({ ...to, replace: true });
 			} else {
 				next();
 			}
@@ -85,13 +44,13 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 		}
 		// 后台未登录&&去登录页
 		else {
-			console.log(to);
-			console.log('111');
 			next();
 		}
 	} else {
 		next();
 	}
+
+	isFirstLoad = false;
 };
 
 export const afterNav: NavigationHookAfter = (to) => {

@@ -18,7 +18,7 @@ request.interceptors.response.use(interceptorsRes, (error) => {
 			loginOut();
 		});
 	} else {
-		ElMessage.error(error.response.data.message);
+		ElMessage.error(error?.response?.data?.message ?? '请求错误');
 	}
 	return Promise.reject(error.response);
 });

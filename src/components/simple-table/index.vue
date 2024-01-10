@@ -56,7 +56,7 @@ const elTableRef = ref();
 const instance = getCurrentInstance();
 
 nextTick(() => {
-	const entries = Object.entries(elTableRef.value.$.exposed);
+	const entries = Object.entries(elTableRef.value?.$.exposed);
 	for (const [key, value] of entries) {
 		instance!.exposed![key] = value;
 	}
