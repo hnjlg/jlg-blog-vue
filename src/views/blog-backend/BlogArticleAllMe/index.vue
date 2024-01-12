@@ -1,7 +1,7 @@
 <!-- blog后台-我的文章 -->
 <template>
 	<div class="blog-backend-page blog-backend-my-article-page">
-		<div class="py-3">
+		<div class="pb-3">
 			<el-button type="primary" @click="publishArticleFun"> 发布文章 </el-button>
 		</div>
 		<div class="table-box">

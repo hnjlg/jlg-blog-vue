@@ -6,16 +6,12 @@ import initRoutes from './initRoutes';
 
 let isFirstLoad = true;
 
-let i = 0;
 export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) => {
-	console.log('======', isFirstLoad, ++i);
-
 	// 进入后台
 	if (to.fullPath.startsWith('/blogBackend')) {
 		if (isFirstLoad) {
 			initRoutes();
 		}
-
 		// 后台已登录
 		if (localStorage.getItem('blog-backend-token')) {
 			// 后台已登录&&去登录页=拦截放行到首页

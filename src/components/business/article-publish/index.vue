@@ -184,8 +184,6 @@ async function getInitData() {
 	});
 }
 
-const dialogVisible = ref(false);
-
 const ruleFormRef = ref<FormInstance>();
 const formRules = reactive<FormRules>({
 	title: [
@@ -274,7 +272,6 @@ async function sumbmitEditFun() {
 
 // 关闭弹窗
 function handleCancel() {
-	dialogVisible.value = false;
 	emits('cancel');
 }
 
