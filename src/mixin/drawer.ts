@@ -1,13 +1,14 @@
 import { h, render } from 'vue';
 import DrawerFrame from '@/components/drawer-frame/index.vue';
 import ArticlePublish from '@/components/business/article-publish/index.vue';
-
+import MyInformation from '@/components/business/my-information/index.vue';
 const divDom = document.createElement('div');
 document.body.appendChild(divDom);
 
 const DrawerList = new Map(
 	Object.entries({
 		ArticlePublish: ArticlePublish,
+		MyInformation: MyInformation,
 	})
 );
 

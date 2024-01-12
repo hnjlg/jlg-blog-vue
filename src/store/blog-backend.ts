@@ -11,6 +11,7 @@ const useBlobStore = defineStore<
 	},
 	{
 		getRouterInfo: () => RouteRecordRaw[];
+		getUserInfo: () => AT_UserLoginResponse;
 	},
 	{
 		changeUserInfo: (userInfo: AT_UserLoginResponse) => void;
@@ -33,6 +34,9 @@ const useBlobStore = defineStore<
 		routerInfo: [],
 	}),
 	getters: {
+		getUserInfo() {
+			return this.userInfo;
+		},
 		getRouterInfo() {
 			return routes.map((route) => {
 				if (route.name === 'BlogBackend') {

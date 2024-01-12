@@ -72,7 +72,7 @@
 							</el-avatar>
 							<template #dropdown>
 								<el-dropdown-menu>
-									<el-dropdown-item :disabled="!isLogin">我的信息</el-dropdown-item>
+									<el-dropdown-item :disabled="!isLogin" @click="myInfo">我的信息</el-dropdown-item>
 									<el-dropdown-item divided @click="loginOut">退出登录</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
@@ -108,6 +108,7 @@ import useBlogBackendStore from '@/store/blog-backend';
 import { loginOut } from './hooks/loginOut';
 import { router } from '@/router/index';
 import socketInit from '@/mixin/useSocketHook';
+import drawer from '@/mixin/drawer';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -132,6 +133,10 @@ function clickAvatar() {
 		router.push({ name: 'BlogBackendLogin' });
 		console.log('===未登录===');
 	}
+}
+function myInfo() {
+	console.log('===我的信息===');
+	drawer('MyInformation', '我的信息', {}, 'edit');
 }
 </script>
 <style lang="scss" scoped>
