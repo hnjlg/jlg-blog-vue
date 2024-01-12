@@ -1,16 +1,26 @@
 import { h, render } from 'vue';
-import Drawer from '@/components/article-publish/index.vue';
+import DrawerFrame from '@/components/drawer-frame/index.vue';
+import ArticlePublish from '@/components/business/article-publish/index.vue';
 
 const divDom = document.createElement('div');
 document.body.appendChild(divDom);
 
 const DrawerList = new Map(
 	Object.entries({
-		ArticlePublish: Drawer,
+		ArticlePublish: ArticlePublish,
 	})
 );
 
-function drawer(modalKey: string, modalTitle: string, option: any) {
+type T_DrawerType = 'add' | 'edit' | 'view';
+function drawer(
+	drawerKey: string,
+	drawerTitle: string,
+	option: { [k: string]: any },
+	drawerType: T_DrawerType,
+	drawerDirection?: string,
+	drawerSize?: string,
+	drawerParams?: { [k: string]: any }
+) {
 	return new Promise((resolve, reject) => {
 		function onSubmit(data: any) {
 			render(null, divDom);
@@ -31,19 +41,37 @@ function drawer(modalKey: string, modalTitle: string, option: any) {
 			第二个参数是要传递的 prop，
 			第三个参数是子节点。
     	*/
-		const vNode = h(DrawerList.get(modalKey) ?? 'div', {
-			modalKey,
-			modalTitle,
-			propsData: option,
-			// 打开弹窗
-			modelValue: true,
-			// 提交
-			onSubmit,
-			// 取消
-			onCancel,
-			// 关闭
-			onClose: onCancel,
-		});
+		const vNode = h(
+			DrawerFrame,
+			{
+				drawerKey,
+				drawerTitle,
+				drawerDirection,
+				drawerSize,
+				...drawerParams,
+				propsData: { drawerType, ...option },
+				// 打开弹窗
+				modelValue: true,
+				// 提交
+				onSubmit,
+				// 取消
+				onCancel,
+				// 关闭
+				onClose: onCancel,
+			},
+			{
+				default: () =>
+					h(DrawerList.get(drawerKey) ?? 'div', {
+						propsData: { drawerType, ...option },
+						// 提交
+						onSubmit,
+						// 取消
+						onCancel,
+						// 关闭
+						onClose: onCancel,
+					}),
+			}
+		);
 
 		/* 
 			用于编程式地创建组件虚拟 DOM 树的函数。

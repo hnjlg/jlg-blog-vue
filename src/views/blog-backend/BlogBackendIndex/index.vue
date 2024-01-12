@@ -6,15 +6,15 @@
 <script lang="ts" setup>
 import { pageLoading } from '../home/hooks/variable';
 import { socketIo } from '@/mixin/useSocketHook';
-import useBlogBackendStore from '@/store/blog-backend';
-import { router, componets } from '@/router';
-import initRoutes from '@/router/initRoutes';
+// import useBlogBackendStore from '@/store/blog-backend';
+// import { router, componets } from '@/router';
+// import initRoutes from '@/router/initRoutes';
 
 defineOptions({
 	name: 'BlogBackendIndex',
 });
 
-const blogBackendStore = useBlogBackendStore();
+// const blogBackendStore = useBlogBackendStore();
 
 function initPage() {
 	nextTick(() => {
@@ -44,22 +44,22 @@ function initPage() {
 		console.log(data, 'datadatadatadatadatadatadata');
 	});
 
-	socketIo.value?.on('resRouterChange', (data) => {
-		console.log('===data===', data);
+	// socketIo.value?.on('resRouterChange', (data) => {
+	// 	console.log('===data===', data);
 
-		console.log(data, 'datadatadatadatadatadatadata');
-		blogBackendStore.changeRouterInfo(data);
-		router.removeRoute('BlogBackend');
-		initRoutes();
-		data.forEach((item) => {
-			router.addRoute('BlogBackend', {
-				path: item.path,
-				component: componets[item.componentName],
-				name: item.name,
-				meta: (item.meta ?? {}) as { [k in string]: any },
-			});
-		});
-	});
+	// 	console.log(data, 'datadatadatadatadatadatadata');
+	// 	blogBackendStore.changeRouterInfo(data);
+	// 	router.removeRoute('BlogBackend');
+	// 	initRoutes();
+	// 	data.forEach((item) => {
+	// 		router.addRoute('BlogBackend', {
+	// 			path: item.path,
+	// 			component: componets[item.componentName],
+	// 			name: item.name,
+	// 			meta: (item.meta ?? {}) as { [k in string]: any },
+	// 		});
+	// 	});
+	// });
 
 	socketIo.value?.on('resLoginout', () => {
 		console.log('===resLoginout===');

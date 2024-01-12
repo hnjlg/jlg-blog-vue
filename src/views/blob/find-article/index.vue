@@ -24,11 +24,6 @@
 		<div class="page-label__hot min-h-[50px] my-8">
 			<div v-if="HotArticleTagsList.length !== 0" class="border-l-8 my-10px px-2">
 				<div class="text-lg font-bold">热门标签</div>
-				<span
-					class="text-base text-stone-500 px-4 m-1 bg-slate-100 hover:bg-slate-200 rounded-full cursor-pointer select-none"
-					@click="tagHandleEvent22222"
-					>打开抽屉
-				</span>
 			</div>
 			<div class="flex flex-wrap">
 				<span
@@ -91,7 +86,6 @@ import {
 import { Search } from '@element-plus/icons-vue';
 import ArticleList from '@/components/article-list/index.vue';
 import { router } from '@/router/index';
-import drawer from '@/mixin/drawer';
 
 defineOptions({
 	name: 'ArticleClassification',
@@ -141,16 +135,6 @@ function tagHandleEvent(item: AT_BlogTagsQueryResponse) {
 
 function handleClick(item: AT_BlogHotArticleQueryResponse) {
 	router.push({ name: 'article-details', query: { id: item.id } });
-}
-
-function tagHandleEvent22222() {
-	drawer('ArticlePublish', '发布文章', { id: 1, modalType: 'add' })
-		.then(() => {
-			console.log('===确定===');
-		})
-		.catch(() => {
-			console.log('===取消===');
-		});
 }
 </script>
 

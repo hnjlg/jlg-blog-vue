@@ -67,10 +67,8 @@
 
 <script setup lang="ts">
 import { Refresh, CirclePlus, MoreFilled, CircleClose, CircleCheck } from '@element-plus/icons-vue';
-import { RouteLocationRaw } from 'vue-router';
 import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
-import router from '@/router';
 import {
 	type AT_BlogBackstageArticleQueryForAuthorResponse,
 	postBlogbackstagearticleallquery,
@@ -86,6 +84,7 @@ import {
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tablehook from '@/mixin/useTableHook';
 import dayjs from 'dayjs';
+import drawer from '@/mixin/drawer';
 
 defineOptions({
 	name: 'BlogArticleAll',
@@ -119,7 +118,13 @@ function editlFun(row: { [K: string]: any }) {
 		ElMessage.warning('该文章正在审核中，无法编辑');
 		return;
 	}
-	jumpto({ name: 'BlogBackendPublish', params: { id: row.row.id } });
+	drawer('ArticlePublish', '编辑文章', { id: row.row.id }, 'edit')
+		.then(() => {
+			restInitPage();
+		})
+		.catch(() => {
+			console.log('===取消===');
+		});
 }
 
 // 删除
@@ -143,18 +148,15 @@ function delFun(row: any) {
 		});
 }
 
-// 跳转页面
-function jumpto(routerInfo: RouteLocationRaw, isNewTab: boolean = false) {
-	if (isNewTab) {
-		window.open(router.resolve(routerInfo).href, '_blank');
-	} else {
-		router.push(routerInfo);
-	}
-}
-
 function rowDbClick(row: any, column: any, event: any) {
 	console.log('===dbclick===', row, column, event);
-	jumpto({ name: 'BlogBackendPublish', query: { id: row.id, pageType: 'view' } });
+	drawer('ArticlePublish', '查看文章', { id: row.id }, 'view', 'ltr', '90%')
+		.then(() => {
+			restInitPage();
+		})
+		.catch(() => {
+			console.log('===取消===');
+		});
 }
 
 function statusCrossType(row: AT_BlogBackstageArticleQueryForAuthorResponse & { status_value: number }) {

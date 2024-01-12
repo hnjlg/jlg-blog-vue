@@ -1,9 +1,9 @@
 <!-- blog后台-我的文章 -->
 <template>
 	<div class="blog-backend-page blog-backend-my-article-page">
-		<!-- <div>
-			<el-button type="primary">发布</el-button>
-		</div> -->
+		<div class="py-3">
+			<el-button type="primary" @click="publishArticleFun"> 发布文章 </el-button>
+		</div>
 		<div class="table-box">
 			<simple-table
 				:table-data="tableData"
@@ -61,10 +61,8 @@
 
 <script setup lang="ts">
 import { Refresh, CirclePlus } from '@element-plus/icons-vue';
-import { RouteLocationRaw } from 'vue-router';
 import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
-import router from '@/router';
 import {
 	type AT_BlogBackstageArticleQueryForAuthorResponse,
 	type AT_SelectListItem,
@@ -78,6 +76,7 @@ import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
 import tablehook from '@/mixin/useTableHook';
 import dayjs from 'dayjs';
+import drawer from '@/mixin/drawer';
 
 defineOptions({
 	name: 'BlogArticleAllMe',
@@ -114,7 +113,13 @@ function editlFun(row: { [K: string]: any }) {
 		ElMessage.warning('该文章正在审核中，无法编辑');
 		return;
 	}
-	jumpto({ name: 'BlogBackendPublish', query: { id: row.row.id, pageType: 'edit' } });
+	drawer('ArticlePublish', '编辑文章', { id: row.row.id }, 'edit')
+		.then(() => {
+			restInitPage();
+		})
+		.catch(() => {
+			console.log('===取消===');
+		});
 }
 
 // 删除
@@ -138,19 +143,16 @@ function delFun(row: any) {
 		});
 }
 
-// 跳转页面
-function jumpto(routerInfo: RouteLocationRaw, isNewTab: boolean = false) {
-	if (isNewTab) {
-		window.open(router.resolve(routerInfo).href, '_blank');
-	} else {
-		router.push(routerInfo);
-	}
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function rowDbClick(row: any, column: any, event: any) {
 	console.log('===dbclick===', row, column, event);
-	jumpto({ name: 'BlogBackendPublish', query: { id: row.id, pageType: 'view' } });
+	drawer('ArticlePublish', '查看文章', { id: row.id }, 'view', 'ltr', '90%')
+		.then(() => {
+			restInitPage();
+		})
+		.catch(() => {
+			console.log('===取消===');
+		});
 }
 
 function statusCrossType(row: AT_BlogBackstageArticleQueryForAuthorResponse & { status_value: number }) {
@@ -189,6 +191,16 @@ function editStatusFun(item: AT_SelectListItem, row: AT_BlogBackstageArticleQuer
 			}
 		});
 	}
+}
+
+function publishArticleFun() {
+	drawer('ArticlePublish', '发布文章', {}, 'add')
+		.then(() => {
+			restInitPage();
+		})
+		.catch(() => {
+			console.log('===取消===');
+		});
 }
 </script>
 <style lang="scss" scoped></style>

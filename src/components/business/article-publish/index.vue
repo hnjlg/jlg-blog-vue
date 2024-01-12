@@ -1,90 +1,84 @@
 <!-- 文章编辑组件 -->
 <template>
-	<el-drawer v-model="dialogVisible" :title="props.modalTitle" v-bind="$attrs" direction="ltr" size="80%">
-		{{ props }}
-		<el-form
-			ref="ruleFormRef"
-			:model="pageFormData"
-			:rules="formRules"
-			label-position="top"
-			size="small"
-			status-icon
-			:disabled="props.propsData.modalType === 'view'"
-		>
-			<el-form-item label="article title" prop="title">
-				<el-input v-model="pageFormData.title" clearable resize :disabled="props.propsData.modalType === 'view'" />
-			</el-form-item>
-			<el-row span="24" gutter="20">
-				<el-col :span="5">
-					<el-form-item label="author" prop="authorName">
-						<el-input v-model="pageFormData.author_name" disabled></el-input>
-					</el-form-item>
-				</el-col>
-				<el-col :span="5">
-					<el-form-item label="article tags" prop="articleTags">
-						<el-input v-if="props.propsData.modalType === 'view' && 'tags' in pageFormData" :value="pageFormData.tag_names" disabled></el-input>
-						<el-select
-							v-else
-							v-model="pageFormData.articleTags"
-							multiple
-							filterable
-							remote
-							reserve-keyword
-							placeholder="Please enter a keyword"
-							collapse-tags
-							collapse-tags-tooltip
-							:remote-method="articleTagsRemoteMethod"
-							:loading="articleTagsLoading"
-						>
-							<el-option v-for="item in articleTagsList" :key="item.id" :label="item.tag_name" :value="item.id" />
-						</el-select>
-					</el-form-item>
-				</el-col>
-				<el-col :span="5">
-					<el-form-item label="article tree" prop="article_tree_id">
-						<el-input
-							v-if="props.propsData.modalType === 'view' && 'article_tree_name' in pageFormData"
-							:value="pageFormData.article_tree_name"
-							disabled
-						></el-input>
-						<el-select
-							v-else
-							v-model="pageFormData.article_tree_id"
-							filterable
-							remote
-							reserve-keyword
-							collapse-tags
-							collapse-tags-tooltip
-							placeholder="Please enter a keyword"
-							:remote-method="articleTreeListRemoteMethod"
-							:loading="articleTagsLoading"
-						>
-							<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" />
-						</el-select>
-					</el-form-item>
-				</el-col>
-			</el-row>
-			<el-row>
-				<el-col :span="24">
-					<el-form-item label="article content" prop="content">
-						<div class="md-box flex-1">
-							<MarkDownShow v-if="props.propsData.modalType === 'view'" :content="pageFormData.content_html"></MarkDownShow>
-							<CherryMarkdown v-else ref="mdEditor" :default-content="pageFormData.content" :display-toc="false"> </CherryMarkdown>
-						</div>
-					</el-form-item>
-				</el-col>
-			</el-row>
-		</el-form>
-
-		<template #footer>
-			<div v-if="props.propsData.modalType === 'add' || props.propsData.modalType === 'edit'" class="btn-box text-right">
-				<el-button @click="handleCancel">取消</el-button>
-				<el-button v-if="props.propsData.modalType === 'add'" type="primary" plain @click="sumbmitDraftFun">存草稿</el-button>
-				<el-button v-if="props.propsData.modalType === 'edit'" @click="sumbmitEditFun">修改</el-button>
-				<el-button v-if="props.propsData.modalType === 'add'" type="primary" @click="sumbmitFun">发布</el-button>
-			</div>
-		</template>
-	</el-drawer>
+	<el-form
+		ref="ruleFormRef"
+		:model="pageFormData"
+		:rules="formRules"
+		label-position="top"
+		size="small"
+		status-icon
+		:disabled="props.propsData.drawerType === 'view'"
+	>
+		<el-form-item label="article title" prop="title">
+			<el-input v-model="pageFormData.title" clearable resize :disabled="props.propsData.drawerType === 'view'" />
+		</el-form-item>
+		<el-row span="24" gutter="20">
+			<el-col :span="5">
+				<el-form-item label="author" prop="authorName">
+					<el-input v-model="pageFormData.author_name" disabled></el-input>
+				</el-form-item>
+			</el-col>
+			<el-col :span="5">
+				<el-form-item label="article tags" prop="articleTags">
+					<el-input v-if="props.propsData.drawerType === 'view' && 'tags' in pageFormData" :value="pageFormData.tag_names" disabled></el-input>
+					<el-select
+						v-else
+						v-model="pageFormData.articleTags"
+						multiple
+						filterable
+						remote
+						reserve-keyword
+						placeholder="Please enter a keyword"
+						collapse-tags
+						collapse-tags-tooltip
+						:remote-method="articleTagsRemoteMethod"
+						:loading="articleTagsLoading"
+					>
+						<el-option v-for="item in articleTagsList" :key="item.id" :label="item.tag_name" :value="item.id" />
+					</el-select>
+				</el-form-item>
+			</el-col>
+			<el-col :span="5">
+				<el-form-item label="article tree" prop="article_tree_id">
+					<el-input
+						v-if="props.propsData.drawerType === 'view' && 'article_tree_name' in pageFormData"
+						:value="pageFormData.article_tree_name"
+						disabled
+					></el-input>
+					<el-select
+						v-else
+						v-model="pageFormData.article_tree_id"
+						filterable
+						remote
+						reserve-keyword
+						collapse-tags
+						collapse-tags-tooltip
+						placeholder="Please enter a keyword"
+						:remote-method="articleTreeListRemoteMethod"
+						:loading="articleTagsLoading"
+					>
+						<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" />
+					</el-select>
+				</el-form-item>
+			</el-col>
+		</el-row>
+		<el-row>
+			<el-col :span="24">
+				<el-form-item label="article content" prop="content">
+					<div class="md-box flex-1">
+						<MarkDownShow v-if="props.propsData.drawerType === 'view'" :content="pageFormData.content_html"></MarkDownShow>
+						<CherryMarkdown v-else ref="mdEditor" :default-content="pageFormData.content" :display-toc="false"> </CherryMarkdown>
+					</div>
+				</el-form-item>
+			</el-col>
+		</el-row>
+	</el-form>
+	<div v-if="props.propsData.drawerType === 'add' || props.propsData.drawerType === 'edit'" class="btn-box text-right">
+		<el-button @click="handleCancel">取消</el-button>
+		<el-button v-if="props.propsData.drawerType === 'add'" type="primary" plain @click="sumbmitDraftFun">存草稿</el-button>
+		<el-button v-if="props.propsData.drawerType === 'edit'" @click="sumbmitEditFun">修改</el-button>
+		<el-button v-if="props.propsData.drawerType === 'add'" type="primary" @click="sumbmitFun">发布</el-button>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -148,7 +142,7 @@ const pageFormData = ref<
 const mdEditor = ref();
 
 async function initModal() {
-	switch (props.propsData.modalType) {
+	switch (props.propsData.drawerType) {
 		case 'add':
 			break;
 		case 'edit':
@@ -321,8 +315,4 @@ function articleTreeListRemoteMethod(name: string) {
 			articleTagsLoading.value = false;
 		});
 }
-
-onUnmounted(() => {
-	console.log('===销毁===');
-});
 </script>
