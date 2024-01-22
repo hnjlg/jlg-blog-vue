@@ -164,6 +164,7 @@ export const componets: { [key: string]: () => Promise<void | typeof import('@/v
 	BlogBackendIndex: () => import('@/views/blog-backend/BlogBackendIndex/index.vue'),
 	BlogBackendLogin: () => import('@/views/blog-backend/BlogBackendLogin/index.vue'),
 	BlogBackend: () => import('@/views/blog-backend/home/index.vue'),
+	UserManagement: () => import('@/views/blog-backend/UserManagement/index.vue'),
 };
 
 export const router = createRouter({
