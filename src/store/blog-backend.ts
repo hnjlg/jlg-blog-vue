@@ -7,7 +7,7 @@ const useBlobStore = defineStore<
 	string,
 	{
 		userInfo: AT_UserLoginResponse;
-		routerInfo: AT_RouterConfigUserRouterQueryResponse[];
+		routerInfo: any;
 	},
 	{
 		getRouterInfo: () => RouteRecordRaw[];
@@ -31,19 +31,22 @@ const useBlobStore = defineStore<
 	},
 	state: () => ({
 		userInfo: { id: -1, user_name: '', token: '', user_code: '', standing: 1 },
+		// 后台路由信息
 		routerInfo: [],
 	}),
 	getters: {
+		// 获取用户信息
 		getUserInfo() {
 			return this.userInfo;
 		},
+		// 获取后台路由信息
 		getRouterInfo() {
 			return routes.map((route) => {
 				if (route.name === 'BlogBackend') {
 					route.children = [
 						...(route.children ?? []),
 						...this.routerInfo
-							.map((item) => {
+							.map((item: { path: any; componentName: string | number; name: any; meta: any }) => {
 								return {
 									path: item.path,
 									component: componets[item.componentName],
@@ -51,7 +54,7 @@ const useBlobStore = defineStore<
 									meta: (item.meta ?? {}) as { [k in string]: any },
 								};
 							})
-							.filter((item) => !route.children?.find((rChild) => rChild.path === item.path)),
+							.filter((item: { path: string }) => !route.children?.find((rChild) => rChild.path === item.path)),
 					];
 				}
 				return route;

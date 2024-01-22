@@ -21,14 +21,24 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 			// 后台已登录&&去登录页、注册、404等系统页面之外的页面
 			else if (!['BlogBackendLogin', 'BlogBackendRegister'].includes(String(to.name)) && isFirstLoad) {
 				const blogBackendStore = useBlogBackendStore();
-				blogBackendStore.routerInfo.forEach((item) => {
-					router.addRoute('BlogBackend', {
-						path: item.path,
-						component: componets[item.componentName],
-						name: item.name,
-						meta: (item.meta ?? {}) as { [k in string]: any },
+				blogBackendStore.routerInfo.forEach((iitem: { children: any[] }) => {
+					iitem.children?.forEach((item: { path: any; componentName: string | number; name: any; meta: any }) => {
+						router.addRoute('BlogBackend', {
+							path: item.path,
+							component: componets[item.componentName],
+							name: item.name,
+							meta: (item.meta ?? {}) as { [k in string]: any },
+						});
 					});
 				});
+				// blogBackendStore.routerInfo.forEach((item) => {
+				// 	router.addRoute('BlogBackend', {
+				// 		path: item.path,
+				// 		component: componets[item.componentName],
+				// 		name: item.name,
+				// 		meta: (item.meta ?? {}) as { [k in string]: any },
+				// 	});
+				// });
 				next({ ...to, replace: true });
 			} else {
 				next();

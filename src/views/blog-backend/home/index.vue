@@ -15,49 +15,25 @@
 								<el-menu-item index="/blogBackend/BlogBackendIndex" @click="jumpTo({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
-						<el-sub-menu index="1">
+						<!-- <el-sub-menu index="1">
 							<template #title>
-								<el-icon><Location /></el-icon>文章管理
+								<el-icon><IconMenu /></el-icon>系统管理
 							</template>
 							<el-menu-item-group>
 								<template v-for="item in blogBackendStore.routerInfo" :key="item.path">
 									<el-menu-item v-if="item.meta" :index="item.path" @click="jumpTo(item)"> {{ item.meta.title }} </el-menu-item>
 								</template>
 							</el-menu-item-group>
-						</el-sub-menu>
-						<el-sub-menu index="2">
+						</el-sub-menu> -->
+						<el-sub-menu v-for="(item, index) in blogBackendStore.routerInfo" :key="index" index="1">
 							<template #title>
-								<el-icon><icon-menu /></el-icon>用户管理
+								<el-icon><IconMenu /></el-icon>{{ item.title }}
 							</template>
 							<el-menu-item-group>
-								<template #title>Group 1</template>
-								<el-menu-item index="2-1">Option 1</el-menu-item>
-								<el-menu-item index="2-2">Option 2</el-menu-item>
+								<template v-for="(iitem, iindex) in item.children" :key="iindex">
+									<el-menu-item v-if="iitem.meta" :index="iitem.path" @click="jumpTo(iitem)"> {{ iitem.meta.title }} </el-menu-item>
+								</template>
 							</el-menu-item-group>
-							<el-menu-item-group title="Group 2">
-								<el-menu-item index="2-3">Option 3</el-menu-item>
-							</el-menu-item-group>
-							<el-sub-menu index="2-4">
-								<template #title>Option 4</template>
-								<el-menu-item index="2-4-1">Option 4-1</el-menu-item>
-							</el-sub-menu>
-						</el-sub-menu>
-						<el-sub-menu index="3">
-							<template #title>
-								<el-icon><setting /></el-icon>其他设置
-							</template>
-							<el-menu-item-group>
-								<template #title>Group 1</template>
-								<el-menu-item index="3-1">Option 1</el-menu-item>
-								<el-menu-item index="3-2">Option 2</el-menu-item>
-							</el-menu-item-group>
-							<el-menu-item-group title="Group 2">
-								<el-menu-item index="3-3">Option 3</el-menu-item>
-							</el-menu-item-group>
-							<el-sub-menu index="3-4">
-								<template #title>Option 4</template>
-								<el-menu-item index="3-4-1">Option 4-1</el-menu-item>
-							</el-sub-menu>
 						</el-sub-menu>
 					</el-menu>
 				</el-scrollbar>
@@ -101,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { Menu as IconMenu, Setting, Location } from '@element-plus/icons-vue';
+import { Menu as IconMenu, Location } from '@element-plus/icons-vue';
 import { RouteLocationRaw } from 'vue-router';
 import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';

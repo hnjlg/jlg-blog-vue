@@ -18,7 +18,7 @@ export const postArticletreebyIddelete = <NUDATA extends (keyof AT_ArticleTreeBy
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tree/byId/delete`, data);
 };
 export const postArticletreeallquery = () => {
-	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tree/all/query`);
+	return axios.post<{ status: number; message: string; content: AT_ArticleTreeTable[] }>(`/article-tree/all/query`);
 };
 export const postArticletreearticletreenamequery = <NUDATA extends (keyof AT_ArticleTreeArticleTreeNameQueryRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTreeArticleTreeNameQueryRequest, NUDATA>
@@ -151,10 +151,12 @@ export const getBloghottagsquery = (limit: number) => {
 	);
 };
 export const postFileupload = <NUDATA extends (keyof AT_FileUploadRequest)[] = []>(data: U_I_NoNull<AT_FileUploadRequest, NUDATA>) => {
-	return axios.post<{ status: number; message: string; content: AT_FileUploadResult }>(`/file/upload`, data);
+	return axios.post<{ status: number; message: string; content: AT_FileUploadResult[] }>(`/file/upload`, data);
 };
 export const getRouterconfiguserrouterquery = () => {
-	return axios.get<{ status: number; message: string; content: AT_RouterConfigUserRouterQueryResponse[] }>(`/router-config/user/router/query`);
+	return axios.get<{ status: number; message: string; content: { title: string; children: AT_RouterConfigUserRouterQueryResponse[] }[] }>(
+		`/router-config/user/router/query`
+	);
 };
 export const postUserdelete = <NUDATA extends (keyof AT_UserDeleteRequest)[] = []>(data: U_I_NoNull<AT_UserDeleteRequest, NUDATA>) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/delete`, data);
