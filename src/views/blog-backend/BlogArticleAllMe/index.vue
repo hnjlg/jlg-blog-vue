@@ -31,7 +31,13 @@
 						</span>
 						<template #dropdown>
 							<el-dropdown-menu>
-								<el-dropdown-item v-for="(item, index) in StatusList" :key="index" :icon="CirclePlus" @click="editStatusFun(item, row)">
+								<el-dropdown-item
+									v-for="(item, index) in StatusList"
+									:key="index"
+									:icon="CirclePlus"
+									:disabled="elDropdownItemDisabled(item, row)"
+									@click="editStatusFun(item, row)"
+								>
 									{{ item.label }}
 								</el-dropdown-item>
 							</el-dropdown-menu>
@@ -71,6 +77,7 @@ import {
 	postBlogbackstagearticlestatusallquery,
 	postBlogbackstagearticletakeback,
 	AT_ArticleStatus,
+	postBlogbackstagearticledraftturnwaitreview,
 } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
@@ -191,6 +198,17 @@ function editStatusFun(item: AT_SelectListItem, row: AT_BlogBackstageArticleQuer
 			}
 		});
 	}
+	// 转公开 即文章提审
+	else if (item.value === AT_ArticleStatus.公开) {
+		postBlogbackstagearticledraftturnwaitreview({
+			articleId: row.id,
+		}).then((result) => {
+			if (result.data.status === 1) {
+				ElMessage.success('操作成功');
+				restInitPage();
+			}
+		});
+	}
 }
 
 function publishArticleFun() {
@@ -201,6 +219,39 @@ function publishArticleFun() {
 		.catch(() => {
 			console.log('===取消===');
 		});
+}
+
+function elDropdownItemDisabled(item: { value: AT_ArticleStatus }, row: { status_value: number }) {
+	if (item.value === row.status_value) return true;
+	if (blogBackendStore.userInfo.standing === 1) {
+		switch (item.value) {
+			case AT_ArticleStatus.草稿:
+				return true;
+			case AT_ArticleStatus.待审:
+				return true;
+			case AT_ArticleStatus.公开:
+				return false;
+			case AT_ArticleStatus.私有:
+				return false;
+			case AT_ArticleStatus.驳回:
+				return true;
+		}
+	} else if (blogBackendStore.userInfo.standing === 2) {
+		switch (item.value) {
+			case AT_ArticleStatus.草稿:
+				return false;
+			case AT_ArticleStatus.待审:
+				return false;
+			case AT_ArticleStatus.公开:
+				return false;
+			case AT_ArticleStatus.私有:
+				return true;
+			case AT_ArticleStatus.驳回:
+				return false;
+		}
+	} else {
+		return true;
+	}
 }
 </script>
 <style lang="scss" scoped></style>
