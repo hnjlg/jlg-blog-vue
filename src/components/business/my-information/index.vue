@@ -113,7 +113,7 @@ async function sumbmitEditFun() {
 		if (valid) {
 			postUserupdate({
 				author: blogBackendStore.getUserInfo.id,
-				passWord: CryptoJS.SHA256(editForm.value.passWord).toString(),
+				passWord: CryptoJS.AES.encrypt(editForm.value.passWord, 'blog').toString(),
 			}).then((result) => {
 				if (result.data.status === 1) {
 					loginOut();

@@ -104,7 +104,7 @@ const submitHandle = () => {
 	formRef.value?.validate((valid) => {
 		if (valid) {
 			submitLoading.value = true;
-			postUserregister({ userName: loginForm.value.userName, passWord: CryptoJS.SHA256(loginForm.value.passWord).toString() })
+			postUserregister({ userName: loginForm.value.userName, passWord: CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString() })
 				.then(() => {
 					ElMessage.success('注册成功！');
 					router.push('BlogBackendIndex');
