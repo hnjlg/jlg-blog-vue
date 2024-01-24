@@ -42,8 +42,13 @@
 			<el-container>
 				<el-header>
 					<div class="flex justify-end">
+						<div class="w-10 h-10 p-3 mr-5">
+							<el-badge :hidden="false" :value="1111" :max="10" @click="elNoticeClick">
+								<el-icon size="20"><Bell /></el-icon>
+							</el-badge>
+						</div>
 						<el-dropdown>
-							<el-avatar class="text-xs" @click="clickAvatar">
+							<el-avatar class="text-xs" shape="square" @click="clickAvatar">
 								{{ isLogin ? blogBackendStore.userInfo.user_name ?? '未登录' : '未登录' }}
 							</el-avatar>
 							<template #dropdown>
@@ -73,18 +78,48 @@
 				<component :is="Component" v-if="!$route.meta.keepAlive" />
 			</router-view>
 		</div>
+		<el-dialog v-model="outerVisible" title="消息" destroy-on-close :close-on-click-modal="false" width="50%" height="500">
+			<template #default>
+				<div class="notice-box w-full">
+					<el-menu default-active="1" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+						<el-menu-item index="1">最新消息</el-menu-item>
+						<el-menu-item index="2">历史消息</el-menu-item>
+						<el-menu-item index="3" disabled>全部消息</el-menu-item>
+					</el-menu>
+					<div class="notice-box-content">
+						<template v-if="HistoryMsg.length !== 0">
+							<div v-for="(item, index) in HistoryMsg" :key="index" class="notice-item border rounded-md">
+								<div class="notice-item-title">标题：{{ item.msg_title }}</div>
+								<div class="notice-item-content">消息内容：{{ item.msg_content }}</div>
+								<div class="notice-item-sendtime">发送时间：{{ dayjs(item.send_time).format('YYYY/MM/DD hh:mm') }}</div>
+							</div>
+						</template>
+						<template v-else>
+							<el-empty description="description" />
+						</template>
+					</div>
+				</div>
+			</template>
+			<template #footer>
+				<div class="dialog-footer">
+					<el-button @click="outerVisible = false">关闭</el-button>
+					<el-button type="primary" @click="outerVisible = false"> 一键已读 </el-button>
+				</div>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { Menu as IconMenu, Location } from '@element-plus/icons-vue';
+import { Menu as IconMenu, Location, Bell } from '@element-plus/icons-vue';
 import { RouteLocationRaw } from 'vue-router';
 import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
 import { loginOut } from './hooks/loginOut';
 import { router } from '@/router/index';
-import socketInit from '@/mixin/useSocketHook';
+import socketInit, { socketIo } from '@/mixin/useSocketHook';
 import drawer from '@/mixin/drawer';
+import dayjs from 'dayjs';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -114,6 +149,37 @@ function myInfo() {
 	console.log('===我的信息===');
 	drawer('MyInformation', '我的信息', {}, 'edit');
 }
+
+function elNoticeClick() {
+	console.log('===查看消息===');
+	outerVisible.value = true;
+}
+
+const outerVisible = ref(false);
+
+function handleSelect(key: string, keyPath: string[]) {
+	console.log('===keyPath===', keyPath);
+
+	if (key === '1') {
+		HistoryMsg.value = [];
+		socketIo.value?.emit('reqNewMessage');
+	} else if (key === '2') {
+		HistoryMsg.value = [];
+		socketIo.value?.emit('reqHistoryMsg');
+	}
+}
+
+const HistoryMsg = ref<any[]>([]);
+socketIo.value?.on('resHistoryMsg', (data) => {
+	HistoryMsg.value = data;
+	console.log(data, 'HistoryMsg');
+});
+
+socketIo.value?.on('resNewMessage', (data) => {
+	console.log(data, 'resNewMessage');
+	outerVisible.value = true;
+	HistoryMsg.value = data;
+});
 </script>
 <style lang="scss" scoped>
 .blog-backend-container {
