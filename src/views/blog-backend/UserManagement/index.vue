@@ -5,6 +5,11 @@
 			<template #operation-column="row">
 				<el-link type="error" @click="delFun(row)">删除</el-link>
 			</template>
+			<template #password-slot>
+				******
+				<!-- {{ CryptoJS.SHA256.decrypt(row.pass_word) }}	 -->
+				<!-- {{ CryptoJS.AES.decrypt(row.pass_word, 'blog').toString(CryptoJS.enc.Utf8) }} -->
+			</template>
 		</simple-table>
 	</div>
 	<div class="pagination-box flex justify-end align-center mt-2">
@@ -32,6 +37,7 @@ import useTable from './hooks/useTable';
 import { postUserallquery, AT_UserQueryAllResponse, postUserdelete } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tablehook from '@/mixin/useTableHook';
+// import CryptoJS from 'crypto-js';
 
 defineOptions({
 	name: 'UserManagement',

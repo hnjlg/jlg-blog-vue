@@ -78,6 +78,7 @@ import {
 	postBlogbackstagearticletakeback,
 	AT_ArticleStatus,
 	postBlogbackstagearticledraftturnwaitreview,
+	AT_UserStanding,
 } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
@@ -223,7 +224,7 @@ function publishArticleFun() {
 
 function elDropdownItemDisabled(item: { value: AT_ArticleStatus }, row: { status_value: number }) {
 	if (item.value === row.status_value) return true;
-	if (blogBackendStore.userInfo.standing === 1) {
+	if (blogBackendStore.userInfo.standing === AT_UserStanding.普通用户) {
 		switch (item.value) {
 			case AT_ArticleStatus.草稿:
 				return true;
@@ -236,7 +237,7 @@ function elDropdownItemDisabled(item: { value: AT_ArticleStatus }, row: { status
 			case AT_ArticleStatus.驳回:
 				return true;
 		}
-	} else if (blogBackendStore.userInfo.standing === 2) {
+	} else if (blogBackendStore.userInfo.standing === AT_UserStanding.管理员) {
 		switch (item.value) {
 			case AT_ArticleStatus.草稿:
 				return false;

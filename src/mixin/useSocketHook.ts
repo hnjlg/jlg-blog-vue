@@ -7,7 +7,7 @@ export const socketIo = ref<Socket<DefaultEventsMap, DefaultEventsMap>>();
 const init = () => {
 	const blogBackendStore = useBlogBackendStore();
 
-	const Authorization = localStorage.getItem('blog-backend-token') || blogBackendStore.$state.userInfo.token;
+	const Authorization = sessionStorage.getItem('blog-backend-token') || blogBackendStore.$state.userInfo.token;
 
 	socketIo.value = io(`${import.meta.env.VITE_APP_BASE_URL}?Authorization=${Authorization}`, {
 		withCredentials: true, // 允许发送凭据（例如 cookie）

@@ -99,7 +99,7 @@ function jumpTo(routerInfo: RouteLocationRaw) {
 	router.push(routerInfo);
 }
 
-const isLogin = computed<boolean>(() => (localStorage.getItem('blog-backend-token') ? true : false));
+const isLogin = computed<boolean>(() => (sessionStorage.getItem('blog-backend-token') ? true : false));
 
 // 点击头像
 function clickAvatar() {

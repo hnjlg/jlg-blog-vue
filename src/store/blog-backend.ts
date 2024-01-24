@@ -64,11 +64,11 @@ const useBlobStore = defineStore<
 	actions: {
 		changeUserInfo(userInfo) {
 			this.userInfo = userInfo;
-			localStorage.setItem('blog-backend-userInfo', JSON.stringify(userInfo));
+			sessionStorage.setItem('blog-backend-userInfo', JSON.stringify(userInfo));
 		},
 		clearUserInfo() {
 			this.userInfo = { id: -1, user_name: '', token: '', user_code: '', standing: 1 };
-			localStorage.removeItem('blog-backend-userInfo');
+			sessionStorage.removeItem('blog-backend-userInfo');
 		},
 		changeRouterInfo(routerInfo) {
 			this.routerInfo = routerInfo;

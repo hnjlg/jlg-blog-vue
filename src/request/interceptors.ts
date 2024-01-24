@@ -5,7 +5,7 @@ type FirstParameter<T> = T extends (first: infer P, ...args: any[]) => any ? P :
 
 export const interceptorsReq: FirstParameter<AxiosInterceptorManager<any>['use']> = (config) => {
 	const blogBackendStore = useBlogBackendStore();
-	const Authorization = localStorage.getItem('blog-backend-token') || blogBackendStore.$state.userInfo.token;
+	const Authorization = sessionStorage.getItem('blog-backend-token') || blogBackendStore.$state.userInfo.token;
 	config.headers.Authorization = Authorization;
 	return config;
 };

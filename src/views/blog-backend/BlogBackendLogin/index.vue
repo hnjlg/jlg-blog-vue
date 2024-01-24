@@ -73,10 +73,10 @@ const submitHandle = () => {
 	formRef.value?.validate((valid) => {
 		if (valid) {
 			submitLoading.value = true;
-			postUserlogin({ userName: loginForm.value.userName, passWord: CryptoJS.SHA256(loginForm.value.passWord).toString() })
+			postUserlogin({ userName: loginForm.value.userName, passWord: CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString() })
 				.then(async (res) => {
 					blogBackendStore.changeUserInfo(res.data.content);
-					localStorage.setItem('blog-backend-token', res.data.content.token);
+					sessionStorage.setItem('blog-backend-token', res.data.content.token);
 					const result = await getRouterconfiguserrouterquery();
 					blogBackendStore.changeRouterInfo(result.data.content);
 					ElMessage.success('登录成功！');

@@ -26,7 +26,7 @@ function initPage() {
 
 	// socketIo.value?.emit('reqHistoryMsg');
 
-	socketIo.value?.emit('reqReadMessage');
+	socketIo.value?.emit('reqReadMessage', { id: 1 });
 
 	socketIo.value?.on('resReadMessage', (data) => {
 		console.log(data, 'data');
@@ -41,31 +41,36 @@ function initPage() {
 	// socketIo.value?.emit('resNewMessage');
 
 	socketIo.value?.on('resNewMessage', (data) => {
-		console.log(data, 'datadatadatadatadatadatadata');
+		console.log(data, 'aaaaaaaaaaaaaaa');
 	});
 
 	// socketIo.value?.on('resRouterChange', (data) => {
 	// 	console.log('===data===', data);
 
-	// 	console.log(data, 'datadatadatadatadatadatadata');
-	// 	blogBackendStore.changeRouterInfo(data);
-	// 	router.removeRoute('BlogBackend');
-	// 	initRoutes();
-	// 	data.forEach((item) => {
-	// 		router.addRoute('BlogBackend', {
-	// 			path: item.path,
-	// 			component: componets[item.componentName],
-	// 			name: item.name,
-	// 			meta: (item.meta ?? {}) as { [k in string]: any },
-	// 		});
-	// 	});
+	// 	console.log(data, 'resRouterChange');
+	// 	// blogBackendStore.changeRouterInfo(data);
+	// 	// router.removeRoute('BlogBackend');
+	// 	// initRoutes();
+	// 	// data.forEach((item) => {
+	// 	// 	router.addRoute('BlogBackend', {
+	// 	// 		path: item.path,
+	// 	// 		component: componets[item.componentName],
+	// 	// 		name: item.name,
+	// 	// 		meta: (item.meta ?? {}) as { [k in string]: any },
+	// 	// 	});
+	// 	// });
 	// });
 
 	socketIo.value?.on('resLoginout', () => {
 		console.log('===resLoginout===');
 	});
 }
-initPage();
+console.log('===11111111333311111===');
+onMounted(() => {
+	console.log('===11111111111111111111111111===', socketIo.value);
+
+	initPage();
+});
 </script>
 
 <style lang="scss" scoped></style>

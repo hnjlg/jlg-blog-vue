@@ -4,48 +4,44 @@ import { router, componets } from './index';
 import useBlogBackendStore from '@/store/blog-backend';
 import initRoutes from './initRoutes';
 
-let isFirstLoad = true;
+export const isFirstLoad = ref(true);
+
+export const isAddAxiosRoute = ref(false);
 
 export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) => {
 	// 进入后台
 	if (to.fullPath.startsWith('/blogBackend')) {
-		if (isFirstLoad) {
+		if (isFirstLoad.value) {
 			initRoutes();
+			isFirstLoad.value = false;
 		}
 		// 后台已登录
-		if (localStorage.getItem('blog-backend-token')) {
-			// 后台已登录&&去登录页=拦截放行到首页
-			if (to.name === 'BlogBackendLogin') {
+		if (sessionStorage.getItem('blog-backend-token')) {
+			if (['BlogBackendLogin', 'BlogBackendRegister'].includes(String(to.name))) {
 				next({ name: 'BlogBackendIndex' });
-			}
-			// 后台已登录&&去登录页、注册、404等系统页面之外的页面
-			else if (!['BlogBackendLogin', 'BlogBackendRegister'].includes(String(to.name)) && isFirstLoad) {
-				const blogBackendStore = useBlogBackendStore();
-				blogBackendStore.routerInfo.forEach((iitem: { children: any[] }) => {
-					iitem.children?.forEach((item: { path: any; componentName: string | number; name: any; meta: any }) => {
-						router.addRoute('BlogBackend', {
-							path: item.path,
-							component: componets[item.componentName],
-							name: item.name,
-							meta: (item.meta ?? {}) as { [k in string]: any },
+			} else {
+				if (!isAddAxiosRoute.value) {
+					const blogBackendStore = useBlogBackendStore();
+					blogBackendStore.routerInfo.forEach((iitem: { children: any[] }) => {
+						iitem.children?.forEach((item: { path: any; componentName: string | number; name: any; meta: any }) => {
+							router.addRoute('BlogBackend', {
+								path: item.path,
+								component: componets[item.componentName],
+								name: item.name,
+								meta: (item.meta ?? {}) as { [k in string]: any },
+							});
 						});
 					});
-				});
-				// blogBackendStore.routerInfo.forEach((item) => {
-				// 	router.addRoute('BlogBackend', {
-				// 		path: item.path,
-				// 		component: componets[item.componentName],
-				// 		name: item.name,
-				// 		meta: (item.meta ?? {}) as { [k in string]: any },
-				// 	});
-				// });
-				next({ ...to, replace: true });
-			} else {
-				next();
+
+					isAddAxiosRoute.value = true;
+					next({ ...to, replace: true });
+				} else {
+					next();
+				}
 			}
 		}
 		// 后台未登录&&不是去登录页
-		else if (!localStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin' && to.name !== 'BlogBackendRegister') {
+		else if (!sessionStorage.getItem('blog-backend-token') && to.name !== 'BlogBackendLogin' && to.name !== 'BlogBackendRegister') {
 			next({ name: 'BlogBackendLogin' });
 		}
 		// 后台未登录&&去登录页
@@ -55,8 +51,6 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 	} else {
 		next();
 	}
-
-	isFirstLoad = false;
 };
 
 export const afterNav: NavigationHookAfter = (to) => {

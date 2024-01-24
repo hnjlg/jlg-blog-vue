@@ -154,7 +154,7 @@ export const routes: RouteRecordRaw[] = [
 	},
 	// {
 	// 	path: '/:pathMatch(.*)*',
-	// 	redirect: '/blogBackend',
+	// 	redirect: '/404',
 	// },
 ];
 

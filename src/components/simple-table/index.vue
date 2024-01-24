@@ -53,14 +53,14 @@ const props = withDefaults(
 
 const elTableRef = ref();
 
-const instance = getCurrentInstance();
+// const instance = getCurrentInstance();
 
-nextTick(() => {
-	const entries = Object.entries(elTableRef.value?.$.exposed);
-	for (const [key, value] of entries) {
-		instance!.exposed![key] = value;
-	}
-});
+// nextTick(() => {
+// 	const entries = Object.entries(elTableRef.value?.$.exposed);
+// 	for (const [key, value] of entries) {
+// 		instance!.exposed![key] = value;
+// 	}
+// });
 
 const emit = defineEmits(['dbclick:row']);
 
@@ -69,4 +69,8 @@ function dbClickRow(row: Record<string, unknown>, column: Record<string, unknown
 }
 // 表格默认列名
 const defaultFieldList = props.fieldList?.length === 0 && Object.keys(props.tableData[0]);
+
+defineExpose({
+	elTableRef,
+});
 </script>

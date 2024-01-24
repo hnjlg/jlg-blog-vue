@@ -18,6 +18,7 @@ export default function () {
 		{
 			title: '用户密码',
 			field: 'pass_word',
+			slotName: 'password-slot',
 			minWidth: 400,
 		},
 		// {
