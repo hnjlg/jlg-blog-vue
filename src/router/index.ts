@@ -5,7 +5,7 @@ import { afterNav, beforeNav } from './navigate';
 export const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		redirect: '/blogBackend/BlogBackendIndex',
+		redirect: '/blob-home',
 	},
 	{
 		path: '/home',

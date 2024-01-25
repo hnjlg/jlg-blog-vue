@@ -21,13 +21,13 @@ const startClientY = ref(0); //记录开始的纵坐标位置
 const elRight = ref(50); //定位-初始位置
 const elBottom = ref(100); //定位-初始位置
 // 拖拽开始事件
-const dragstart = (e: MouseEvent) => {
+const dragstart = (e: DragEvent) => {
 	// 记录拖拽元素初始位置
 	startClientX.value = e.clientX;
 	startClientY.value = e.clientY;
 };
 // 拖拽完成事件
-const dragend = (e: MouseEvent) => {
+const dragend = (e: DragEvent) => {
 	const x = startClientX.value - e.clientX; // 计算偏移量
 	const y = startClientY.value - e.clientY;
 	if (elRight.value + x < 0) {

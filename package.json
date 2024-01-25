@@ -14,7 +14,7 @@
 		"pre-commit": "concurrently \"tsc\" \"lint-staged\"",
 		"preinstall": "npx only-allow npm",
 		"style": "stylelint \"./**/*.{css,scss,sass,vue,html}\" --fix",
-		"jlg_generate_by_swagger": "npx jlg_generate_by_swagger"
+		"jlg_generate_by_swagger": "npx jlg_generate_by_swagger && prettier --write ./src/apiType/production"
 	},
 	"dependencies": {
 		"@element-plus/icons": "^0.0.11",

@@ -1,20 +1,19 @@
 <!-- 抽屉 -->
 <template>
 	<el-drawer
-		v-model="dialogVisible"
+		:model-value="drawerValue"
 		:title="props.drawerTitle"
 		:direction="props.drawerDirection"
 		:size="props.drawerSize"
 		v-bind="$attrs"
 		modal-class="drawerClassName"
-		@closed="$emit('close')"
+		@closed="handleCancel"
 	>
 		<slot name="default"></slot>
 	</el-drawer>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 defineOptions({
 	name: 'ArticleFrame',
 });
@@ -44,11 +43,11 @@ const props = defineProps({
 
 const emits = defineEmits(['close']);
 
-const dialogVisible = ref(false);
+const drawerValue = ref(true);
 
 // 关闭弹窗
 function handleCancel() {
-	dialogVisible.value = false;
+	drawerValue.value = false;
 	emits('close');
 }
 

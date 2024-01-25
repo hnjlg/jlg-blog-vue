@@ -50,9 +50,6 @@ function drawer<Option = object>(
 				drawerSize,
 				...drawerParams,
 				propsData: { drawerTitle, drawerType, ...option },
-				// 打开弹窗
-				modelValue: true,
-				// 关闭
 				onClose: onClose,
 			},
 			{

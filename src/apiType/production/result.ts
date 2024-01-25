@@ -7,7 +7,9 @@ export declare type U_I_NoNull<T, U extends Array<keyof T>> = { [K in keyof T as
 export const postArticletagstagsadd = (data: { tagName: string }) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tags/tags/add`, data);
 };
-export const postArticletagstagsdelete = (data: { id: number }) => {
+export const postArticletagstagsdelete = <NUDATA extends (keyof AT_ArticleTagAddRequest)[] = []>(
+	data: U_I_NoNull<AT_ArticleTagAddRequest, NUDATA>
+) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tags/tags/delete`, data);
 };
 export const postArticletagstagsquery = <NUDATA extends (keyof AT_ArticleTagsTagsQueryRequest)[] = []>(
@@ -17,6 +19,14 @@ export const postArticletagstagsquery = <NUDATA extends (keyof AT_ArticleTagsTag
 		`/article-tags/tags/query`,
 		data
 	);
+};
+export const getArticletagstagsqueryArticleSingleByTagId = (tag_id: number) => {
+	return axios.get<{ status: number; message: string; content: AT_QueryArticleSingleByTagIdResponse[] }>(
+		`/article-tags/tags/queryArticleSingleByTagId?${tag_id ? 'tag_id=' + tag_id : ''}`
+	);
+};
+export const postArticletagstagsupdate = (data: { tag_id: number; tag_name: string }) => {
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tags/tags/update`, data);
 };
 export const postArticletreebyIddelete = <NUDATA extends (keyof AT_ArticleTreeByIdDeleteRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTreeByIdDeleteRequest, NUDATA>
@@ -109,6 +119,11 @@ export const postBlogbackstagearticleadd = <NUDATA extends (keyof AT_BlogBacksta
 ) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/add`, data);
 };
+export const postBlogbackstagearticlebatchUpdate = <NUDATA extends (keyof AT_ArticleBatchUpdateTagRequest)[] = []>(
+	data: U_I_NoNull<AT_ArticleBatchUpdateTagRequest, NUDATA>
+) => {
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/blog-backstage/article/batchUpdate`, data);
+};
 export const postBlogarticlequeryforarticleId = <NUDATA extends (keyof AT_BlogBackstageQueryForArticleIdRequest)[] = []>(
 	data: U_I_NoNull<AT_BlogBackstageQueryForArticleIdRequest, NUDATA>
 ) => {
@@ -177,6 +192,22 @@ export const postUserregister = <NUDATA extends (keyof AT_UserRegisterRequest)[]
 export const postUserupdate = <NUDATA extends (keyof AT_UserUpdateRequest)[] = []>(data: U_I_NoNull<AT_UserUpdateRequest, NUDATA>) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/update`, data);
 };
+export declare interface AT_ArticleBatchUpdateTagRequest {
+	tag_id: number;
+	article_ids: number[];
+}
+
+export declare interface AT_QueryArticleSingleByTagIdResponse {
+	/*文章id*/
+	id: number;
+	/*文章标题*/
+	title: string;
+	/*文章新增时间*/
+	add_time: string;
+	/*作者*/
+	user_name: string;
+}
+
 export declare interface AT_ArticleTagAddRequest {
 	id: number;
 }

@@ -1,4 +1,4 @@
-<!-- 用户管理 - 所有用户-->
+<!-- 标签管理 - 所有标签-->
 <template>
 	<div class="table-box">
 		<div class="header">
@@ -11,7 +11,7 @@
 		</div>
 
 		<simple-table :table-data="tableData" :field-list="tableCols" :operation-column-width="120" max-height="84vh" stripe border size="large">
-			<template #operation-column="row">
+			<template #operation-column="{ row: { row } }">
 				<el-link type="primary" @click="editlFun(row)">编辑</el-link>
 				<el-link type="error" @click="delFun(row)">删除</el-link>
 			</template>
@@ -38,8 +38,15 @@
 <script setup lang="ts">
 import { Refresh } from '@element-plus/icons-vue';
 import SimpleTable from '@/components/simple-table/index.vue';
+import DeletePromptList from '@/components/business/delete-prompt-list/index.vue';
 import useTable from './hooks/useTable';
-import { AT_UserQueryAllResponse, postArticletagstagsquery, postArticletagstagsdelete } from '@/apiType/production/result';
+import {
+	AT_ArticleTagsTagsQueryResponse,
+	postArticletagstagsquery,
+	postArticletagstagsdelete,
+	getArticletagstagsqueryArticleSingleByTagId,
+	postBlogbackstagearticlebatchUpdate,
+} from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tableHook from '@/mixin/useTableHook';
 import { Search } from '@element-plus/icons-vue';
@@ -55,7 +62,7 @@ const { paginationInfo, total, handleSizeChange, handleCurrentChange, restInitPa
 const { tableCols } = useTable();
 
 const tagName = ref('');
-const tableData = ref<AT_UserQueryAllResponse[]>([]);
+const tableData = ref<AT_ArticleTagsTagsQueryResponse[]>([]);
 // 初始请求表格内容
 function initPage() {
 	pageLoading.value = true;
@@ -69,35 +76,77 @@ function initPage() {
 			pageLoading.value = false;
 		});
 }
+
 initPage();
 
+function delAjax(row: AT_ArticleTagsTagsQueryResponse) {
+	return postArticletagstagsdelete({ id: Number(row.id) }).then((result) => {
+		if (result.data.status === 1) {
+			ElMessage.success('Delete completed');
+			restInitPage();
+		}
+	});
+}
+
 // 删除
-function delFun(row: any) {
-	console.log(row);
+function delFun(row: AT_ArticleTagsTagsQueryResponse) {
 	ElMessageBox.confirm('Are you sure to delete this Tag?', 'Warning', {
 		confirmButtonText: 'I am true!',
 		cancelButtonText: 'NO,I will think about it again',
 		type: 'warning',
+		closeOnClickModal: false,
 	})
 		.then(() => {
-			postArticletagstagsdelete({ id: Number(row.row.row.id) }).then((result) => {
-				if (result.data.status === 1) {
-					ElMessage.success('Delete completed');
-					restInitPage();
+			getArticletagstagsqueryArticleSingleByTagId(Number(row.id)).then(async (result) => {
+				const tableData = result.data.content;
+				if (tableData.length === 0) {
+					pageLoading.value = true;
+					await delAjax(row);
+					pageLoading.value = false;
+				} else {
+					let newArticleTagId: number | undefined;
+					ElMessageBox({
+						title: '所属文章',
+						closeOnClickModal: false,
+						// Should pass a function if VNode contains dynamic props
+						message: () =>
+							h(DeletePromptList, {
+								tableData: tableData,
+								valueReturn: (val: number) => {
+									newArticleTagId = val;
+								},
+							}),
+					}).then(() => {
+						if (newArticleTagId !== undefined) {
+							pageLoading.value = true;
+							Promise.all([
+								postBlogbackstagearticlebatchUpdate({ article_ids: tableData.map((item) => item.id), tag_id: newArticleTagId }),
+								delAjax(row),
+							]).then(() => {
+								pageLoading.value = false;
+								restInitPage();
+							});
+						}
+					});
 				}
 			});
 		})
 		.catch(() => {
 			ElMessage.info('Delete canceled');
+			pageLoading.value = false;
 		});
 }
 // 新增
 const addTag = () => {
-	drawer('AddTag', '新增标签', {}, 'add');
+	drawer('AddTag', '新增标签', {}, 'add').then(() => {
+		restInitPage();
+	});
 };
 // 编辑
-const editlFun = (row: any) => {
-	drawer('AddTag', '编辑标签', { row: row.row.row }, 'edit');
+const editlFun = (row: AT_ArticleTagsTagsQueryResponse) => {
+	drawer('AddTag', '编辑标签', { row: row }, 'edit').then(() => {
+		restInitPage();
+	});
 };
 </script>
 <style lang="scss" scoped>

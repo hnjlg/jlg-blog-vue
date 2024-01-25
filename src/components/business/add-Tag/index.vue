@@ -29,7 +29,7 @@ const props = defineProps({
 		default: () => ({}),
 	},
 });
-const emits = defineEmits(['cancel', 'submit']);
+const emits = defineEmits(['close', 'submit']);
 const tagForm = ref({
 	tagName: '',
 });
@@ -93,6 +93,6 @@ async function sumbmitFun() {
 // 关闭弹窗
 function handleCancel() {
 	dialogVisible.value = false;
-	emits('cancel');
+	emits('close');
 }
 </script>
