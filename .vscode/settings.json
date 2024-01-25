@@ -10,7 +10,7 @@
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	// 配置在保存时，执行stylelint
 	"editor.codeActionsOnSave": {
-		"source.fixAll.stylelint": true
+		"source.fixAll.stylelint": "explicit"
 	},
 	"cSpell.words": [
 		"Articletagstagsquery",
