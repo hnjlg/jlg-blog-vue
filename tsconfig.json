@@ -12,6 +12,8 @@
 		/* Bundler mode */
 		"moduleResolution": "node",
 		"allowImportingTsExtensions": true,
+		// TypeScript 将允许使用 "export =" 声明的模块进行默认导入
+		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		// 不生成js文件

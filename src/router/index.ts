@@ -158,7 +158,7 @@ export const routes: RouteRecordRaw[] = [
 	// },
 ];
 
-export const componets: { [key: string]: () => Promise<void | typeof import('@/views/blog-backend/BlogArticleAll/index.vue')> } = {
+export const components: { [key: string]: () => Promise<void | typeof import('@/views/blog-backend/BlogArticleAll/index.vue')> } = {
 	BlogArticleAll: () => import('@/views/blog-backend/BlogArticleAll/index.vue'),
 	BlogArticleAllMe: () => import('@/views/blog-backend/BlogArticleAllMe/index.vue'),
 	BlogBackendIndex: () => import('@/views/blog-backend/BlogBackendIndex/index.vue'),

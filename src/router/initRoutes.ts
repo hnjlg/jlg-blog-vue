@@ -1,9 +1,9 @@
-import { router, componets } from './index';
+import { router, components } from './index';
 
 export default function () {
 	router.addRoute({
 		path: '/blogBackend',
-		component: componets.BlogBackend,
+		component: components.BlogBackend,
 		redirect: '/BlogBackendIndex',
 		name: 'BlogBackend',
 		meta: {
@@ -13,7 +13,7 @@ export default function () {
 	});
 	router.addRoute('BlogBackend', {
 		path: '/blogBackend/BlogBackendIndex',
-		component: componets.BlogBackendIndex,
+		component: components.BlogBackendIndex,
 		meta: {
 			keepAlive: true,
 			systemPage: true,

@@ -36,7 +36,7 @@ import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
 import { postUserallquery, AT_UserQueryAllResponse, postUserdelete } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
-import tablehook from '@/mixin/useTableHook';
+import tableHook from '@/mixin/useTableHook';
 // import CryptoJS from 'crypto-js';
 
 defineOptions({
@@ -44,7 +44,7 @@ defineOptions({
 });
 
 /* 分页逻辑 */
-const { paginationInfo, total, handleSizeChange, handleCurrentChange, restInitPage } = tablehook(initPage);
+const { paginationInfo, total, handleSizeChange, handleCurrentChange, restInitPage } = tableHook(initPage);
 
 const { tableCols } = useTable();
 
@@ -65,7 +65,7 @@ function initPage() {
 initPage();
 
 // 删除
-function delFun(row: any) {
+function delFun(row: AT_UserQueryAllResponse) {
 	ElMessageBox.confirm('Are you sure to delete this user?', 'Warning', {
 		confirmButtonText: 'I am true!',
 		cancelButtonText: 'NO,I will think about it again',

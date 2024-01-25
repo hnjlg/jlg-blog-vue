@@ -11,38 +11,19 @@
 	// 配置在保存时，执行stylelint
 	"editor.codeActionsOnSave": {
 		"source.fixAll.stylelint": true
-	}
+	},
 	"cSpell.words": [
-		"addreal",
-		"agentaudit",
-		"axios",
-		"brank",
-		"Cloumn",
+		"Articletagstagsquery",
 		"commitlint",
-		"Datas",
-		"Exmplate",
-		"Explate",
-		"hookpage",
-		"iconfont",
-		"Jsons",
-		"modalthaw",
-		"Optionevent",
+		"gsap",
+		"iitem",
+		"pagi",
+		"persistedstate",
 		"pinia",
 		"preinstall",
-		"setvalidate",
 		"stylelint",
-		"swiper",
-		"tinymce",
-		"toolbelt",
-		"typeing",
-		"unref",
-		"viewerjs",
-		"VITE",
-		"vitepress",
-		"warpped",
-		"yalc",
 		"tailwindcss",
-		"gsap",
-		"getBlobVar"
+		"Userallquery",
+		"Userdelete"
 	]
 }

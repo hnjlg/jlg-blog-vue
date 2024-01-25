@@ -1,22 +1,22 @@
-import { AT_RouterConfigUserRouterQueryResponse, AT_UserLoginResponse } from '@/apiType/production/result';
+import { AT_RouterQueryResponse, AT_UserLoginResponse } from '@/apiType/production/result';
 import { defineStore } from 'pinia';
-import { RouteRecordRaw } from 'vue-router';
-import { componets, routes } from '@/router';
+// import { RouteRecordRaw } from 'vue-router';
+// import { components, routes } from '@/router';
 
 const useBlobStore = defineStore<
 	string,
 	{
 		userInfo: AT_UserLoginResponse;
-		routerInfo: any;
+		routerInfo: AT_RouterQueryResponse[];
 	},
 	{
-		getRouterInfo: () => RouteRecordRaw[];
+		// getRouterInfo: () => RouteRecordRaw[];
 		getUserInfo: () => AT_UserLoginResponse;
 	},
 	{
 		changeUserInfo: (userInfo: AT_UserLoginResponse) => void;
 		clearUserInfo: () => void;
-		changeRouterInfo: (routerInfo: AT_RouterConfigUserRouterQueryResponse[]) => void;
+		changeRouterInfo: (routerInfo: AT_RouterQueryResponse[]) => void;
 	}
 >('blobStore', {
 	// 开启持续化存储
@@ -39,27 +39,27 @@ const useBlobStore = defineStore<
 		getUserInfo() {
 			return this.userInfo;
 		},
-		// 获取后台路由信息
-		getRouterInfo() {
-			return routes.map((route) => {
-				if (route.name === 'BlogBackend') {
-					route.children = [
-						...(route.children ?? []),
-						...this.routerInfo
-							.map((item: { path: any; componentName: string | number; name: any; meta: any }) => {
-								return {
-									path: item.path,
-									component: componets[item.componentName],
-									name: item.name,
-									meta: (item.meta ?? {}) as { [k in string]: any },
-								};
-							})
-							.filter((item: { path: string }) => !route.children?.find((rChild) => rChild.path === item.path)),
-					];
-				}
-				return route;
-			});
-		},
+		// // 获取后台路由信息
+		// getRouterInfo() {
+		// 	return routes.map((route) => {
+		// 		if (route.name === 'BlogBackend') {
+		// 			route.children = [
+		// 				...(route.children ?? []),
+		// 				...this.routerInfo
+		// 					.map((item) => {
+		// 						return {
+		// 							path: item.path,
+		// 							component: components[item.componentName],
+		// 							name: item.name,
+		// 							meta: item.meta ?? {},
+		// 						};
+		// 					})
+		// 					.filter((item: { path: string }) => !route.children?.find((rChild) => rChild.path === item.path)),
+		// 			];
+		// 		}
+		// 		return route;
+		// 	});
+		// },
 	},
 	actions: {
 		changeUserInfo(userInfo) {

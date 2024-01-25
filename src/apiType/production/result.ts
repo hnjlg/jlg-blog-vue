@@ -154,9 +154,7 @@ export const postFileupload = <NUDATA extends (keyof AT_FileUploadRequest)[] = [
 	return axios.post<{ status: number; message: string; content: AT_FileUploadResult[] }>(`/file/upload`, data);
 };
 export const getRouterconfiguserrouterquery = () => {
-	return axios.get<{ status: number; message: string; content: { title: string; children: AT_RouterConfigUserRouterQueryResponse[] }[] }>(
-		`/router-config/user/router/query`
-	);
+	return axios.get<{ status: number; message: string; content: AT_RouterQueryResponse[] }>(`/router-config/user/router/query`);
 };
 export const postUserdelete = <NUDATA extends (keyof AT_UserDeleteRequest)[] = []>(data: U_I_NoNull<AT_UserDeleteRequest, NUDATA>) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/delete`, data);
@@ -173,6 +171,11 @@ export const postUserregister = <NUDATA extends (keyof AT_UserRegisterRequest)[]
 export const postUserupdate = <NUDATA extends (keyof AT_UserUpdateRequest)[] = []>(data: U_I_NoNull<AT_UserUpdateRequest, NUDATA>) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/update`, data);
 };
+export declare interface AT_RouterQueryResponse {
+	title: string;
+	children: AT_RouterConfigUserRouterQueryResponse[];
+}
+
 export declare interface AT_FileUploadRequest {
 	/*文件流*/
 	file: string;

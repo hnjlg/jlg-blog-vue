@@ -153,7 +153,7 @@ import { Menu as IconMenu, Location, Bell } from '@element-plus/icons-vue';
 import { RouteLocationRaw } from 'vue-router';
 import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
-import { loginOut } from './hooks/loginOut';
+import { loginOut } from './hooks/loginout';
 import { router } from '@/router/index';
 import socketInit, { socketIo } from '@/mixin/useSocketHook';
 import drawer from '@/mixin/drawer';

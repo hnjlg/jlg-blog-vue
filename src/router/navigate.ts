@@ -1,6 +1,6 @@
 import { blobHomeContentBackgroundHandleClick } from '@/views/blob/home/hooks/useBackgroundContent';
 import { NavigationGuardWithThis, NavigationHookAfter } from 'vue-router';
-import { router, componets } from './index';
+import { router, components } from './index';
 import useBlogBackendStore from '@/store/blog-backend';
 import initRoutes from './initRoutes';
 
@@ -22,13 +22,13 @@ export const beforeNav: NavigationGuardWithThis<undefined> = (to, _from, next) =
 			} else {
 				if (!isAddAxiosRoute.value) {
 					const blogBackendStore = useBlogBackendStore();
-					blogBackendStore.routerInfo.forEach((iitem: { children: any[] }) => {
-						iitem.children?.forEach((item: { path: any; componentName: string | number; name: any; meta: any }) => {
+					blogBackendStore.routerInfo.forEach((iitem) => {
+						iitem.children?.forEach((item) => {
 							router.addRoute('BlogBackend', {
 								path: item.path,
-								component: componets[item.componentName],
+								component: components[item.componentName],
 								name: item.name,
-								meta: (item.meta ?? {}) as { [k in string]: any },
+								meta: item.meta ?? {},
 							});
 						});
 					});

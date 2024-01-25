@@ -7,7 +7,7 @@
 import { pageLoading } from '../home/hooks/variable';
 import { socketIo } from '@/mixin/useSocketHook';
 // import useBlogBackendStore from '@/store/blog-backend';
-// import { router, componets } from '@/router';
+// import { router, components } from '@/router';
 // import initRoutes from '@/router/initRoutes';
 
 defineOptions({
@@ -54,7 +54,7 @@ function initPage() {
 	// 	// data.forEach((item) => {
 	// 	// 	router.addRoute('BlogBackend', {
 	// 	// 		path: item.path,
-	// 	// 		component: componets[item.componentName],
+	// 	// 		component: components[item.componentName],
 	// 	// 		name: item.name,
 	// 	// 		meta: (item.meta ?? {}) as { [k in string]: any },
 	// 	// 	});
