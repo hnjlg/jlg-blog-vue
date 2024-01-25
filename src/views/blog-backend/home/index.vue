@@ -43,7 +43,7 @@
 				<el-header>
 					<div class="flex justify-end">
 						<div class="w-10 h-10 p-3 mr-5">
-							<el-badge :hidden="false" :value="1111" :max="10" @click="elNoticeClick">
+							<el-badge :hidden="false" :value="HistoryMsg.length" :max="10" @click="elNoticeClick">
 								<el-icon size="20"><Bell /></el-icon>
 							</el-badge>
 						</div>
@@ -88,14 +88,14 @@
 					</el-menu>
 					<div class="notice-box-content">
 						<template v-if="HistoryMsg.length !== 0">
-							<div v-for="(item, index) in HistoryMsg" :key="index" class="notice-item border rounded-md">
+							<div v-for="(item, index) in HistoryMsg" :key="index" class="notice-item border rounded-md p-4" @click="readMessage(item)">
 								<div class="notice-item-title">标题：{{ item.msg_title }}</div>
 								<div class="notice-item-content">消息内容：{{ item.msg_content }}</div>
 								<div class="notice-item-sendtime">发送时间：{{ dayjs(item.send_time).format('YYYY/MM/DD hh:mm') }}</div>
 							</div>
 						</template>
 						<template v-else>
-							<el-empty description="description" />
+							<el-empty description="还么有消息哦！" />
 						</template>
 					</div>
 				</div>
@@ -103,7 +103,7 @@
 			<template #footer>
 				<div class="dialog-footer">
 					<el-button @click="outerVisible = false">关闭</el-button>
-					<el-button type="primary" @click="outerVisible = false"> 一键已读 </el-button>
+					<!-- <el-button type="primary" @click="outerVisible = false"> 一键已读 </el-button> -->
 				</div>
 			</template>
 		</el-dialog>
@@ -158,6 +158,7 @@ import { router } from '@/router/index';
 import socketInit, { socketIo } from '@/mixin/useSocketHook';
 import drawer from '@/mixin/drawer';
 import dayjs from 'dayjs';
+import { ElNotification } from 'element-plus';
 import FloatingBall from '@/components/floating-ball/index.vue';
 import { ChatLineRound, SemiSelect } from '@element-plus/icons-vue';
 
@@ -202,7 +203,6 @@ function handleSelect(key: string, keyPath: string[]) {
 
 	if (key === '1') {
 		HistoryMsg.value = [];
-		socketIo.value?.emit('reqNewMessage');
 	} else if (key === '2') {
 		HistoryMsg.value = [];
 		socketIo.value?.emit('reqHistoryMsg');
@@ -219,6 +219,19 @@ socketIo.value?.on('resNewMessage', (data) => {
 	console.log(data, 'resNewMessage');
 	outerVisible.value = true;
 	HistoryMsg.value = data;
+});
+
+function readMessage(item: any) {
+	socketIo.value?.emit('reqReadMessage', { id: item.id });
+}
+socketIo.value?.on('resReadMessage', (data) => {
+	ElNotification({
+		title: 'Success',
+		message: data.message,
+		type: 'success',
+		position: 'bottom-right',
+		duration: 3000,
+	});
 });
 
 const isBallShow = ref<boolean>(true);
