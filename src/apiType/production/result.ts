@@ -4,6 +4,12 @@ type ItemInTu<T, K> = T extends [infer F, ...infer R] ? (F extends K ? true : It
 export declare type U_I_NoNull<T, U extends Array<keyof T>> = { [K in keyof T as ItemInTu<U, K> extends true ? never : K]: T[K] } & {
 	[K in keyof T as ItemInTu<U, K> extends true ? K : never]-?: T[K];
 };
+export const postArticletagstagsadd = (data: { tagName: string }) => {
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tags/tags/add`, data);
+};
+export const postArticletagstagsdelete = (data: { id: number }) => {
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tags/tags/delete`, data);
+};
 export const postArticletagstagsquery = <NUDATA extends (keyof AT_ArticleTagsTagsQueryRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTagsTagsQueryRequest, NUDATA>
 ) => {
@@ -171,6 +177,10 @@ export const postUserregister = <NUDATA extends (keyof AT_UserRegisterRequest)[]
 export const postUserupdate = <NUDATA extends (keyof AT_UserUpdateRequest)[] = []>(data: U_I_NoNull<AT_UserUpdateRequest, NUDATA>) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/user/update`, data);
 };
+export declare interface AT_ArticleTagAddRequest {
+	id: number;
+}
+
 export declare interface AT_RouterQueryResponse {
 	title: string;
 	children: AT_RouterConfigUserRouterQueryResponse[];

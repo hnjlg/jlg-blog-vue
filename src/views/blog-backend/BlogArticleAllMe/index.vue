@@ -213,7 +213,7 @@ function editStatusFun(item: AT_SelectListItem, row: AT_BlogBackstageArticleQuer
 }
 
 function publishArticleFun() {
-	drawer('ArticlePublish', '发布文章', {}, 'add')
+	drawer('ArticlePublish', '发布文章', {}, 'add', '70%')
 		.then(() => {
 			restInitPage();
 		})

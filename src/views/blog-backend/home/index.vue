@@ -25,7 +25,7 @@
 								</template>
 							</el-menu-item-group>
 						</el-sub-menu> -->
-						<el-sub-menu v-for="(item, index) in blogBackendStore.routerInfo" :key="index" index="1">
+						<el-sub-menu v-for="(item, index) in blogBackendStore.routerInfo" :key="index" :index="index">
 							<template #title>
 								<el-icon><IconMenu /></el-icon>{{ item.title }}
 							</template>
@@ -166,6 +166,7 @@ import dayjs from 'dayjs';
 import { ElNotification } from 'element-plus';
 import FloatingBall from '@/components/floating-ball/index.vue';
 import { ChatLineRound, SemiSelect } from '@element-plus/icons-vue';
+import { postArticletagstagsquery } from '@/apiType/production/result';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -288,6 +289,11 @@ const sendMsg = () => {
 	clearInputMsgValue();
 	scrollMsgBottomShow();
 };
+
+postArticletagstagsquery({
+	pageIndex: 1,
+	pageSize: 20,
+});
 </script>
 <style lang="scss" scoped>
 @import url('@/assets/styles/scroll.scss');

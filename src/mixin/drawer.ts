@@ -3,6 +3,7 @@ import DrawerFrame from '@/components/drawer-frame/index.vue';
 import ArticlePublish from '@/components/business/article-publish/index.vue';
 import MyInformation from '@/components/business/my-information/index.vue';
 import { DrawerProps } from 'element-plus';
+
 const divDom = document.createElement('div');
 document.body.appendChild(divDom);
 
@@ -23,15 +24,10 @@ function drawer<Option = object>(
 	drawerSize?: string,
 	drawerParams?: DrawerProps
 ) {
-	return new Promise((resolve, reject) => {
-		function onSubmit<T = object>(data: T) {
-			render(null, divDom);
+	return new Promise((resolve) => {
+		function onClose(data: unknown) {
 			resolve(data);
-		}
-
-		function onCancel() {
 			render(null, divDom);
-			reject(new Error('取消'));
 		}
 
 		/* 
@@ -51,26 +47,18 @@ function drawer<Option = object>(
 				drawerDirection,
 				drawerSize,
 				...drawerParams,
-				propsData: { drawerType, ...option },
+				propsData: { drawerTitle, drawerType, ...option },
 				// 打开弹窗
 				modelValue: true,
-				// 提交
-				onSubmit,
-				// 取消
-				onCancel,
 				// 关闭
-				onClose: onCancel,
+				onClose: onClose,
 			},
 			{
 				default: () =>
 					h(DrawerList.get(drawerKey) ?? 'div', {
-						propsData: { drawerType, ...option },
-						// 提交
-						onSubmit,
+						propsData: { drawerTitle, drawerType, ...option },
 						// 取消
-						onCancel,
-						// 关闭
-						onClose: onCancel,
+						onClose,
 					}),
 			}
 		);

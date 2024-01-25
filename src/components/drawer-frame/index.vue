@@ -7,6 +7,7 @@
 		:size="props.drawerSize"
 		v-bind="$attrs"
 		modal-class="drawerClassName"
+		@closed="$emit('close')"
 	>
 		<slot name="default"></slot>
 	</el-drawer>
@@ -40,14 +41,15 @@ const props = defineProps({
 		default: () => ({}),
 	},
 });
-const emits = defineEmits(['cancel', 'submit']);
+
+const emits = defineEmits(['close']);
 
 const dialogVisible = ref(false);
 
 // 关闭弹窗
 function handleCancel() {
 	dialogVisible.value = false;
-	emits('cancel');
+	emits('close');
 }
 
 defineExpose({

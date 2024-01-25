@@ -113,7 +113,7 @@ const props = defineProps({
 		default: () => ({}),
 	},
 });
-const emits = defineEmits(['cancel', 'submit']);
+const emits = defineEmits(['close', 'submit']);
 
 const blogBackendStore = useBlogBackendStore();
 const pageFormData = ref<
@@ -272,7 +272,7 @@ async function sumbmitEditFun() {
 
 // 关闭弹窗
 function handleCancel() {
-	emits('cancel');
+	emits('close');
 }
 
 const articleTagsLoading = ref(false);
