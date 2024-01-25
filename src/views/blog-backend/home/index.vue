@@ -43,7 +43,7 @@
 				<el-header>
 					<div class="flex justify-end">
 						<div class="w-10 h-10 p-3 mr-5">
-							<el-badge :hidden="false" :value="HistoryMsg.length" :max="10" @click="elNoticeClick">
+							<el-badge :hidden="false" @click="elNoticeClick">
 								<el-icon size="20"><Bell /></el-icon>
 							</el-badge>
 						</div>
@@ -78,7 +78,7 @@
 				<component :is="Component" v-if="!$route.meta.keepAlive" />
 			</router-view>
 		</div>
-		<el-dialog v-model="outerVisible" title="消息" destroy-on-close :close-on-click-modal="false" width="50%" height="500">
+		<el-dialog v-model="outerVisible" title="消息" destroy-on-close :close-on-click-modal="false" width="50%" custom-class="max-h-[540px]">
 			<template #default>
 				<div class="notice-box w-full">
 					<el-menu default-active="1" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -86,9 +86,14 @@
 						<el-menu-item index="2">历史消息</el-menu-item>
 						<el-menu-item index="3" disabled>全部消息</el-menu-item>
 					</el-menu>
-					<div class="notice-box-content">
+					<div class="notice-box-content max-h-[450px] overflow-y-scroll">
 						<template v-if="HistoryMsg.length !== 0">
-							<div v-for="(item, index) in HistoryMsg" :key="index" class="notice-item border rounded-md p-4" @click="readMessage(item)">
+							<div
+								v-for="(item, index) in HistoryMsg"
+								:key="index"
+								class="notice-item border rounded-md p-4 my-2 mr-1 cursor-pointer hover:bg-gray-100 transition duration-300"
+								@click="readMessage(item)"
+							>
 								<div class="notice-item-title">标题：{{ item.msg_title }}</div>
 								<div class="notice-item-content">消息内容：{{ item.msg_content }}</div>
 								<div class="notice-item-sendtime">发送时间：{{ dayjs(item.send_time).format('YYYY/MM/DD hh:mm') }}</div>

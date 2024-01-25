@@ -2,6 +2,7 @@ import { h, render } from 'vue';
 import DrawerFrame from '@/components/drawer-frame/index.vue';
 import ArticlePublish from '@/components/business/article-publish/index.vue';
 import MyInformation from '@/components/business/my-information/index.vue';
+import { DrawerProps } from 'element-plus';
 const divDom = document.createElement('div');
 document.body.appendChild(divDom);
 
@@ -13,17 +14,17 @@ const DrawerList = new Map(
 );
 
 type T_DrawerType = 'add' | 'edit' | 'view';
-function drawer(
+function drawer<Option = object>(
 	drawerKey: string,
 	drawerTitle: string,
-	option: { [k: string]: any },
+	option: Option,
 	drawerType: T_DrawerType,
 	drawerDirection?: string,
 	drawerSize?: string,
-	drawerParams?: { [k: string]: any }
+	drawerParams?: DrawerProps
 ) {
 	return new Promise((resolve, reject) => {
-		function onSubmit(data: any) {
+		function onSubmit<T = object>(data: T) {
 			render(null, divDom);
 			resolve(data);
 		}
