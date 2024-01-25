@@ -12,17 +12,6 @@
 			@dbclick:row="rowDbClick"
 		>
 			<template #operation-column="row">
-				<el-dropdown trigger="click">
-					<span>
-						<el-icon><MoreFilled /></el-icon>
-					</span>
-					<template #dropdown>
-						<el-dropdown-menu>
-							<el-dropdown-item :icon="CircleCheck" @click="PassFun(row)"> 审核通过 </el-dropdown-item>
-							<el-dropdown-item :icon="CircleClose" @click="NoPassFun(row)"> 审核不通过 </el-dropdown-item>
-						</el-dropdown-menu>
-					</template>
-				</el-dropdown>
 				<el-link type="primary" @click="editlFun(row)">编辑</el-link>
 				<el-link type="error" @click="delFun(row)">删除</el-link>
 			</template>
@@ -72,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { Refresh, CirclePlus, MoreFilled, CircleClose, CircleCheck } from '@element-plus/icons-vue';
+import { Refresh, CirclePlus } from '@element-plus/icons-vue';
 import SimpleTable from '@/components/simple-table/index.vue';
 import useTable from './hooks/useTable';
 import {
@@ -203,8 +192,8 @@ function editStatusFun(item: AT_SelectListItem, row: AT_BlogBackstageArticleQuer
 			}
 		});
 	}
-	// 转公开 即文章提审
-	else if (item.value === AT_ArticleStatus.公开) {
+	// 转待审
+	else if (item.value === AT_ArticleStatus.待审) {
 		postBlogbackstagearticledraftturnwaitreview({
 			articleId: row.id,
 		}).then((result) => {
@@ -214,25 +203,24 @@ function editStatusFun(item: AT_SelectListItem, row: AT_BlogBackstageArticleQuer
 			}
 		});
 	}
-}
-
-// 审核通过
-function PassFun(row: { row: { row: AT_BlogBackstageArticleAllQueryResponse } }) {
-	console.log('===row===', row.row.row);
-	postBlogbackstagearticlereview({ articleId: row.row.row.id }).then((result) => {
-		if (result.data.status === 1) {
-			ElMessage.success('操作成功');
-			restInitPage();
-		}
-	});
-}
-function NoPassFun(row: { row: { row: AT_BlogBackstageArticleAllQueryResponse } }) {
-	postBlogbackstagearticlereject({ articleId: row.row.row.id }).then((result) => {
-		if (result.data.status === 1) {
-			ElMessage.success('操作成功');
-			restInitPage();
-		}
-	});
+	// 转公开
+	else if (item.value === AT_ArticleStatus.公开) {
+		postBlogbackstagearticlereview({ articleId: row.id }).then((result) => {
+			if (result.data.status === 1) {
+				ElMessage.success('操作成功');
+				restInitPage();
+			}
+		});
+	}
+	// 转驳回
+	else if (item.value === AT_ArticleStatus.驳回) {
+		postBlogbackstagearticlereject({ articleId: row.id }).then((result) => {
+			if (result.data.status === 1) {
+				ElMessage.success('操作成功');
+				restInitPage();
+			}
+		});
+	}
 }
 
 const blogBackendStore = useBlogBackendStore();

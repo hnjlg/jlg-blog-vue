@@ -199,8 +199,8 @@ function editStatusFun(item: AT_SelectListItem, row: AT_BlogBackstageArticleQuer
 			}
 		});
 	}
-	// 转公开 即文章提审
-	else if (item.value === AT_ArticleStatus.公开) {
+	// 转待审
+	else if (item.value === AT_ArticleStatus.待审) {
 		postBlogbackstagearticledraftturnwaitreview({
 			articleId: row.id,
 		}).then((result) => {
@@ -229,9 +229,9 @@ function elDropdownItemDisabled(item: { value: AT_ArticleStatus }, row: { status
 			case AT_ArticleStatus.草稿:
 				return true;
 			case AT_ArticleStatus.待审:
-				return true;
-			case AT_ArticleStatus.公开:
 				return false;
+			case AT_ArticleStatus.公开:
+				return true;
 			case AT_ArticleStatus.私有:
 				return false;
 			case AT_ArticleStatus.驳回:
