@@ -17,6 +17,10 @@ const DrawerList = new Map(
 );
 
 type T_DrawerType = 'add' | 'edit' | 'view';
+
+export declare interface I_SonData {
+	close: () => Promise<void> | void;
+}
 function drawer<Option = object>(
 	drawerKey: string,
 	drawerTitle: string,
@@ -27,9 +31,13 @@ function drawer<Option = object>(
 	drawerParams?: DrawerProps
 ) {
 	return new Promise((resolve) => {
+		let sonData: I_SonData = { close: () => {} };
+
 		function onClose(data: unknown) {
-			resolve(data);
-			render(null, divDom);
+			sonData?.close()?.then(() => {
+				render(null, divDom);
+				resolve(data);
+			});
 		}
 
 		/* 
@@ -51,6 +59,9 @@ function drawer<Option = object>(
 				...drawerParams,
 				propsData: { drawerTitle, drawerType, ...option },
 				onClose: onClose,
+				getSonData: (data: I_SonData) => {
+					sonData = data;
+				},
 			},
 			{
 				default: () =>
