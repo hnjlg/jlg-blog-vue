@@ -38,7 +38,7 @@ const props = defineProps({
 		default: () => ({}),
 	},
 });
-const emits = defineEmits(['cancel', 'submit']);
+const emits = defineEmits(['close', 'submit']);
 const editForm = ref({
 	userName: '',
 	passWord: '',
@@ -101,7 +101,7 @@ async function initModal() {
 }
 initModal();
 
-const dialogVisible = ref(false);
+// const dialogVisible = ref(false);
 
 const ruleFormRef = ref<FormInstance>();
 
@@ -129,7 +129,7 @@ async function sumbmitEditFun() {
 
 // 关闭弹窗
 function handleCancel() {
-	dialogVisible.value = false;
-	emits('cancel');
+	// dialogVisible.value = false;
+	emits('close');
 }
 </script>
