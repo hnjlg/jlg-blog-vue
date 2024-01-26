@@ -11,6 +11,7 @@
 			<el-form-item>
 				<el-button @click="registerHandle">To Register</el-button>
 				<el-button :loading="submitLoading" @click="submitHandle">Submit</el-button>
+				<el-checkbox v-model="loginForm.isRemember" label="记住密码" size="large" style="margin-left: 30px" />
 			</el-form-item>
 		</el-form>
 	</div>
@@ -34,8 +35,17 @@ const blogBackendStore = useBlogBackendStore();
 const loginForm = ref({
 	userName: '',
 	passWord: '',
+	isRemember: false,
 });
-
+onMounted(() => {
+	const userName = localStorage.getItem('savedUsername');
+	const passWord = localStorage.getItem('savedPassword');
+	if (userName && passWord) {
+		loginForm.value.userName = userName;
+		loginForm.value.passWord = passWord;
+		loginForm.value.isRemember = true;
+	}
+});
 const rules = ref<FormRules>({
 	userName: [
 		{ required: true, message: 'Please input userName', trigger: 'blur' },
@@ -75,6 +85,14 @@ const submitHandle = () => {
 			submitLoading.value = true;
 			postUserlogin({ userName: loginForm.value.userName, passWord: CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString() })
 				.then(async (res) => {
+					// 判断是否记住密码
+					if (loginForm.value.isRemember) {
+						localStorage.setItem('savedUsername', loginForm.value.userName);
+						localStorage.setItem('savedPassword', loginForm.value.passWord);
+					} else {
+						localStorage.removeItem('savedUsername');
+						localStorage.removeItem('savedPassword');
+					}
 					blogBackendStore.changeUserInfo(res.data.content);
 					sessionStorage.setItem('blog-backend-token', res.data.content.token);
 					const result = await getRouterconfiguserrouterquery();
