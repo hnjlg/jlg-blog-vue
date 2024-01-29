@@ -2,7 +2,7 @@
 <template>
 	<div class="table-box">
 		<div class="header">
-			<el-input v-model="tagName" placeholder="Please input tagName" class="input-with-select" @click="initPage" @keyup.enter="initPage">
+			<el-input v-model="tagName" placeholder="Please input tagName" clearable class="input-with-select" @click="initPage" @keyup.enter="initPage">
 				<template #prepend>
 					<el-button :icon="Search" @click="initPage" />
 				</template>
@@ -66,7 +66,7 @@ const tableData = ref<AT_ArticleTagsTagsQueryResponse[]>([]);
 // 初始请求表格内容
 function initPage() {
 	pageLoading.value = true;
-	postArticletagstagsquery({ ...paginationInfo.value, tagName: tagName.value })
+	postArticletagstagsquery({ ...paginationInfo.value, tagName: tagName.value.trim() })
 		.then((result) => {
 			tableData.value = result.data.content.arr;
 			total.value = result.data.content.total;
