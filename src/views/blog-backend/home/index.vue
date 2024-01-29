@@ -124,6 +124,7 @@
 						<el-icon @click="isBallShow = true"><SemiSelect /></el-icon>
 					</header>
 					<main>
+						在线人员{{ onlinePeoples }}
 						<div v-for="(msg, index) in messageList" :key="msg.id">
 							<div
 								:id="index + 1 === messageList.length ? 'is-last-msg' : ''"
@@ -166,7 +167,7 @@ import dayjs from 'dayjs';
 import { ElNotification } from 'element-plus';
 import FloatingBall from '@/components/floating-ball/index.vue';
 import { ChatLineRound, SemiSelect } from '@element-plus/icons-vue';
-import { postArticletagstagsquery } from '@/apiType/production/result';
+import { AT_UserLoginResponse, postArticletagstagsquery } from '@/apiType/production/result';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -227,6 +228,13 @@ socketIo.value?.on('resNewMessage', (data) => {
 	HistoryMsg.value = data;
 });
 
+socketIo.value?.on('resOnlinePeoples', (data: AT_UserLoginResponse[]) => {
+	console.log(data, 'resOnlinePeoples');
+	onlinePeoples.value = data;
+});
+
+socketIo.value?.emit('reqOnlinePeoples');
+
 function readMessage(item: any) {
 	socketIo.value?.emit('reqReadMessage', { id: item.id });
 }
@@ -263,6 +271,8 @@ watch(
 );
 
 const connectionMessage = ref<string>('');
+
+const onlinePeoples = ref<AT_UserLoginResponse[]>([]);
 
 const messageList = ref<{ msg: string; id: number; sendUserCode: string }[]>([
 	{ msg: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好', id: 1, sendUserCode: 'aa' },
