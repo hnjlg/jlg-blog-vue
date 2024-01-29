@@ -2,7 +2,7 @@
 	"openapi": "3.0.0",
 	"info": {
 		"title": "JLG_BLOG",
-		"version": "2024/01/25-23:30:08",
+		"version": "2024/01/29-11:25:20",
 		"description": "API 文档",
 		"license": { "name": "swagger.json", "url": "http://localhost:3000/swagger.json" }
 	},
@@ -360,7 +360,12 @@
 			},
 			"UserUpdateRequest": {
 				"type": "object",
-				"properties": { "author": { "type": "integer", "description": "用户id" }, "passWord": { "type": "string", "description": "加密密码" } }
+				"properties": {
+					"author": { "type": "integer", "description": "用户id" },
+					"passWord": { "type": "string", "description": "加密密码" },
+					"email": { "type": "string", "description": "邮箱" },
+					"isReceiveEmail": { "type": "integer", "description": "是否接收邮件" }
+				}
 			},
 			"UserDeleteRequest": { "type": "object", "properties": { "author": { "type": "integer", "description": "用户id" } } },
 			"ArticleTreeTable": {

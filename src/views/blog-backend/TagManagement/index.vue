@@ -2,7 +2,7 @@
 <template>
 	<div class="table-box">
 		<div class="header">
-			<el-input v-model="tagName" placeholder="Please input tagName" class="input-with-select" @click="initPage" @keyup.enter="initPage">
+			<el-input v-model="tagName" placeholder="Please input tagName" clearable class="input-with-select" @click="initPage" @keyup.enter="initPage">
 				<template #prepend>
 					<el-button :icon="Search" @click="initPage" />
 				</template>
@@ -66,7 +66,7 @@ const tableData = ref<AT_ArticleTagsTagsQueryResponse[]>([]);
 // 初始请求表格内容
 function initPage() {
 	pageLoading.value = true;
-	postArticletagstagsquery({ ...paginationInfo.value, tagName: tagName.value })
+	postArticletagstagsquery({ ...paginationInfo.value, tagName: tagName.value.trim() })
 		.then((result) => {
 			tableData.value = result.data.content.arr;
 			total.value = result.data.content.total;
@@ -106,9 +106,8 @@ function delFun(row: AT_ArticleTagsTagsQueryResponse) {
 				} else {
 					let newArticleTagId: number | undefined;
 					ElMessageBox({
-						title: '所属文章',
+						title: '标签所属文章',
 						closeOnClickModal: false,
-						// Should pass a function if VNode contains dynamic props
 						message: () =>
 							h(DeletePromptList, {
 								tableData: tableData,

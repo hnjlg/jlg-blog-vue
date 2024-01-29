@@ -1,12 +1,21 @@
 <!-- blog后台-登录注册页 -->
 <template>
+	<input type="text" />
 	<div class="blob-login-container">
 		<el-form ref="formRef" :model="loginForm" :rules="rules" label-width="120px" label-position="top" class="form">
 			<el-form-item label="用户名" prop="userName">
 				<el-input v-model="loginForm.userName" placeholder="Please input userName" clearable @keyup.enter="submitHandle" />
 			</el-form-item>
 			<el-form-item label="密码" prop="passWord">
-				<el-input v-model="loginForm.passWord" placeholder="Please input passWord" show-password clearable @keyup.enter="submitHandle" />
+				<el-input
+					v-model="loginForm.passWord"
+					type="password"
+					placeholder="Please input passWord"
+					:show-password="!loginForm.isRemember"
+					clearable
+					@keyup.enter="submitHandle"
+					@input="handleInput"
+				/>
 			</el-form-item>
 			<el-form-item>
 				<el-button @click="registerHandle">To Register</el-button>
@@ -23,7 +32,7 @@ import useBlogBackendStore from '@/store/blog-backend';
 import { getRouterconfiguserrouterquery, postUserlogin } from '@/apiType/production/result';
 import CryptoJS from 'crypto-js';
 import { router } from '@/router/index';
-
+import Cookies from 'js-cookie';
 defineOptions({
 	name: 'BlogBackendLogin',
 });
@@ -37,15 +46,23 @@ const loginForm = ref({
 	passWord: '',
 	isRemember: false,
 });
+// 记住密码 - 存储的密码（加密过）
+const storePassWord = ref('');
+// 密码框内容是否被改动过
+const isPassWordChange = ref(false);
 onMounted(() => {
-	const userName = localStorage.getItem('savedUsername');
-	const passWord = localStorage.getItem('savedPassword');
+	const userName = Cookies.get('savedUsername');
+	const passWord = Cookies.get('savedPassword');
 	if (userName && passWord) {
+		storePassWord.value = passWord;
 		loginForm.value.userName = userName;
-		loginForm.value.passWord = passWord;
+		loginForm.value.passWord = '******';
 		loginForm.value.isRemember = true;
 	}
 });
+const handleInput = () => {
+	isPassWordChange.value = true;
+};
 const rules = ref<FormRules>({
 	userName: [
 		{ required: true, message: 'Please input userName', trigger: 'blur' },
@@ -83,18 +100,27 @@ const submitHandle = () => {
 	formRef.value?.validate((valid) => {
 		if (valid) {
 			submitLoading.value = true;
-			postUserlogin({ userName: loginForm.value.userName, passWord: CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString() })
+			// 只有当Cookies中有保存用户名和密码时 且 用户没有动过密码框时 采用不加密提交
+			postUserlogin({
+				userName: loginForm.value.userName,
+				passWord:
+					Cookies.get('savedUsername') && !isPassWordChange.value
+						? storePassWord.value
+						: CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString(),
+			})
 				.then(async (res) => {
 					// 判断是否记住密码
 					if (loginForm.value.isRemember) {
-						localStorage.setItem('savedUsername', loginForm.value.userName);
-						localStorage.setItem('savedPassword', loginForm.value.passWord);
+						Cookies.set('savedUsername', loginForm.value.userName, { expires: 3 });
+						Cookies.set('savedPassword', CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString(), { expires: 3 });
 					} else {
-						localStorage.removeItem('savedUsername');
-						localStorage.removeItem('savedPassword');
+						Cookies.remove('savedUsername');
+						Cookies.remove('savedPassword');
 					}
+					// 记录登录信息
 					blogBackendStore.changeUserInfo(res.data.content);
 					sessionStorage.setItem('blog-backend-token', res.data.content.token);
+					// 记录路由权限信息
 					const result = await getRouterconfiguserrouterquery();
 					blogBackendStore.changeRouterInfo(result.data.content);
 					ElMessage.success('登录成功！');

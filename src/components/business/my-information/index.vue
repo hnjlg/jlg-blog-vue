@@ -10,6 +10,10 @@
 		<el-form-item label="密码确认" prop="confirmPassWord">
 			<el-input v-model="editForm.confirmPassWord" placeholder="Please input confirmPassWord" show-password clearable @keyup.enter="sumbmitEditFun" />
 		</el-form-item>
+		<el-form-item label="邮箱" prop="email">
+			<el-input v-model="editForm.email" placeholder="Please input email" clearable @keyup.enter="sumbmitEditFun" />
+		</el-form-item>
+		<el-switch v-model="editForm.isReceiveEmail" active-text="接收邮件" />
 	</el-form>
 	<div class="btn-box text-right">
 		<el-button @click="handleCancel">取消</el-button>
@@ -43,6 +47,8 @@ const editForm = ref({
 	userName: '',
 	passWord: '',
 	confirmPassWord: '',
+	email: '',
+	isReceiveEmail: false,
 });
 
 const rules = ref<FormRules>({
@@ -79,6 +85,15 @@ const rules = ref<FormRules>({
 			},
 		},
 	],
+	email: {
+		validator(_rule, value, callback) {
+			if (value.trim() === '' && editForm.value.isReceiveEmail) {
+				callback('Please input email');
+			} else {
+				callback();
+			}
+		},
+	},
 });
 
 async function initModal() {
@@ -114,6 +129,8 @@ async function sumbmitEditFun() {
 			postUserupdate({
 				author: blogBackendStore.getUserInfo.id,
 				passWord: CryptoJS.AES.encrypt(editForm.value.passWord, 'blog').toString(),
+				email: editForm.value.email,
+				isReceiveEmail: editForm.value.isReceiveEmail ? 1 : 0,
 			}).then((result) => {
 				if (result.data.status === 1) {
 					loginOut();
