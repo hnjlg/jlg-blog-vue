@@ -13,7 +13,7 @@
 		<el-form-item label="邮箱" prop="email">
 			<el-input v-model="editForm.email" placeholder="Please input email" clearable @keyup.enter="sumbmitEditFun" />
 		</el-form-item>
-		<el-checkbox v-model="editForm.isReceiveEmail" label="是否接收邮件" size="large" />
+		<el-switch v-model="editForm.isReceiveEmail" active-text="接收邮件" />
 	</el-form>
 	<div class="btn-box text-right">
 		<el-button @click="handleCancel">取消</el-button>
@@ -85,6 +85,15 @@ const rules = ref<FormRules>({
 			},
 		},
 	],
+	email: {
+		validator(_rule, value, callback) {
+			if (value.trim() === '' && editForm.value.isReceiveEmail) {
+				callback('Please input email');
+			} else {
+				callback();
+			}
+		},
+	},
 });
 
 async function initModal() {
