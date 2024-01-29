@@ -127,7 +127,6 @@ function tagHandleEvent(item: AT_BlogTagsQueryResponse) {
 		tagId: item.id,
 	}).then((result) => {
 		if (result.data.status === 1) {
-			console.log('===result===', result);
 			tableData.value = result.data.content.arr;
 		}
 	});

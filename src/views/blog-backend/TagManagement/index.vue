@@ -106,9 +106,8 @@ function delFun(row: AT_ArticleTagsTagsQueryResponse) {
 				} else {
 					let newArticleTagId: number | undefined;
 					ElMessageBox({
-						title: '所属文章',
+						title: '标签所属文章',
 						closeOnClickModal: false,
-						// Should pass a function if VNode contains dynamic props
 						message: () =>
 							h(DeletePromptList, {
 								tableData: tableData,

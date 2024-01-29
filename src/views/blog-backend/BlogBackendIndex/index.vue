@@ -65,10 +65,7 @@ function initPage() {
 		console.log('===resLoginout===');
 	});
 }
-console.log('===11111111333311111===');
 onMounted(() => {
-	console.log('===11111111111111111111111111===', socketIo.value);
-
 	initPage();
 });
 </script>

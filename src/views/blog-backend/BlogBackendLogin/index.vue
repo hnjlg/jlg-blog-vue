@@ -56,7 +56,7 @@ onMounted(() => {
 	if (userName && passWord) {
 		storePassWord.value = passWord;
 		loginForm.value.userName = userName;
-		loginForm.value.passWord = '111111';
+		loginForm.value.passWord = '******';
 		loginForm.value.isRemember = true;
 	}
 });
