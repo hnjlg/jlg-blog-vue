@@ -100,7 +100,7 @@ const submitHandle = () => {
 	formRef.value?.validate((valid) => {
 		if (valid) {
 			submitLoading.value = true;
-			// 只有当Cookies中没有保存用户名和密码时 且 用户没有动过密码框时 采用不加密提交
+			// 只有当Cookies中有保存用户名和密码时 且 用户没有动过密码框时 采用不加密提交
 			postUserlogin({
 				userName: loginForm.value.userName,
 				passWord:

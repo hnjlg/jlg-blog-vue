@@ -678,6 +678,10 @@ export declare interface AT_UserUpdateRequest {
 	author: number;
 	/*加密密码*/
 	passWord: string;
+	/*邮箱*/
+	email: string;
+	/*是否接收邮件*/
+	isReceiveEmail: number;
 }
 
 export declare interface AT_UserDeleteRequest {
