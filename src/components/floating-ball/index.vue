@@ -28,6 +28,25 @@ const dragstart = (e: DragEvent) => {
 };
 // 拖拽完成事件
 const dragend = (e: DragEvent) => {
+	if (!e.target) return;
+	dragendHandle({
+		clientX: e.clientX,
+		clientY: e.clientY,
+		target: {
+			clientWidth: (e.target as HTMLElement).clientWidth,
+			clientHeight: (e.target as HTMLElement).clientHeight,
+		},
+	});
+};
+
+const dragendHandle = (e: {
+	clientX: number;
+	clientY: number;
+	target: {
+		clientWidth: number;
+		clientHeight: number;
+	};
+}) => {
 	const x = startClientX.value - e.clientX; // 计算偏移量
 	const y = startClientY.value - e.clientY;
 	if (elRight.value + x < 0) {
@@ -45,6 +64,12 @@ const dragend = (e: DragEvent) => {
 		elBottom.value += y;
 	}
 };
+
+defineExpose({
+	dragendHandle,
+	startClientX,
+	startClientY,
+});
 </script>
 <style scoped lang="scss">
 .drag-ball-container {
