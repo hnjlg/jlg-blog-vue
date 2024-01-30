@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { postArticletreeallquery, type AT_ArticleTreeTable } from '@/apiType/production/result';
+import { postBlogarticletreeallquery, type AT_ArticleTreeTable } from '@/apiType/production/result';
 defineOptions({
 	name: 'ArticleTree',
 });
@@ -43,7 +43,7 @@ function buildTree(nodes: AT_ArticleTreeTable[]): AT_ArticleTreeTable[] {
 	return tree;
 }
 
-postArticletreeallquery().then((result) => {
+postBlogarticletreeallquery().then((result) => {
 	if (result.data.status === 1) {
 		pageData.value = buildTree(result.data.content);
 	}

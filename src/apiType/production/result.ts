@@ -28,19 +28,28 @@ export const getArticletagstagsqueryArticleSingleByTagId = (tag_id: number) => {
 export const postArticletagstagsupdate = (data: { tag_id: number; tag_name: string }) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tags/tags/update`, data);
 };
+export const postArticletreetreeadd = (data: { treeName: string; parentId: number }) => {
+	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tree/tree/add`, data);
+};
 export const postArticletreebyIddelete = <NUDATA extends (keyof AT_ArticleTreeByIdDeleteRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTreeByIdDeleteRequest, NUDATA>
 ) => {
 	return axios.post<{ status: number; message: string; content: AT_MySQLResult[] }>(`/article-tree/byId/delete`, data);
 };
-export const postArticletreeallquery = () => {
-	return axios.post<{ status: number; message: string; content: AT_ArticleTreeTable[] }>(`/article-tree/all/query`);
+export const postBlogarticletreeallquery = () => {
+	return axios.post<{ status: number; message: string; content: AT_ArticleTreeTable[] }>(`/blog/article-tree/all/query`);
 };
 export const postArticletreearticletreenamequery = <NUDATA extends (keyof AT_ArticleTreeArticleTreeNameQueryRequest)[] = []>(
 	data: U_I_NoNull<AT_ArticleTreeArticleTreeNameQueryRequest, NUDATA>
 ) => {
 	return axios.post<{ status: number; message: string; content: { total: number; arr: AT_ArticleTreeArticleTreeNameQueryResponse[] } }>(
 		`/article-tree/article-tree-name/query`,
+		data
+	);
+};
+export const postArticletreearticletreeidquery = (data: { articleTreeId: number }) => {
+	return axios.post<{ status: number; message: string; content: AT_ArticleTreeArticleTreeNameQueryResponse[] }>(
+		`/article-tree/article-tree-id/query`,
 		data
 	);
 };

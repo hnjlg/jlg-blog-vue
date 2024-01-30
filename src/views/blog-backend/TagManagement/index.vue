@@ -51,6 +51,7 @@ import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tableHook from '@/mixin/useTableHook';
 import { Search } from '@element-plus/icons-vue';
 import drawer from '@/mixin/drawer';
+import './messagebox.scss';
 
 defineOptions({
 	name: 'TagManagement',
@@ -108,9 +109,11 @@ function delFun(row: AT_ArticleTagsTagsQueryResponse) {
 					ElMessageBox({
 						title: '标签所属文章',
 						closeOnClickModal: false,
+						customClass: 'delete-prompt-list',
 						message: () =>
 							h(DeletePromptList, {
 								tableData: tableData,
+								rowData: row,
 								valueReturn: (val: number) => {
 									newArticleTagId = val;
 								},
