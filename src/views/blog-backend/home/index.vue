@@ -113,44 +113,7 @@
 			</template>
 		</el-dialog>
 	</div>
-
-	<floating-ball>
-		<div :class="{ 'size-transition': true, 'drag-ball': isBallShow, 'message-window': !isBallShow }">
-			<el-icon v-if="isBallShow" @click="isBallShow = false"><ChatLineRound /></el-icon>
-			<div v-if="!isBallShow" class="chat-container">
-				<div v-if="!isBallShowComNex">
-					<header>
-						<span>联系管理员</span>
-						<el-icon @click="isBallShow = true"><SemiSelect /></el-icon>
-					</header>
-					<main>
-						<div v-for="(msg, index) in messageList" :key="msg.id">
-							<div
-								:id="index + 1 === messageList.length ? 'is-last-msg' : ''"
-								:class="['msg-item', msg.sendUserCode === 'aa' ? 'flex-end' : 'flex-start']"
-							>
-								<div :class="[msg.sendUserCode === 'aa' ? 'is-own-msg' : 'is-not-own-msg']">
-									{{ msg.msg }}
-								</div>
-							</div>
-						</div>
-					</main>
-					<footer>
-						<el-input
-							v-model="connectionMessage"
-							maxlength="200"
-							placeholder=""
-							show-word-limit
-							type="textarea"
-							resize="none"
-							@keyup.enter="sendMsg"
-						/>
-						<el-button type="primary" plain :disabled="!connectionMessage" @click="sendMsg">发送</el-button>
-					</footer>
-				</div>
-			</div>
-		</div>
-	</floating-ball>
+	<blog-backend-ball></blog-backend-ball>
 </template>
 
 <script setup lang="ts">
@@ -164,9 +127,8 @@ import socketInit, { socketIo } from '@/mixin/useSocketHook';
 import drawer from '@/mixin/drawer';
 import dayjs from 'dayjs';
 import { ElNotification } from 'element-plus';
-import FloatingBall from '@/components/floating-ball/index.vue';
-import { ChatLineRound, SemiSelect } from '@element-plus/icons-vue';
 import { postArticletagstagsquery } from '@/apiType/production/result';
+import BlogBackendBall from '@/components/business/blog-backend-ball/index.vue';
 
 defineOptions({
 	name: 'BlobBackendHome',
@@ -240,56 +202,6 @@ socketIo.value?.on('resReadMessage', (data) => {
 	});
 });
 
-const isBallShow = ref<boolean>(true);
-
-const isBallShowComNex = ref(isBallShow.value);
-
-const scrollMsgBottomShow = () => {
-	nextTick(() => {
-		document.getElementById('is-last-msg')?.scrollIntoView({
-			behavior: 'smooth',
-		});
-	});
-};
-
-watch(
-	() => isBallShow.value,
-	(newVal) => {
-		setTimeout(() => {
-			isBallShowComNex.value = newVal;
-			scrollMsgBottomShow();
-		}, 500);
-	}
-);
-
-const connectionMessage = ref<string>('');
-
-const messageList = ref<{ msg: string; id: number; sendUserCode: string }[]>([
-	{ msg: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好', id: 1, sendUserCode: 'aa' },
-	{ msg: '你好', id: 2, sendUserCode: 'aa' },
-	{ msg: '你好', id: 3, sendUserCode: 'b' },
-	{ msg: '你好', id: 4, sendUserCode: 'aa' },
-	{ msg: '你好', id: 5, sendUserCode: 'c' },
-	{ msg: '你好', id: 6, sendUserCode: 'aa' },
-	{ msg: '你好', id: 7, sendUserCode: 'd' },
-	{ msg: '你好', id: 8, sendUserCode: 'aa' },
-	{ msg: '你好', id: 9, sendUserCode: 'aa' },
-]);
-
-const clearInputMsgValue = () => {
-	connectionMessage.value = '';
-};
-
-const sendMsg = () => {
-	messageList.value.push({
-		id: messageList.value.length + 1,
-		msg: connectionMessage.value,
-		sendUserCode: 'aa',
-	});
-	clearInputMsgValue();
-	scrollMsgBottomShow();
-};
-
 postArticletagstagsquery({
 	pageIndex: 1,
 	pageSize: 20,
@@ -297,97 +209,11 @@ postArticletagstagsquery({
 </script>
 <style lang="scss" scoped>
 @import url('@/assets/styles/scroll.scss');
-$message-window-height: 520px;
-$message-window-width: 400px;
-$message-window-header-height: 50px;
-$message-window-footer-height: 84px;
+
 .blog-backend-container {
 	height: 100vh;
 	.blog-backend-home-content-common {
 		height: 100%;
-	}
-}
-.size-transition {
-	transition: all 0.5s;
-}
-.drag-ball {
-	width: 48px;
-	height: 48px;
-	border-radius: 50%;
-	background-color: var(--el-color-primary);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	.el-icon {
-		color: #ffffff;
-		cursor: pointer;
-	}
-}
-
-.message-window {
-	width: $message-window-width;
-	height: $message-window-height;
-	box-shadow:
-		0 4px 6px rgba(0, 0, 0, 0.1),
-		0 1px 3px rgba(0, 0, 0, 0.08);
-	background-color: #fff;
-	border-radius: 10px;
-
-	.chat-container {
-		header {
-			height: $message-window-header-height;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 10px 15px;
-			border-bottom: 1px solid #f0f0f0;
-			.el-icon {
-				cursor: pointer;
-			}
-		}
-
-		main {
-			height: calc($message-window-height - $message-window-header-height - $message-window-footer-height);
-			overflow-y: auto;
-
-			.flex-start {
-				justify-content: flex-start;
-			}
-
-			.flex-end {
-				justify-content: flex-end;
-			}
-
-			.msg-item {
-				display: flex;
-				.is-own-msg {
-					margin: 10px 0;
-					max-width: calc($message-window-width / 2 + 100px);
-					background-color: var(--el-color-primary);
-					padding: 10px 0;
-					border-radius: 10px;
-					color: #fff;
-				}
-
-				.is-not-own-msg {
-					margin: 10px 0;
-					padding: 8px 0;
-					max-width: calc($message-window-width / 2 + 100px);
-					border: 1px solid var(--el-color-primary);
-					color: var(--el-color-primary);
-					border-radius: 10px;
-				}
-			}
-		}
-
-		footer {
-			height: $message-window-footer-height;
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: column;
-			align-items: flex-end;
-		}
 	}
 }
 </style>
