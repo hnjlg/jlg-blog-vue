@@ -2,7 +2,7 @@
 <template>
 	<div class="table-box">
 		<div class="header">
-			<el-input v-model="tagName" placeholder="Please input tagName" clearable class="input-with-select" @click="initPage" @keyup.enter="initPage">
+			<el-input v-model="tagName" placeholder="Please input tagName" clearable class="input-with-select" @keyup.enter="initPage">
 				<template #prepend>
 					<el-button :icon="Search" @click="initPage" />
 				</template>
