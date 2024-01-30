@@ -166,6 +166,7 @@ export const components: { [key: string]: () => Promise<void | typeof import('@/
 	BlogBackend: () => import('@/views/blog-backend/home/index.vue'),
 	UserManagement: () => import('@/views/blog-backend/UserManagement/index.vue'),
 	TagManagement: () => import('@/views/blog-backend/TagManagement/index.vue'),
+	CatalogManagement: () => import('@/views/blog-backend/CatalogManagement/index.vue'),
 };
 
 export const router = createRouter({
