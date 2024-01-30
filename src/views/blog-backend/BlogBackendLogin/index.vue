@@ -101,18 +101,19 @@ const submitHandle = () => {
 		if (valid) {
 			submitLoading.value = true;
 			// 只有当Cookies中有保存用户名和密码时 且 用户没有动过密码框时 采用不加密提交
+			const passWord =
+				Cookies.get('savedUsername') && !isPassWordChange.value
+					? storePassWord.value
+					: CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString();
 			postUserlogin({
 				userName: loginForm.value.userName,
-				passWord:
-					Cookies.get('savedUsername') && !isPassWordChange.value
-						? storePassWord.value
-						: CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString(),
+				passWord: passWord,
 			})
 				.then(async (res) => {
 					// 判断是否记住密码
 					if (loginForm.value.isRemember) {
 						Cookies.set('savedUsername', loginForm.value.userName, { expires: 3 });
-						Cookies.set('savedPassword', CryptoJS.AES.encrypt(loginForm.value.passWord, 'blog').toString(), { expires: 3 });
+						Cookies.set('savedPassword', passWord, { expires: 3 });
 					} else {
 						Cookies.remove('savedUsername');
 						Cookies.remove('savedPassword');
