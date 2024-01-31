@@ -1,23 +1,32 @@
 <template>
-	<div class="navigation-menu-container-switch" @click="navigationSwitchHandle">{{ navigationSwitchUrl }}</div>
-	<Navigation-Menu
-		v-model="navigationMenuShow"
-		:animation-event-callback="{
-			drawerOpened,
-			drawerClosed,
-		}"
-	></Navigation-Menu>
+	<el-config-provider :locale="language[locale]">
+		<div class="navigation-menu-container-switch" @click="navigationSwitchHandle">{{ navigationSwitchUrl }}</div>
+		<Navigation-Menu
+			v-model="navigationMenuShow"
+			:animation-event-callback="{
+				drawerOpened,
+				drawerClosed,
+			}"
+		></Navigation-Menu>
 
-	<router-view v-slot="{ Component }">
-		<keep-alive v-if="$route.meta.keepAlive">
-			<component :is="Component" />
-		</keep-alive>
-		<component :is="Component" v-if="!$route.meta.keepAlive" />
-	</router-view>
+		<router-view v-slot="{ Component }">
+			<keep-alive v-if="$route.meta.keepAlive">
+				<component :is="Component" />
+			</keep-alive>
+			<component :is="Component" v-if="!$route.meta.keepAlive" />
+		</router-view>
+	</el-config-provider>
 </template>
 
 <script setup lang="ts">
 import NavigationMenu from '@/components/navigation-menu/index.vue';
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
+import en from 'element-plus/dist/locale/en.mjs';
+import { ElConfigProvider } from 'element-plus';
+
+const language = ref([zhCn, en]);
+
+const locale = ref(0);
 
 const navigationMenuShow = ref<boolean>(false);
 const navigationSwitchUrl = ref<string>('中');
