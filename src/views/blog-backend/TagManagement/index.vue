@@ -140,13 +140,23 @@ function delFun(row: AT_ArticleTagsTagsQueryResponse) {
 }
 // 新增
 const addTag = () => {
-	drawer('AddTag', '新增标签', {}, 'add').then(() => {
+	drawer({
+		drawerKey: 'AddTag',
+		drawerTitle: '新增标签',
+		option: {},
+		drawerType: 'add',
+	}).then(() => {
 		restInitPage();
 	});
 };
 // 编辑
 const editlFun = (row: AT_ArticleTagsTagsQueryResponse) => {
-	drawer('AddTag', '编辑标签', { row: row }, 'edit').then(() => {
+	drawer({
+		drawerKey: 'AddTag',
+		drawerTitle: '编辑标签',
+		option: { row: row },
+		drawerType: 'edit',
+	}).then(() => {
 		restInitPage();
 	});
 };

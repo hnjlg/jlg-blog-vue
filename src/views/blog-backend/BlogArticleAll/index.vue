@@ -115,7 +115,12 @@ function editlFun(row: { [K: string]: any }) {
 		ElMessage.warning('该文章正在审核中，无法编辑');
 		return;
 	}
-	drawer('ArticlePublish', '编辑文章', { id: row.row.id }, 'edit')
+	drawer({
+		drawerKey: 'ArticlePublish',
+		drawerTitle: '编辑文章',
+		option: { id: row.row.id },
+		drawerType: 'edit',
+	})
 		.then(() => {
 			restInitPage();
 		})
@@ -147,7 +152,14 @@ function delFun(row: any) {
 
 function rowDbClick(row: any, column: any, event: any) {
 	console.log('===dbclick===', row, column, event);
-	drawer('ArticlePublish', '查看文章', { id: row.id }, 'view', 'ltr', '90%')
+	drawer({
+		drawerKey: 'ArticlePublish',
+		drawerTitle: '查看文章',
+		option: { id: row.id },
+		drawerType: 'view',
+		drawerDirection: 'ltr',
+		drawerSize: '90%',
+	})
 		.then(() => {
 			restInitPage();
 		})
