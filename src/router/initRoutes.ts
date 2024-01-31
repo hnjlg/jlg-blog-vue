@@ -1,4 +1,5 @@
-import { router, components } from './index';
+import { router } from './index';
+import { components } from './componentsList';
 
 export default function () {
 	router.addRoute({

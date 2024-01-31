@@ -16,16 +16,6 @@
 								<el-menu-item index="/blogBackend/BlogBackendIndex" @click="jumpTo({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
-						<!-- <el-sub-menu index="1">
-							<template #title>
-								<el-icon><IconMenu /></el-icon>系统管理
-							</template>
-							<el-menu-item-group>
-								<template v-for="item in blogBackendStore.routerInfo" :key="item.path">
-									<el-menu-item v-if="item.meta" :index="item.path" @click="jumpTo(item)"> {{ item.meta.title }} </el-menu-item>
-								</template>
-							</el-menu-item-group>
-						</el-sub-menu> -->
 						<el-sub-menu v-for="(item, index) in blogBackendStore.routerInfo" :key="index" :index="index">
 							<template #title>
 								<el-icon><IconMenu /></el-icon>{{ item.title }}
@@ -157,7 +147,12 @@ function clickAvatar() {
 }
 function myInfo() {
 	console.log('===我的信息===');
-	drawer('MyInformation', '我的信息', {}, 'edit');
+	drawer({
+		drawerKey: 'MyInformation',
+		drawerTitle: '我的信息',
+		option: {},
+		drawerType: 'edit',
+	});
 }
 
 function elNoticeClick() {

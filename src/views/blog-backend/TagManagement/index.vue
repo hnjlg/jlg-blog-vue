@@ -2,7 +2,7 @@
 <template>
 	<div class="table-box">
 		<div class="header">
-			<el-input v-model="tagName" placeholder="Please input tagName" clearable class="input-with-select" @click="initPage" @keyup.enter="initPage">
+			<el-input v-model="tagName" placeholder="Please input tagName" clearable class="input-with-select" @keyup.enter="initPage">
 				<template #prepend>
 					<el-button :icon="Search" @click="initPage" />
 				</template>
@@ -51,6 +51,7 @@ import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tableHook from '@/mixin/useTableHook';
 import { Search } from '@element-plus/icons-vue';
 import drawer from '@/mixin/drawer';
+import './messagebox.scss';
 
 defineOptions({
 	name: 'TagManagement',
@@ -108,9 +109,11 @@ function delFun(row: AT_ArticleTagsTagsQueryResponse) {
 					ElMessageBox({
 						title: '标签所属文章',
 						closeOnClickModal: false,
+						customClass: 'delete-prompt-list',
 						message: () =>
 							h(DeletePromptList, {
 								tableData: tableData,
+								rowData: row,
 								valueReturn: (val: number) => {
 									newArticleTagId = val;
 								},
@@ -137,13 +140,23 @@ function delFun(row: AT_ArticleTagsTagsQueryResponse) {
 }
 // 新增
 const addTag = () => {
-	drawer('AddTag', '新增标签', {}, 'add').then(() => {
+	drawer({
+		drawerKey: 'AddTag',
+		drawerTitle: '新增标签',
+		option: {},
+		drawerType: 'add',
+	}).then(() => {
 		restInitPage();
 	});
 };
 // 编辑
 const editlFun = (row: AT_ArticleTagsTagsQueryResponse) => {
-	drawer('AddTag', '编辑标签', { row: row }, 'edit').then(() => {
+	drawer({
+		drawerKey: 'AddTag',
+		drawerTitle: '编辑标签',
+		option: { row: row },
+		drawerType: 'edit',
+	}).then(() => {
 		restInitPage();
 	});
 };

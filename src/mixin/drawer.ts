@@ -21,15 +21,16 @@ type T_DrawerType = 'add' | 'edit' | 'view';
 export declare interface I_SonData {
 	close: () => Promise<void> | void;
 }
-function drawer<Option = object>(
-	drawerKey: string,
-	drawerTitle: string,
-	option: Option,
-	drawerType: T_DrawerType,
-	drawerDirection?: string,
-	drawerSize?: string,
-	drawerParams?: DrawerProps
-) {
+function drawer<Option = object>(optionData: {
+	drawerKey: string;
+	drawerTitle: string;
+	option: Option;
+	drawerType: T_DrawerType;
+	drawerDirection?: string;
+	drawerSize?: string;
+	drawerParams?: DrawerProps;
+}) {
+	const { drawerKey, drawerTitle, option, drawerType, drawerDirection, drawerSize, drawerParams } = optionData;
 	return new Promise((resolve) => {
 		let sonData: I_SonData = { close: () => {} };
 

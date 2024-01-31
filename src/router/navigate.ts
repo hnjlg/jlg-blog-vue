@@ -1,6 +1,8 @@
 import { blobHomeContentBackgroundHandleClick } from '@/views/blob/home/hooks/useBackgroundContent';
 import { NavigationGuardWithThis, NavigationHookAfter } from 'vue-router';
-import { router, components } from './index';
+import { router } from './index';
+import { components } from './componentsList';
+
 import useBlogBackendStore from '@/store/blog-backend';
 import initRoutes from './initRoutes';
 
