@@ -1,14 +1,53 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/logo.ico" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>丰恺思营销系统</title>
-	</head>
 
-	<body>
-		<div id="app"></div>
-		<script type="module" src="/src/main.ts"></script>
-	</body>
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/svg+xml" href="/logo.ico" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>丰恺思营销系统</title>
+	<style>
+		#google-translate-div {
+			display: none;
+			position: absolute;
+			right: 0;
+			top: 0;
+			z-index: 9999;
+		}
+
+		.VIpgJd-ZVi9od-ORHb-OEVmcd {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="google-translate-div"></div>
+	<div id="app"></div>
+	<script type="module" src="/src/main.ts"></script>
+	<script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+	<script>
+		function googleTranslateElementInit() {
+			new window.google.translate.TranslateElement({
+					// 需要下拉翻译支持哪些语言，默认全部
+					includedLanguages: 'en,zh-CN',
+					layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+				},
+				'google-translate-div'
+			);
+		}
+
+		window.selectLanguage = function () {
+			var d = document.getElementById('google-translate-div');
+			if (d) {
+				d.style.display = d.style.display === 'none' ? 'block' : 'none';
+			}
+		}
+
+		window.onload = function () {
+			document.body.style.top = 0;
+		}
+	</script>
+</body>
+
 </html>

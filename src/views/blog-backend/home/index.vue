@@ -1,6 +1,7 @@
 <!-- blog后台layout -->
 <template>
 	<div class="blog-backend-container">
+		<div id="google_translate_element"></div>
 		<el-container v-if="$route.meta.systemPage">
 			<!-- 左侧menu start -->
 			<el-aside style="background-color: aliceblue; height: 100vh">
@@ -42,6 +43,7 @@
 			<el-container>
 				<el-header>
 					<div class="flex justify-end">
+						<el-button type="primary" @click="changeLanguageHandle">切换语言</el-button>
 						<div class="w-10 h-10 p-3 mr-5">
 							<el-badge :hidden="false" @click="elNoticeClick">
 								<el-icon size="20"><Bell /></el-icon>
@@ -127,7 +129,6 @@ import socketInit, { socketIo } from '@/mixin/useSocketHook';
 import drawer from '@/mixin/drawer';
 import dayjs from 'dayjs';
 import { ElNotification } from 'element-plus';
-import { postArticletagstagsquery } from '@/apiType/production/result';
 import BlogBackendBall from '@/components/business/blog-backend-ball/index.vue';
 
 defineOptions({
@@ -202,10 +203,9 @@ socketIo.value?.on('resReadMessage', (data) => {
 	});
 });
 
-postArticletagstagsquery({
-	pageIndex: 1,
-	pageSize: 20,
-});
+const changeLanguageHandle = () => {
+	window.selectLanguage();
+};
 </script>
 <style lang="scss" scoped>
 @import url('@/assets/styles/scroll.scss');
