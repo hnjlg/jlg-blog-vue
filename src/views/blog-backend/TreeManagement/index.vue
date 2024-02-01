@@ -33,12 +33,16 @@
 			</div>
 		</template>
 	</el-tree>
-	<div class="btn-box text-right">
+	<div class="pagination-box flex justify-end align-center mt-2">
 		<el-button type="primary" plain @click="saveFun">保存</el-button>
+		<div class="pagination-box-refresh my-auto cursor-pointer ml-2">
+			<el-icon @click="initPage"><Refresh /></el-icon>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { Refresh } from '@element-plus/icons-vue';
 import { postBlogarticletreeallquery, AT_ArticleTreeTable, postArticletreebyIddelete } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import { Delete, EditPen, Search } from '@element-plus/icons-vue';
@@ -50,6 +54,7 @@ import { TreeNodeData } from 'element-plus/es/components/tree-v2/src/types';
 defineOptions({
 	name: 'TreeManagement',
 });
+
 // 没处理过的表格数据
 const UnprocessedList = ref<AT_ArticleTreeTable[]>([]);
 // 初始请求表格内容
@@ -131,7 +136,7 @@ function editFun(data: AT_ArticleTreeTable) {
 		drawerType: 'edit',
 		drawerSize: '40%',
 	}).then(() => {
-		// initPage();
+		initPage();
 	});
 }
 
