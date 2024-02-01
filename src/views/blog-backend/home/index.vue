@@ -1,6 +1,7 @@
 <!-- blog后台layout -->
 <template>
 	<div class="blog-backend-container">
+		<div id="google_translate_element"></div>
 		<el-container v-if="$route.meta.systemPage">
 			<!-- 左侧menu start -->
 			<el-aside style="background-color: aliceblue; height: 100vh">
@@ -32,6 +33,7 @@
 			<el-container>
 				<el-header>
 					<div class="flex justify-end">
+						<el-button type="primary" @click="changeLanguageHandle">切换语言</el-button>
 						<div class="w-10 h-10 p-3 mr-5">
 							<el-badge :hidden="false" @click="elNoticeClick">
 								<el-icon size="20"><Bell /></el-icon>
@@ -195,6 +197,10 @@ socketIo.value?.on('resReadMessage', (data) => {
 		duration: 3000,
 	});
 });
+
+const changeLanguageHandle = () => {
+	window.selectLanguage();
+};
 </script>
 <style lang="scss" scoped>
 @import url('@/assets/styles/scroll.scss');
