@@ -17,7 +17,8 @@
 				:loading="articleTagsLoading"
 				style="width: 100%"
 			>
-				<el-option :key="defaultParentId" :label="defaultParentLabel" :value="defaultParentId" />
+				<el-option :key="null" label="默认最高级别" :value="null" />
+				<el-option v-if="defaultParentId" :key="defaultParentId" :label="defaultParentLabel" :value="defaultParentId" />
 				<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" :disabled="item.disabled" />
 			</el-select>
 		</el-form-item>
@@ -79,8 +80,8 @@ async function initModal() {
 			{
 				TreeForm.value.treeName = props.propsData.data.label;
 				defaultParentLabel.value = props.propsData.parent.article_tree_name;
-				defaultParentId.value = props.propsData.parent.article_tree_id;
-				TreeForm.value.parentId = props.propsData.parent.article_tree_id;
+				defaultParentId.value = props.propsData.parent.id;
+				TreeForm.value.parentId = props.propsData.parent.id;
 				recursion(props.propsData.data);
 				// await getInitData();
 			}
