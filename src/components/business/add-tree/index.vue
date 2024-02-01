@@ -2,7 +2,7 @@
 <template>
 	<el-form ref="ruleFormRef" :model="TreeForm" :rules="rules" label-position="top" size="small" status-icon>
 		<el-form-item label="文章树名称" prop="treeName">
-			<el-input v-model="TreeForm.treeName" placeholder="Please input userName" clearable />
+			<el-input v-model="TreeForm.treeName" placeholder="Please input treeName" clearable />
 		</el-form-item>
 		<el-form-item label="父级文章树" prop="parentId">
 			<el-select
@@ -12,12 +12,12 @@
 				reserve-keyword
 				collapse-tags
 				collapse-tags-tooltip
-				placeholder="Please enter a keyword"
+				placeholder="Please enter a word"
 				:remote-method="articleTreeListRemoteMethod"
 				:loading="articleTagsLoading"
 				style="width: 100%"
 			>
-				<el-option :key="null" label="默认最高级别" :value="null" />
+				<el-option :key="defaultParentId" :label="defaultParentLabel" :value="defaultParentId" />
 				<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" :disabled="item.disabled" />
 			</el-select>
 		</el-form-item>
@@ -40,7 +40,8 @@ import { ref } from 'vue';
 defineOptions({
 	name: 'AddTree',
 });
-
+const defaultParentId = ref<number | null>(null);
+const defaultParentLabel = ref<string | null>('');
 const props = defineProps({
 	modalTitle: {
 		type: String,
@@ -76,8 +77,11 @@ async function initModal() {
 			break;
 		case 'edit':
 			{
-				recursion(props.propsData.data);
 				TreeForm.value.treeName = props.propsData.data.label;
+				defaultParentLabel.value = props.propsData.parent.article_tree_name;
+				defaultParentId.value = props.propsData.parent.article_tree_id;
+				TreeForm.value.parentId = props.propsData.parent.article_tree_id;
+				recursion(props.propsData.data);
 				// await getInitData();
 			}
 			break;

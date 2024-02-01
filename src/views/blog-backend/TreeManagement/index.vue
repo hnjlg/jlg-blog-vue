@@ -50,13 +50,15 @@ import { TreeNodeData } from 'element-plus/es/components/tree-v2/src/types';
 defineOptions({
 	name: 'TreeManagement',
 });
-
+// 没处理过的表格数据
+const UnprocessedList = ref<AT_ArticleTreeTable[]>([]);
 // 初始请求表格内容
 function initPage() {
 	pageLoading.value = true;
 	postBlogarticletreeallquery()
 		.then((result) => {
 			if (result.data.status === 1) {
+				UnprocessedList.value = result.data.content;
 				pageData.value = buildTree(result.data.content);
 			}
 		})
@@ -116,11 +118,16 @@ function addFun() {
 }
 
 function editFun(data: AT_ArticleTreeTable) {
-	console.log(data);
+	console.log('edit', data);
 	drawer({
 		drawerKey: 'AddTree',
 		drawerTitle: '编辑目录',
-		option: { data: data },
+		option: {
+			data: data,
+			parent: UnprocessedList.value.find(
+				(item) => item.id === Number(UnprocessedList.value.find((item) => item.id === data.id)?.parent_article_tree_id)
+			),
+		},
 		drawerType: 'edit',
 		drawerSize: '40%',
 	}).then(() => {
