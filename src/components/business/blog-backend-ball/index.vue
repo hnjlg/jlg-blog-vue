@@ -1,5 +1,5 @@
 <template>
-	<floating-ball ref="floatingBallRef">
+	<floating-ball ref="floatingBallRef" v-model:el-right="ballElRight" v-model:el-bottom="ballElBottom">
 		<div :class="{ 'size-transition': true, 'drag-ball': isBallShow, 'message-window': !isBallShow }">
 			<el-icon v-if="isBallShow" @click="isBallShow = false"><ChatLineRound /></el-icon>
 			<div v-if="!isBallShow" class="chat-container">
@@ -66,6 +66,10 @@ const floatingBallRef = ref();
 const connectionMessage = ref<string>('');
 
 const isBallShow = ref<boolean>(true);
+
+const ballElRight = ref<number>(100);
+
+const ballElBottom = ref<number>(100);
 
 const isBallShowComNex = ref(isBallShow.value);
 

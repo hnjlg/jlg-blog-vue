@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="drag-ball-container"
-		:style="`right:${elRight}px;bottom:${elBottom}px`"
+		:style="`right:${props.elRight}px;bottom:${props.elBottom}px`"
 		draggable="true"
 		@dragstart="dragstart($event)"
 		@dragend="dragend($event)"
@@ -10,16 +10,16 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-
 defineOptions({
 	name: 'FloatingBall',
 });
 
+const props = withDefaults(defineProps<{ elRight: number; elBottom: number }>(), {});
+
+const emits = defineEmits(['update:elRight', 'update:elBottom']);
+
 const startClientX = ref(0); //记录开始的横坐标位置
 const startClientY = ref(0); //记录开始的纵坐标位置
-const elRight = ref(50); //定位-初始位置
-const elBottom = ref(100); //定位-初始位置
 // 拖拽开始事件
 const dragstart = (e: DragEvent) => {
 	// 记录拖拽元素初始位置
@@ -49,19 +49,19 @@ const dragendHandle = (e: {
 }) => {
 	const x = startClientX.value - e.clientX; // 计算偏移量
 	const y = startClientY.value - e.clientY;
-	if (elRight.value + x < 0) {
-		elRight.value = 0;
-	} else if (elRight.value + x + e.target.clientWidth > window.innerWidth) {
-		elRight.value = window.innerWidth - e.target.clientWidth;
+	if (props.elRight + x < 0) {
+		emits('update:elRight', 0);
+	} else if (props.elRight + x + e.target.clientWidth > window.innerWidth) {
+		emits('update:elRight', window.innerWidth - e.target.clientWidth);
 	} else {
-		elRight.value += x;
+		emits('update:elRight', props.elRight + x);
 	}
-	if (elBottom.value + y < 0) {
-		elBottom.value = 0;
-	} else if (elBottom.value + y + e.target.clientHeight > window.innerHeight) {
-		elBottom.value = window.innerHeight - e.target.clientHeight;
+	if (props.elBottom + y < 0) {
+		emits('update:elBottom', 0);
+	} else if (props.elBottom + y + e.target.clientHeight > window.innerHeight) {
+		emits('update:elBottom', window.innerHeight - e.target.clientHeight);
 	} else {
-		elBottom.value += y;
+		emits('update:elBottom', props.elBottom + y);
 	}
 };
 

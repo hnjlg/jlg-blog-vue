@@ -11,6 +11,9 @@ import './cherry-markdown.scss';
 import App from '@/App.vue';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
+// 国际化
+import i18n from '@/utils/i18n';
+
 const app = createApp(App);
 
 const pinia = createPinia();
@@ -20,5 +23,7 @@ pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
 
 app.use(router);
+
+app.use(i18n);
 
 app.mount('#app');
