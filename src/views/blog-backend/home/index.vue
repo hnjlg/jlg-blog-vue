@@ -24,7 +24,7 @@
 							</template>
 							<el-menu-item-group>
 								<template v-for="(iitem, iindex) in item.children" :key="iindex">
-									<el-menu-item v-if="iitem.meta" :index="iitem.path" @click="jumpTo(iitem)"> {{ iitem.meta.title }} </el-menu-item>
+									<el-menu-item v-if="iitem.meta" :index="iitem.path" @click="jumpTo(iitem)">{{ $t('main-menu.' + iitem.meta.title) }} </el-menu-item>
 								</template>
 							</el-menu-item-group>
 						</el-sub-menu>

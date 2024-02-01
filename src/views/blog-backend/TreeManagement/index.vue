@@ -7,6 +7,7 @@
 			</template>
 		</el-input>
 		<el-button type="primary" @click="addFun">新增</el-button>
+		<el-button class="float-right" plain circle :icon="Refresh" @click="initPage"></el-button>
 	</div>
 	<el-tree
 		ref="treeRef"
@@ -35,9 +36,6 @@
 	</el-tree>
 	<div class="pagination-box flex justify-end align-center mt-2">
 		<el-button type="primary" plain @click="saveFun">保存</el-button>
-		<div class="pagination-box-refresh my-auto cursor-pointer ml-2">
-			<el-icon @click="initPage"><Refresh /></el-icon>
-		</div>
 	</div>
 </template>
 
