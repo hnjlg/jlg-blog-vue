@@ -105,25 +105,25 @@ const filterMethod = (query: string, node: TreeNode) => {
 
 function addFun() {
 	drawer({
-		drawerKey: 'TreeDrawer',
+		drawerKey: 'AddTree',
 		drawerTitle: '新增目录',
 		option: {},
 		drawerType: 'add',
 		drawerSize: '40%',
 	}).then(() => {
-		// initPage();
+		initPage();
 	});
 }
 
 function editFun() {
 	drawer({
-		drawerKey: 'TreeDrawer',
+		drawerKey: 'AddTree',
 		drawerTitle: '编辑目录',
 		option: {},
 		drawerType: 'edit',
 		drawerSize: '40%',
 	}).then(() => {
-		initPage();
+		// initPage();
 	});
 }
 
