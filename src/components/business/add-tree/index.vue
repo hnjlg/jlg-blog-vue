@@ -15,6 +15,7 @@
 				placeholder="Please enter a keyword"
 				:remote-method="articleTreeListRemoteMethod"
 				:loading="articleTagsLoading"
+				style="width: 100%"
 			>
 				<el-option :key="null" label="默认最高级别" :value="null" />
 				<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" :disabled="item.disabled" />
@@ -33,6 +34,7 @@ import {
 	postArticletreearticletreenamequery,
 	postArticletreetreeadd,
 	type AT_ArticleTreeArticleTreeNameQueryResponse,
+	postArticletreearticletreeidupdate,
 } from '@/apiType/production/result.ts';
 import { ref } from 'vue';
 defineOptions({
@@ -113,12 +115,16 @@ async function sumbmitFun() {
 					}
 				});
 			} else {
-				// postArticletagstagsedit({ treeName: TreeForm.value.treeName, id: props.propsData.row.id }).then((result) => {
-				// 	if (result.data.status === 1) {
-				// 		ElMessage.success('edit Tag success!');
-				// 		handleCancel();
-				// 	}
-				// });
+				postArticletreearticletreeidupdate({
+					id: props.propsData.data.id,
+					article_tree_name: TreeForm.value.treeName,
+					parent_article_tree_id: TreeForm.value.parentId,
+				}).then((result) => {
+					if (result.data.status === 1) {
+						ElMessage.success('edit Tag success!');
+						handleCancel();
+					}
+				});
 				sumbmitLoading.value = false;
 			}
 		} else {
