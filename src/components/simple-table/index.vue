@@ -33,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+// import { Refresh } from '@element-plus/icons-vue';
 defineOptions({
 	name: 'SimpleTable',
 });
@@ -43,24 +44,17 @@ const props = withDefaults(
 		fieldList?: Array<Record<string, unknown>>;
 		title?: string | number | null | undefined;
 		operationColumnWidth?: number | boolean | null | undefined;
+		paginationData: any;
 	}>(),
 	{
 		tableData: () => [],
 		title: null,
 		operationColumnWidth: null,
+		paginationData: null,
 	}
 );
 
 const elTableRef = ref();
-
-// const instance = getCurrentInstance();
-
-// nextTick(() => {
-// 	const entries = Object.entries(elTableRef.value?.$.exposed);
-// 	for (const [key, value] of entries) {
-// 		instance!.exposed![key] = value;
-// 	}
-// });
 
 const emit = defineEmits(['dbclick:row']);
 

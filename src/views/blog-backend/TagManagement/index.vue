@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { Refresh } from '@element-plus/icons-vue';
+import { Refresh, Search } from '@element-plus/icons-vue';
 import SimpleTable from '@/components/simple-table/index.vue';
 import DeletePromptList from '@/components/business/delete-prompt-list/index.vue';
 import useTable from './hooks/useTable';
@@ -49,7 +49,6 @@ import {
 } from '@/apiType/production/result';
 import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 import tableHook from '@/mixin/useTableHook';
-import { Search } from '@element-plus/icons-vue';
 import drawer from '@/mixin/drawer';
 import './messagebox.scss';
 

@@ -3,7 +3,7 @@ export default function () {
 		{
 			title: '标签id',
 			field: 'id',
-			minWidth: 200,
+			width: 100,
 		},
 		{
 			title: '标签名称',
