@@ -9,16 +9,18 @@
 					<el-menu :default-openeds="['0', '1']" :default-active="$route.path">
 						<el-sub-menu index="0">
 							<template #title>
-								<el-icon><Location /></el-icon>首页
+								<el-icon><Location /></el-icon>{{ $t('main-menu.首页') }}
 							</template>
 							<el-menu-item-group>
-								<el-menu-item @click="jumpTo({ path: '/blob-home' })">前台首页</el-menu-item>
-								<el-menu-item index="/blogBackend/BlogBackendIndex" @click="jumpTo({ name: 'BlogBackendIndex' })">后台首页</el-menu-item>
+								<el-menu-item @click="jumpTo({ path: '/blob-home' })">{{ $t('main-menu.前台首页') }}</el-menu-item>
+								<el-menu-item index="/blogBackend/BlogBackendIndex" @click="jumpTo({ name: 'BlogBackendIndex' })">{{
+									$t('main-menu.后台首页')
+								}}</el-menu-item>
 							</el-menu-item-group>
 						</el-sub-menu>
 						<el-sub-menu v-for="(item, index) in blogBackendStore.routerInfo" :key="index" :index="index">
 							<template #title>
-								<el-icon><IconMenu /></el-icon>{{ item.title }}
+								<el-icon><IconMenu /></el-icon>{{ $t('main-menu.' + item.title) }}
 							</template>
 							<el-menu-item-group>
 								<template v-for="(iitem, iindex) in item.children" :key="iindex">
@@ -33,7 +35,7 @@
 			<el-container>
 				<el-header>
 					<div class="flex justify-end">
-						<el-button type="primary" @click="changeLanguageHandle">切换语言</el-button>
+						<!-- <el-button type="primary" @click="changeLanguageHandle">切换语言</el-button> -->
 						<div class="w-10 h-10 p-3 mr-5">
 							<el-badge :hidden="false" @click="elNoticeClick">
 								<el-icon size="20"><Bell /></el-icon>
@@ -198,9 +200,9 @@ socketIo.value?.on('resReadMessage', (data) => {
 	});
 });
 
-const changeLanguageHandle = () => {
-	window.selectLanguage();
-};
+// const changeLanguageHandle = () => {
+// 	window.selectLanguage();
+// };
 </script>
 <style lang="scss" scoped>
 @import url('@/assets/styles/scroll.scss');

@@ -99,6 +99,8 @@ import {
 } from '@/apiType/production/result.ts';
 import useBlogBackendStore from '@/store/blog-backend';
 import { nextTick, reactive, ref } from 'vue';
+import { t } from '@/utils/i18n';
+
 defineOptions({
 	name: 'ArticlePublish',
 });
@@ -164,7 +166,7 @@ initModal();
 async function getInitData() {
 	return new Promise<void>((resolve, reject) => {
 		if (!props.propsData.id) {
-			ElMessage.error('参数错误!');
+			ElMessage.error(t('message.参数错误'));
 			reject();
 		}
 		postBlogbackstagearticlequeryforarticleId({ articleId: Number(props.propsData.id) }).then((result) => {

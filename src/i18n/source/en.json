@@ -1,0 +1,21 @@
+{
+	"main-menu": {
+		"首页": "Home",
+		"前台首页": "Front Page",
+		"后台首页": "Backstage Home",
+		"文章管理": "Article Management",
+		"全部文章": "All Articles",
+		"我的文章": "My Articles",
+		"用户管理": "User Management",
+		"所有用户": "All Users",
+		"标签管理": "Tag Management",
+		"所有标签": "All Tags",
+		"目录管理": "Directory Management",
+		"所有目录": "All Directories",
+		"文章树": "Article Tree",
+		"其他": "Other"
+	},
+	"message": {
+		"参数错误": "Parameter Error"
+	}
+}
