@@ -27,7 +27,7 @@
 			<div class="w-full flex justify-between items-center">
 				<div>{{ data.label }}</div>
 				<div class="w-10 mr-4 flex justify-around items-baseline">
-					<el-icon style="color: var(--el-color-primary)" @click.stop="editFun"><EditPen /></el-icon>
+					<el-icon style="color: var(--el-color-primary)" @click.stop="editFun(data)"><EditPen /></el-icon>
 					<el-icon style="color: var(--el-color-danger)" @click.stop="deleteFun"><Delete /></el-icon>
 				</div>
 			</div>
@@ -50,13 +50,15 @@ import { TreeNodeData } from 'element-plus/es/components/tree-v2/src/types';
 defineOptions({
 	name: 'TreeManagement',
 });
-
+// 没处理过的表格数据
+const UnprocessedList = ref<AT_ArticleTreeTable[]>([]);
 // 初始请求表格内容
 function initPage() {
 	pageLoading.value = true;
 	postBlogarticletreeallquery()
 		.then((result) => {
 			if (result.data.status === 1) {
+				UnprocessedList.value = result.data.content;
 				pageData.value = buildTree(result.data.content);
 			}
 		})
@@ -105,25 +107,31 @@ const filterMethod = (query: string, node: TreeNode) => {
 
 function addFun() {
 	drawer({
-		drawerKey: 'TreeDrawer',
+		drawerKey: 'AddTree',
 		drawerTitle: '新增目录',
 		option: {},
 		drawerType: 'add',
 		drawerSize: '40%',
 	}).then(() => {
-		// initPage();
+		initPage();
 	});
 }
 
-function editFun() {
+function editFun(data: AT_ArticleTreeTable) {
+	console.log('edit', data);
 	drawer({
-		drawerKey: 'TreeDrawer',
+		drawerKey: 'AddTree',
 		drawerTitle: '编辑目录',
-		option: {},
+		option: {
+			data: data,
+			parent: UnprocessedList.value.find(
+				(item) => item.id === Number(UnprocessedList.value.find((item) => item.id === data.id)?.parent_article_tree_id)
+			),
+		},
 		drawerType: 'edit',
 		drawerSize: '40%',
 	}).then(() => {
-		initPage();
+		// initPage();
 	});
 }
 

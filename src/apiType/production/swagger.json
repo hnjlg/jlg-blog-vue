@@ -2,7 +2,7 @@
 	"openapi": "3.0.0",
 	"info": {
 		"title": "JLG_BLOG",
-		"version": "2024/01/30-15:04:14",
+		"version": "2024/02/01-14:08:05",
 		"description": "API 文档",
 		"license": { "name": "swagger.json", "url": "http://localhost:3000/swagger.json" }
 	},
@@ -596,30 +596,6 @@
 				}
 			}
 		},
-		"/blog/article-tree/all/query": {
-			"post": {
-				"tags": ["blog"],
-				"summary": "获取文章树",
-				"description": "获取文章树\n",
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"status": { "type": "integer", "description": "1表示成功，2表示失败" },
-										"message": { "type": "string", "description": "success表示成功，failed表示失败" },
-										"content": { "type": "array", "items": { "$ref": "#/components/schemas/ArticleTreeTable" } }
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
 		"/article-tree/article-tree-name/query": {
 			"post": {
 				"tags": ["article-tree"],
@@ -664,6 +640,45 @@
 					"content": {
 						"application/json": {
 							"schema": { "type": "object", "properties": { "articleTreeId": { "type": "integer", "description": "文章树id" } } }
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status": { "type": "integer", "description": "1表示成功，2表示失败" },
+										"message": { "type": "string", "description": "success表示成功，failed表示失败" },
+										"content": { "type": "array", "items": { "$ref": "#/components/schemas/ArticleTreeArticleTreeNameQueryResponse" } }
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/article-tree/article-tree-id/update": {
+			"post": {
+				"tags": ["article-tree"],
+				"summary": "编辑文章树",
+				"description": "编辑文章树\n",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "integer", "description": "文章树id" },
+									"article_tree_name": { "type": "string", "description": "文章树名称" },
+									"parent_article_tree_id": { "type": "integer", "description": "父级文章树id" }
+								}
+							}
 						}
 					}
 				},
@@ -1196,6 +1211,30 @@
 										"status": { "type": "integer", "description": "1表示成功，2表示失败" },
 										"message": { "type": "string", "description": "success表示成功，failed表示失败" },
 										"content": { "type": "array", "items": { "$ref": "#/components/schemas/MySQLResult" } }
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/blog/article-tree/all/query": {
+			"post": {
+				"tags": ["blog"],
+				"summary": "获取文章树",
+				"description": "获取文章树\n",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status": { "type": "integer", "description": "1表示成功，2表示失败" },
+										"message": { "type": "string", "description": "success表示成功，failed表示失败" },
+										"content": { "type": "array", "items": { "$ref": "#/components/schemas/ArticleTreeTable" } }
 									}
 								}
 							}
