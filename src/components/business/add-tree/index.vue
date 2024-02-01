@@ -17,7 +17,7 @@
 				:loading="articleTagsLoading"
 			>
 				<el-option :key="null" label="默认最高级别" :value="null" />
-				<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" />
+				<el-option v-for="item in articleTreeList" :key="item.id" :label="item.article_tree_name" :value="item.id" :disabled="item.disabled" />
 			</el-select>
 		</el-form-item>
 	</el-form>
@@ -60,15 +60,22 @@ const rules = ref<FormRules>({
 	treeName: [{ required: true, message: 'Please input treeName', trigger: 'blur' }],
 	parentId: [{ required: false, message: 'Please input parentId', trigger: 'blur' }],
 });
-
+// 记录所有 当前 以下的后代
+const unSelectedList: any = [];
+const recursion = (data: any) => {
+	unSelectedList.push(data.id);
+	data.children.forEach((item) => {
+		recursion(item);
+	});
+};
 async function initModal() {
 	switch (props.propsData.drawerType) {
 		case 'add':
 			break;
 		case 'edit':
 			{
-				console.log(props.propsData.row);
-				TreeForm.value.treeName = props.propsData.row.treeName;
+				recursion(props.propsData.data);
+				TreeForm.value.treeName = props.propsData.data.label;
 				// await getInitData();
 			}
 			break;
@@ -140,7 +147,12 @@ function articleTreeListRemoteMethod(name: string) {
 		articleTreeName: name,
 	})
 		.then((result) => {
-			articleTreeList.value = result.data.content.arr;
+			articleTreeList.value = result.data.content.arr.map((item) => {
+				if (unSelectedList.includes(item.id)) {
+					item.disabled = true;
+				}
+				return item;
+			});
 		})
 		.finally(() => {
 			articleTagsLoading.value = false;

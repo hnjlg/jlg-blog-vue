@@ -27,7 +27,7 @@
 			<div class="w-full flex justify-between items-center">
 				<div>{{ data.label }}</div>
 				<div class="w-10 mr-4 flex justify-around items-baseline">
-					<el-icon style="color: var(--el-color-primary)" @click.stop="editFun"><EditPen /></el-icon>
+					<el-icon style="color: var(--el-color-primary)" @click.stop="editFun(data)"><EditPen /></el-icon>
 					<el-icon style="color: var(--el-color-danger)" @click.stop="deleteFun"><Delete /></el-icon>
 				</div>
 			</div>
@@ -115,11 +115,12 @@ function addFun() {
 	});
 }
 
-function editFun() {
+function editFun(data: AT_ArticleTreeTable) {
+	console.log(data);
 	drawer({
 		drawerKey: 'AddTree',
 		drawerTitle: '编辑目录',
-		option: {},
+		option: { data: data },
 		drawerType: 'edit',
 		drawerSize: '40%',
 	}).then(() => {
