@@ -9,12 +9,16 @@
 			}"
 		></Navigation-Menu>
 
-		<router-view v-slot="{ Component }">
-			<keep-alive v-if="$route.meta.keepAlive">
-				<component :is="Component" />
-			</keep-alive>
-			<component :is="Component" v-if="!$route.meta.keepAlive" />
-		</router-view>
+		<transition name="slide">
+			<router-view v-slot="{ Component }">
+				<blog-backend-loading :model-value="pageLoading">
+					<keep-alive v-if="$route.meta.keepAlive">
+						<component :is="Component" />
+					</keep-alive>
+					<component :is="Component" v-if="!$route.meta.keepAlive" />
+				</blog-backend-loading>
+			</router-view>
+		</transition>
 	</el-config-provider>
 	<floating-ball v-model:el-right="ballElRight" v-model:el-bottom="ballElBottom">
 		<el-radio-group v-model="locale">
@@ -29,6 +33,8 @@ import NavigationMenu from '@/components/navigation-menu/index.vue';
 import { eleLanguage, locale } from '@/utils/i18n';
 import { ElConfigProvider } from 'element-plus';
 import FloatingBall from '@/components/floating-ball/index.vue';
+import BlogBackendLoading from '@/components/business/blog-backend-loading/index.vue';
+import { pageLoading } from '@/views/blog-backend/home/hooks/variable';
 
 const navigationMenuShow = ref<boolean>(false);
 const navigationSwitchUrl = ref<string>('中');

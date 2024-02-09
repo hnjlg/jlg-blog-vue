@@ -28,6 +28,7 @@
 		"gsap": "^3.12.2",
 		"js-cookie": "^3.0.5",
 		"lodash-unified": "^1.0.3",
+		"lottie-web": "^5.12.2",
 		"normalize.css": "^8.0.1",
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.1",

@@ -54,7 +54,7 @@
 						</el-dropdown>
 					</div>
 				</el-header>
-				<el-main v-loading="pageLoading" class="blog-backend-home-content-common blog-backend-home-content-system-page">
+				<el-main class="blog-backend-home-content-common blog-backend-home-content-system-page">
 					<router-view v-slot="{ Component }">
 						<keep-alive v-if="$route.meta.keepAlive">
 							<component :is="Component" :key="$route.path" />
@@ -64,7 +64,7 @@
 				</el-main>
 			</el-container>
 		</el-container>
-		<div v-else v-loading="pageLoading" class="blog-backend-home-content-common blog-backend-home-content-other-page">
+		<div v-else class="blog-backend-home-content-common blog-backend-home-content-other-page">
 			<router-view v-slot="{ Component }">
 				<keep-alive v-if="$route.meta.keepAlive">
 					<component :is="Component" :key="$route.path" />
@@ -113,7 +113,6 @@
 <script setup lang="ts">
 import { Menu as IconMenu, Location, Bell } from '@element-plus/icons-vue';
 import { RouteLocationRaw } from 'vue-router';
-import { pageLoading } from './hooks/variable';
 import useBlogBackendStore from '@/store/blog-backend';
 import { loginOut } from './hooks/loginout';
 import { router } from '@/router/index';
@@ -212,5 +211,22 @@ socketIo.value?.on('resReadMessage', (data) => {
 	.blog-backend-home-content-common {
 		height: 100%;
 	}
+}
+
+.slide-enter-active,
+.slide-leave-active {
+	transition: all 0.5s ease;
+}
+
+.slide-enter-from {
+	transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+	transform: translateX(0);
+}
+.slide-leave-to {
+	transform: translateX(-100%);
 }
 </style>
